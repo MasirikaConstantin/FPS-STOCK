@@ -23,10 +23,9 @@ return new class extends Migration
             $table->ipAddress('last_login_ip')->nullable();
             $table->rememberToken();
             $table->timestampsTz();
-            $table->uuid('ref')->primary()->default(DB::raw('gen_random_uuid()'));
+            $table->uuid('ref')->unique();
 
             $table->softDeletesTz();
-            //$table->timestamps();
         });
 
         Schema::create('password_reset_tokens', function (Blueprint $table) {
