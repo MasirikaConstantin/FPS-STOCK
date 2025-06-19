@@ -101,10 +101,26 @@ console.log(flash);
         });
     };
 
+    const handleResendVerification = () => {
+        console.log('handleResendVerification called with email:', registerData.email);
+        router.post(route('verification.send-to'), { email: registerData.email }, {
+            onSuccess: () => toast.success('Un lien de vérification a été envoyé !'),
+            onError: (errors) => {
+                if (errors.email) {
+                    toast.error(errors.email);
+                } else {
+                    toast.error('Erreur lors de l\'envoi du email de vérification');
+                }
+            }
+        });
+    };
     const handleRegister: FormEventHandler = (e) => {
         e.preventDefault();
         registerPost(route('register'), {
             onFinish: () => resetRegister('password', 'password_confirmation'),
+            onSuccess: () => {
+                handleResendVerification();
+            },
         });
     };
 

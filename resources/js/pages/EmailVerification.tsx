@@ -4,10 +4,11 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
 import { toast } from 'sonner';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 
 export default function VerifyEmail({ status }: { status?: string }) {
+    const [showAlert, setShowAlert] = useState(false);
     const { data, setData, post, processing, errors } = useForm({
         email: '',
     });
@@ -15,6 +16,8 @@ const { flash } = usePage<{ props: { flash: { success?: string; }; }; }>().props
     useEffect(() => {
         if (flash.success) {
             toast.success(flash.success);
+            setShowAlert(true);
+            
         }
     }, [flash.success]);
 
@@ -29,6 +32,18 @@ const { flash } = usePage<{ props: { flash: { success?: string; }; }; }>().props
                             <AlertTitle>Erreur compte mail</AlertTitle>
                             <AlertDescription>L'adresse email que vous avez fournie n'existe pas.</AlertDescription>
                     
+                </Alert>
+            )}
+
+            {showAlert && (
+                <Alert  className='green-600' >
+                    <AlertTitle>Succès</AlertTitle>
+                    <AlertDescription>Adresse email envoyé avec success
+                        <br />
+                        Veuillez vérifier votre boîte de réception et cliquer sur le lien de vérification.
+                        <br />
+                        Ou vérifier votre dossier spam.
+                    </AlertDescription>
                 </Alert>
             )}
             <form onSubmit={(e) => {

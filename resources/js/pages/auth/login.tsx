@@ -29,7 +29,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
         remember: false,
     });
 
-    const { flash, verifyMessage } = usePage().props;
+    const { flash, verifyMessage } = usePage<{ flash?: { error?: string }; verifyMessage?: string }>().props;
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post(route('login'), {

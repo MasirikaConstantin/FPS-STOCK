@@ -1,4 +1,4 @@
-import { Head, useForm } from '@inertiajs/react';
+import { Head, router, useForm } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
 import { FormEventHandler } from 'react';
 
@@ -8,6 +8,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import AuthLayout from '@/layouts/auth-layout';
+import { toast } from 'sonner';
 
 type RegisterForm = {
     name: string;
@@ -23,11 +24,26 @@ export default function Register() {
         password: '',
         password_confirmation: '',
     });
-
+    const handleResendVerification = () => {
+        console.log('handleResendVerification called with email:', data.email);
+        router.post(route('verification.resend'), { email: data.email }, {
+            onSuccess: () => toast.success('Un lien de vérification a été envoyé !'),
+            onError: (errors) => {
+                if (errors.email) {
+                    toast.error(errors.email);
+                } else {
+                    toast.error('Erreur lors de l\'envoi du email de vérification');
+                }
+            }
+        });
+    };
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post(route('register'), {
-            onFinish: () => reset('password', 'password_confirmation'),
+            onFinish: () => {
+                reset('password', 'password_confirmation');
+                console.log("handleResendVerification()");
+            },
         });
     };
 
