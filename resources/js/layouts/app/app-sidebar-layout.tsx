@@ -1,4 +1,5 @@
 import { AppContent } from '@/components/app-content';
+import { motion } from 'framer-motion';
 import { AppShell } from '@/components/app-shell';
 import { AppSidebar } from '@/components/app-sidebar';
 import { AppSidebarHeader } from '@/components/app-sidebar-header';

@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { BookOpen, Folder, LayoutGrid } from 'lucide-react';
+import { AlertTriangle, BarChart3, BookOpen, Building2, Folder, Hospital, LayoutGrid, Package, Pill, Settings, Truck, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -13,6 +13,64 @@ const mainNavItems: NavItem[] = [
         href: '/dashboard',
         icon: LayoutGrid,
     },
+
+    {
+        title: 'COCO',
+        href: '/coc',
+        icon: LayoutGrid,
+    },
+
+   
+      {
+        title: 'Stocks Central',
+        href: '/central-stocks',
+        icon: Package,
+      },
+      {
+        title: 'Stocks Hôpitaux',
+        href: '/hospital-stocks',
+        icon: Building2,
+      },
+      {
+        title: 'Hôpitaux',
+        href: '/hospitals',
+        icon: Hospital,
+      },
+      {
+        title: 'Médicaments',
+        href: '/medicines',
+        icon: Pill,
+      },
+      {
+        title: 'Transferts',
+        href: '/transfers',
+        icon: Truck,
+      },
+      {
+        title: 'Alertes',
+        href: '/alerts',
+        icon: AlertTriangle,
+      },
+      {
+        title: 'Kits',
+        href: '/kits',
+        icon: Package,
+      },
+      {
+        title: 'Utilisateurs',
+        href: '/users',
+        icon: Users,
+      },
+      {
+        title: 'Rapports',
+        href: '/reports',
+        icon: BarChart3,
+      },
+      {
+        title: 'Paramètres',
+        href: '/settings',
+        icon: Settings,
+      }
 ];
 
 const footerNavItems: NavItem[] = [
@@ -34,7 +92,7 @@ export function AppSidebar() {
             <SidebarHeader>
                 <SidebarMenu>
                     <SidebarMenuItem>
-                        <SidebarMenuButton size="lg" asChild>
+                        <SidebarMenuButton size="xl" asChild>
                             <Link href="/dashboard" prefetch>
                                 <AppLogo />
                             </Link>
@@ -46,9 +104,9 @@ export function AppSidebar() {
             <SidebarContent>
                 <NavMain items={mainNavItems} />
             </SidebarContent>
-
+          
             <SidebarFooter>
-                <NavFooter items={footerNavItems} className="mt-auto" />
+                {/*<NavFooter items={footerNavItems} classtitle="mt-auto" />*/}
                 <NavUser />
             </SidebarFooter>
         </Sidebar>
