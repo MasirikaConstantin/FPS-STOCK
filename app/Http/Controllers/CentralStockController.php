@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Inertia\Inertia;
 
 class CentralStockController extends Controller
 {
@@ -11,7 +12,9 @@ class CentralStockController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('StocksCentral/index', [
+           // 'stocks' => \App\Models\CentralStock::with(['product', 'warehouse'])->get(),
+        ]);
     }
 
     /**

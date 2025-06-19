@@ -13,14 +13,6 @@ const mainNavItems: NavItem[] = [
         href: '/dashboard',
         icon: LayoutGrid,
     },
-
-    {
-        title: 'COCO',
-        href: '/coc',
-        icon: LayoutGrid,
-    },
-
-   
       {
         title: 'Stocks Central',
         href: '/central-stocks',
