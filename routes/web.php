@@ -94,6 +94,26 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::put('/categories/{category}', [CategorieController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{category}', [CategorieController::class, 'destroy'])->name('categories.destroy');
     
+
+
+
+    Route::prefix('users')->middleware('can:viewAny,App\Models\User')->group(function () {
+        Route::get('/', [UserController::class, 'index'])->name('users.index');
+        Route::get('/{user}', [UserController::class, 'show'])->name('users.show');
+        Route::get('/{user}/edit', [UserController::class, 'edit'])->name('users.edit');
+        Route::put('/{user}', [UserController::class, 'update'])->name('users.update');
+        Route::delete('/{user}', [UserController::class, 'destroy'])->name('users.destroy');
+
+
+        Route::get('users/create', [UserController::class, 'create'])
+        ->name('users.create')
+        ->middleware('can:create,App\Models\User');
+        
+        Route::post('users', [UserController::class, 'store'])
+            ->name('users.store')
+            ->middleware('can:create,App\Models\User');
+    });
+    
     // Alertes
     Route::get('/alerts', [AlertController::class, 'index'])
          ->name('alerts.index');
@@ -101,9 +121,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     // Kits
     Route::resource('kits', KitController::class);
     
-    // Utilisateurs
-    Route::resource('users', UserController::class)
-         ->middleware('can:manage-users'); // Exemple de permission
+ 
     
     // Rapports
     Route::prefix('reports')->group(function () {
@@ -118,6 +136,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
              ->name('settings.index');
         // Autres routes de paramètres
     });
+
+    Route::get('/settings', [SettingsController::class, 'index'])
+         ->name('settings.index');
 });
 
 // Pour les besoins d'Inertia.js - route de fallback

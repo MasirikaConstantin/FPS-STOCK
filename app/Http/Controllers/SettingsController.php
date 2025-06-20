@@ -11,7 +11,10 @@ class SettingsController extends Controller
      */
     public function index()
     {
-        //
+        return inertia('Settings/Index', [
+            'title' => 'Paramètres',
+            'description' => 'Gérer les paramètres de l\'application',
+        ]);
     }
 
     /**

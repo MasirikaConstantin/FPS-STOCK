@@ -1,7 +1,7 @@
 // resources/js/types.d.ts
 
 import { Page } from '@inertiajs/core';
-
+export type Role = 'admin_central' | 'admin' | 'medecin' | 'pharmacien' | 'magasinier';
 // Étendez les types globaux d'Inertia
 declare module '@inertiajs/core' {
     interface PageProps {
@@ -15,6 +15,48 @@ declare module '@inertiajs/core' {
         };
         // Ajoutez d'autres propriétés globales partagées par toutes les pages
     }
+
+   
+
+    export interface User {
+        id: number;
+        name: string;
+        email: string;
+        avatar?: string;
+        role: Role;
+        is_active: boolean;
+        last_login_at?: string;
+        last_login_ip?: string;
+        created_at: string;
+        updated_at: string;
+        profile?: {
+            phone?: string;
+            address?: string;
+            hospital?: {
+                id: number;
+                name: string;
+            };
+        };
+        permissions?: Permission[];
+    }
+
+   
+    
+    
+}
+
+export interface Permission {
+    id: number;
+    name: string;
+    description?: string;
+    module: string;
+    action: string;
+}
+export interface Hospital {
+    id: number;
+    name: string;
+    address?: string;
+    phone?: string;
 }
 
 // Types spécifiques à votre application
@@ -59,13 +101,7 @@ declare namespace App {
         } | null;
     }
 
-    interface User {
-        id: number;
-        name: string;
-        email: string;
-        created_at: string;
-        updated_at: string;
-    }
+    
 }
 
 // Exportez le type PageProps pour l'utiliser dans vos composants

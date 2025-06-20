@@ -24,6 +24,11 @@ class User extends Authenticatable implements MustVerifyEmail
         'name',
         'email',
         'password',
+        'role',
+        'is_active',
+        'avatar',
+        'last_login_at',
+        'last_login_ip',
     ];
     protected $keyType = 'string';
     /**
@@ -46,6 +51,8 @@ class User extends Authenticatable implements MustVerifyEmail
         return [
             'email_verified_at' => 'datetime',
             'password' => 'hashed',
+            'is_active' => 'boolean',
+            'last_login_at' => 'datetime',
         ];
     }
     // Dans votre modèle User
@@ -55,6 +62,54 @@ class User extends Authenticatable implements MustVerifyEmail
         
         static::creating(function ($model) {
             $model->ref = Str::uuid();
+        });
+    }
+
+
+
+    public function profile()
+    {
+        return $this->hasOne(Profil::class);
+    }
+
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class, 'user_permissions')
+                   ->withTimestamps()
+                   ->withPivot('granted_by', 'granted_at');
+    }
+
+    public function hospital()
+    {
+        return $this->hasOneThrough(
+            Hopital::class,
+            Profil::class,
+            'user_id',
+            'id',
+            'id',
+            'hopital_id'
+        );
+    }
+
+    public function isAdminCentral(): bool
+    {
+        return $this->role === 'admin_central';
+    }
+
+    public function isAdmin(): bool
+    {
+        return $this->role === 'admin';
+    }
+
+    public function isMedicalStaff(): bool
+    {
+        return in_array($this->role, ['medecin', 'pharmacien', 'magasinier']);
+    }
+
+    public function scopeForHospital($query, $hospitalId)
+    {
+        return $query->whereHas('profile', function($q) use ($hospitalId) {
+            $q->where('hopital_id', $hospitalId);
         });
     }
 }

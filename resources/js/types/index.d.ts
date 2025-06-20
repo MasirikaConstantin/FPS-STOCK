@@ -35,9 +35,22 @@ export interface User {
     id: number;
     name: string;
     email: string;
+    role: string;
     avatar?: string;
     email_verified_at: string | null;
     created_at: string;
+    last_login_at: string;
     updated_at: string;
+    created_at: string;
+        updated_at: string;
+        profile?: {
+            phone?: string;
+            address?: string;
+            hospital?: {
+                id: number;
+                name: string;
+            };
+        };
+        permissions?: Permission[];
     [key: string]: unknown; // This allows for additional properties...
 }

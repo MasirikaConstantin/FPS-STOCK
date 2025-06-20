@@ -26,4 +26,10 @@ class Permission extends Model
             $model->ref = \Illuminate\Support\Str::uuid();
         });
     }
+    public function users()
+    {
+        return $this->belongsToMany(User::class, 'user_permissions')
+                    ->withTimestamps()
+                    ->withPivot('granted_by', 'granted_at');
+    }
 }

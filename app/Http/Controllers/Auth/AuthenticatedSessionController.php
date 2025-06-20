@@ -28,37 +28,42 @@ class AuthenticatedSessionController extends Controller
     /**
      * Handle an incoming authentication request.
      */
-
-public function store(LoginRequest $request)
-{
-    try {
-        $request->authenticate();
-        $user = Auth::user();
-
-        if (!$user->is_active) {
-            Auth::logout();
-            return Inertia::render('auth/auth', [
-                'errors' => ['email' => 'Votre compte est désactivé. Veuillez contacter l\'administrateur.'],
-                'flash' => ['error' => 'Compte désactivé']
+    public function store(LoginRequest $request)
+    {
+        try {
+            $request->authenticate();
+            $user = Auth::user();
+    
+            if (!$user->is_active) {
+                Auth::logout();
+                return Inertia::render('auth/auth', [
+                    'errors' => ['email' => 'Votre compte est désactivé. Veuillez contacter l\'administrateur.'],
+                    'flash' => ['error' => 'Compte désactivé']
+                ]);
+            }
+    
+            if (is_null($user->email_verified_at)) {
+                Auth::logout();
+                return Inertia::render('auth/auth', [
+                    'errors' => ['email' => 'Email non vérifié'],
+                    'flash' => ['error' => 'Vous devez vérifier votre email'],
+                    'verifyMessage' => 'Veillez vérifier votre email pour activer votre compte.'
+                ]);
+            }
+    
+            // Mise à jour des informations de connexion
+            $user->update([
+                'last_login_at' => now(),
+                'last_login_ip' => $request->ip()
             ]);
+    
+            $request->session()->regenerate();
+            return redirect()->intended(route('dashboard'));
+    
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return back()->withErrors($e->errors())->with('error', 'Erreur de validation');
         }
-
-        if (is_null($user->email_verified_at)) {
-            Auth::logout();
-            return Inertia::render('auth/auth', [
-                'errors' => ['email' => 'Email non vérifié'],
-                'flash' => ['error' => 'Vous devez vérifier votre email'],
-                'verifyMessage' => 'Veillez vérifier votre email pour activer votre compte.'
-            ]);
-        }
-
-        $request->session()->regenerate();
-        return redirect()->intended(route('dashboard'));
-
-    } catch (\Illuminate\Validation\ValidationException $e) {
-        return back()->withErrors($e->errors())->with('error', 'Erreur de validation');
     }
-}
 
     /**
      * Destroy an authenticated session.
