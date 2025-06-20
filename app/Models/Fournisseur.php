@@ -15,6 +15,7 @@ class Fournisseur extends Model
         'email',
         'type',
         'province',
+        'specialties',
         'ville',
         'contact_person',
         'is_active',
@@ -22,6 +23,8 @@ class Fournisseur extends Model
         'created_by',
         'updated_by',
         'ref',
+        'contract_start_date',
+        'contract_end_date',
     ];
 
     protected static function boot()
@@ -32,4 +35,22 @@ class Fournisseur extends Model
             $model->ref = \Illuminate\Support\Str::uuid();
         });
     }
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+    public function updater()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+    protected $casts = [
+        'specialties' => 'array',
+        'is_active' => 'boolean',
+        'contract_start_date' => 'datetime',
+        'contract_end_date' => 'datetime'
+    ];
+    
+    protected $attributes = [
+        'specialties' => '[]' // Assure que la valeur par défaut est un tableau vide
+    ];
 }

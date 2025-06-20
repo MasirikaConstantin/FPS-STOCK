@@ -44,6 +44,12 @@ const mainNavItems: NavItem[] = [
         href: '/medicaments',
         icon: Pill,
     },
+
+    {
+        title: 'Fournisseurs',
+        href: '/fournisseurs',
+        icon: Building2,
+    },
     {
         title: 'Categories',
         href: '/categories',

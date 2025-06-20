@@ -205,6 +205,9 @@ Route::prefix('hopitals')->group(function () {
     Route::delete('/{hopital}', [HospitalController::class, 'destroy'])
         ->name('hopitals.destroy');
 });
+
+Route::resource('fournisseurs', \App\Http\Controllers\FournisseurController::class)
+    ->middleware(['auth', 'verified']);
 // Pour les besoins d'Inertia.js - route de fallback
 Route::fallback(function () {
     return inertia('Error/404');

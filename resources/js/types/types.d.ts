@@ -72,6 +72,25 @@ export interface DivisionAdministrative {
     };
 }
 
+export interface Fournisseur {
+    id: number;
+    ref: string;
+    nom: string;
+    contact_person: string | null;
+    phone: string | null;
+    email: string | null;
+    address: string | null;
+    specialties: string[];
+    is_active: boolean;
+    contract_start_date: string | null;
+    contract_end_date: string | null;
+    created_by: number | null;
+    updated_by: number | null;
+    created_at: string;
+    updated_at: string;
+    creator?: User;
+    updater?: User;
+}
 
 export interface Hospital {
     id: number;
