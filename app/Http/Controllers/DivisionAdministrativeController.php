@@ -5,52 +5,49 @@ namespace App\Http\Controllers;
 use App\Models\DivisionAdministrative;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Inertia\Inertia;
 
 class DivisionAdministrativeController extends Controller
 {
     public function index()
-    {
-        $divisions = DivisionAdministrative::query()
-            ->with(['parent', 'creator'])
-            ->latest()
-            ->get()
-            ->groupBy('type');
-            $canCreate = auth()->user()->role === 'admin_central';
-
-            $user = auth()->user();
-
-           // dd($canCreate, $user->can('create divisions')); // Debug
-
-
-        return Inertia::render('Divisions/Index', [
-            'provinces' => $divisions['province'] ?? [],
-            'territoires' => $divisions['territoire'] ?? [],
-            'villes' => $divisions['ville'] ?? [],
-            'canCreate' => auth()->user()->can('create', DivisionAdministrative::class),
-        ]);
+{
+    if (Gate::denies('viewAny', DivisionAdministrative::class)) {
+        abort(403);
     }
 
+    $divisions = DivisionAdministrative::query()
+        ->with(['parent', 'creator'])
+        ->latest()
+        ->get()
+        ->groupBy('type');
+
+    return Inertia::render('Divisions/Index', [
+        'provinces' => $divisions['province'] ?? [],
+        'territoires' => $divisions['territoire'] ?? [],
+        'villes' => $divisions['ville'] ?? [],
+        'communes' => $divisions['commune'] ?? [],
+        'canCreate' => auth()->user()->can('create', DivisionAdministrative::class),
+    ]);
+}
     public function create()
     {
-        $types = ['province', 'territoire', 'ville'];
-        $parents = DivisionAdministrative::query()
-            ->when(auth()->user()->cannot('viewAll', DivisionAdministrative::class), function ($query) {
-                // Filtre selon les permissions si nécessaire
-            })
+        $types = ['province', 'territoire', 'ville', 'commune'];
+        $parents = DivisionAdministrative::where('is_active', true)
             ->get(['id', 'nom', 'type']);
-
+        
         return Inertia::render('Divisions/Create', [
             'types' => $types,
             'parents' => $parents,
         ]);
     }
 
+
     public function store(Request $request)
     {
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
-            'type' => 'required|in:province,territoire,ville',
+            'type' => 'required|in:province,territoire,ville,commune',
             'code' => 'nullable|string|max:50|unique:division_administraves,code',
             'parent_id' => [
                 'nullable',
@@ -89,17 +86,17 @@ class DivisionAdministrativeController extends Controller
     public function show(DivisionAdministrative $division)
     {
         $division->load(['parent', 'children', 'creator']);
-
         return Inertia::render('Divisions/Show', [
             'division' => $division,
             'hierarchy' => $division->hierarchy,
-            'canEdit' => auth()->user()->can('update', $division),
+
+            'canEdit' => auth()->user()->can('edit', $division),
         ]);
     }
 
     public function edit(DivisionAdministrative $division)
     {
-        $types = ['province', 'territoire', 'ville'];
+        $types = ['province', 'territoire', 'ville','commune'];
         $parents = DivisionAdministrative::query()
             ->where('id', '!=', $division->id)
             ->get(['id', 'nom', 'type']);
@@ -115,7 +112,7 @@ class DivisionAdministrativeController extends Controller
     {
         $validated = $request->validate([
             'nom' => 'required|string|max:255',
-            'type' => 'required|in:province,territoire,ville',
+            'type' => 'required|in:province,territoire,ville,commune',
             'code' => 'nullable|string|max:50|unique:division_administraves,code,'.$division->id,
             'parent_id' => [
                 'nullable',
@@ -169,7 +166,7 @@ class DivisionAdministrativeController extends Controller
     public function getByType(Request $request)
     {
         $request->validate([
-            'type' => 'required|in:province,territoire,ville',
+            'type' => 'required|in:province,territoire,ville,commune',
             'parent_id' => 'nullable|exists:division_administraves,id',
         ]);
 

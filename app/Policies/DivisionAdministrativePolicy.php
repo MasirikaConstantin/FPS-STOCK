@@ -4,50 +4,36 @@ namespace App\Policies;
 
 use App\Models\DivisionAdministrative;
 use App\Models\User;
-use Illuminate\Auth\Access\HandlesAuthorization;
 
 class DivisionAdministrativePolicy
 {
-    use HandlesAuthorization;
-
-    public function viewAny(User $user)
+    public function viewAny(User $user): bool
     {
-        return $user->can('view divisions');
+        return $user->hasPermission('divisions', 'view');
     }
 
-    public function view(User $user, DivisionAdministrative $division)
+    public function view(User $user, DivisionAdministrative $division): bool
     {
-        return $user->can('view divisions');
+        return $user->hasPermission('divisions', 'view');
     }
 
-    public function create(User $user)
+    public function create(User $user): bool
     {
-        // Admin central peut créer, admin normal sera vérifié dans le contrôleur
-        return $user->role === 'admin_central' && $user->can('create divisions');
-
-        
+        return $user->hasPermission('divisions', 'create');
     }
 
-    public function update(User $user, DivisionAdministrative $division)
+    public function update(User $user, DivisionAdministrative $division): bool
     {
-        // Admin central peut tout modifier
-        if ($user->role === 'admin_central' && $user->can('edit divisions')) {
-            return true;
-        }
-        
-        // Admin normal ne peut modifier que si la division contient son hôpital
-        if ($user->role === 'admin' && $user->can('edit divisions')) {
-            return $division->hospitals()->where('id', $user->hospital_id)->exists();
-        }
-        
-        return false;
+        return $user->hasPermission('divisions', 'update');
     }
 
-    public function delete(User $user, DivisionAdministrative $division)
+    public function edit(User $user, DivisionAdministrative $division): bool
     {
-        // Seul admin_central peut supprimer
-        return $user->role === 'admin_central' && 
-               $user->can('delete divisions') && 
-               !$division->children()->exists();
+        return $user->hasPermission('divisions', 'edit');
+    }
+
+    public function delete(User $user, DivisionAdministrative $division): bool
+    {
+        return $user->hasPermission('divisions', 'delete');
     }
 }

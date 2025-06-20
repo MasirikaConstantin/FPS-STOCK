@@ -13,11 +13,12 @@ interface IndexProps extends PageProps {
     provinces: DivisionAdministrative[];
     territoires: DivisionAdministrative[];
     villes: DivisionAdministrative[];
+    communes: DivisionAdministrative[];
     canCreate: boolean;
 }
 
 
-export default function Index({ provinces, territoires, villes, canCreate }: IndexProps) {
+export default function Index({ provinces, territoires, villes,communes, canCreate }: IndexProps) {
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -25,7 +26,6 @@ export default function Index({ provinces, territoires, villes, canCreate }: Ind
             href: route('divisions.index'),
         },
     ];
-    console.log(canCreate);
 
 
     const renderTable = (title: string, items: DivisionAdministrative[], type: string) => (
@@ -76,10 +76,10 @@ export default function Index({ provinces, territoires, villes, canCreate }: Ind
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-6">
-                    <div className="flex justify-end">
+                    <div className="flex justify-end gap-2">
                         {canCreate && (
                             <Button asChild>
-                                <Link href={route('divisions.create')}>
+                                <Link href={route('division.create')}>
                                     <PlusIcon className="mr-2 h-4 w-4" />
                                     Ajouter une division
                                 </Link>
@@ -98,6 +98,7 @@ export default function Index({ provinces, territoires, villes, canCreate }: Ind
                         {renderTable('Provinces', provinces, 'province')}
                         {renderTable('Territoires', territoires, 'territoire')}
                         {renderTable('Villes', villes, 'ville')}
+                        {renderTable('Communes', communes, 'commune')}
                     </div>
                 </div>
             </div>

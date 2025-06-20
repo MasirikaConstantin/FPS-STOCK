@@ -147,14 +147,17 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::resource('divisions', DivisionAdministrativeController::class)->except(['create', 'store']);
+    Route::get('divisions', [DivisionAdministrativeController::class, 'index'])->name('divisions.index');
+    Route::get('divisions/{division}', [DivisionAdministrativeController::class, 'show'])->name('divisions.show');
+    Route::get('divisions/{division}/edit', [DivisionAdministrativeController::class, 'edit'])->name('divisions.edit');
+    Route::put('divisions/{division}', [DivisionAdministrativeController::class, 'update'])->name('divisions.update');
+    Route::delete('divisions/{division}', [DivisionAdministrativeController::class, 'destroy'])->name('divisions.destroy');
     
-    Route::get('divisions/create', [DivisionAdministrativeController::class, 'create'])
-        ->name('divisions.create')
-        ->middleware('can:create,App\Models\DivisionAdministrative');
+    Route::get('division/create', [DivisionAdministrativeController::class, 'create'])
+        ->name('division.create');
         
-    Route::post('divisions', [DivisionAdministrativeController::class, 'store'])
-        ->name('divisions.store')
+    Route::post('division', [DivisionAdministrativeController::class, 'store'])
+        ->name('division.store')
         ->middleware('can:create,App\Models\DivisionAdministrative');
         
     Route::get('divisions/by-type', [DivisionAdministrativeController::class, 'getByType'])

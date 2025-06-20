@@ -18,9 +18,7 @@ return new class extends Migration
                 $table->string('module', 50)->index()->comment('Module concerné par la permission');
                 $table->string('action', 50)->index()->comment('Action autorisée par la permission');
                 $table->timestampsTz();
-                
-            $table->uuid('ref')->unique();
-                // Index composites pour les recherches fréquentes
+                $table->uuid('ref')->unique();
                 $table->index(['module', 'action']);
         });
     }

@@ -14,7 +14,7 @@ return new class extends Migration
         Schema::create('division_administraves', function (Blueprint $table) {
             $table->id();
             $table->string('nom');
-            $table->enum('type', ['province', 'territoire', 'ville']);
+            $table->enum('type', ['province', 'territoire', 'ville','commune']);
             $table->string('code')->nullable();
             $table->boolean('is_active')->default(true);
             $table->timestampsTz();

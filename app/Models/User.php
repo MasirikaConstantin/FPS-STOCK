@@ -72,13 +72,7 @@ class User extends Authenticatable implements MustVerifyEmail
         return $this->hasOne(Profil::class);
     }
 
-    public function permissions()
-    {
-        return $this->belongsToMany(Permission::class, 'user_permissions')
-                   ->withTimestamps()
-                   ->withPivot('granted_by', 'granted_at');
-    }
-
+  
     public function hospital()
     {
         return $this->hasOneThrough(
@@ -113,12 +107,18 @@ class User extends Authenticatable implements MustVerifyEmail
         });
     }
 
-    public function hasPermission($permissionName)
+    public function hasPermission(string $module, string $action): bool
 {
-    return $this->permissions()->whereHas('permission', function($q) use ($permissionName) {
-        $q->where('name', $permissionName);
-    })->exists();
+    return $this->permissions()
+        ->where('module', $module)
+        ->where('action', $action)
+        ->exists();
 }
 
+public function permissions()
+{
+    return $this->belongsToMany(Permission::class, 'user_permissions')
+        ->withTimestamps();
+}
 
 }

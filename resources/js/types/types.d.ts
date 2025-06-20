@@ -48,7 +48,7 @@ declare module '@inertiajs/core' {
 export interface DivisionAdministrative {
     id: number;
     nom: string;
-    type: 'province' | 'territoire' | 'ville';
+    type: 'province' | 'territoire' | 'ville' | 'commune' ;
     code?: string;
     is_active: boolean;
     parent_id?: number;
