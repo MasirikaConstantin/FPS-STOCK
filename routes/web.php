@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Admin\PermissionAssignmentController;
 use App\Http\Controllers\EmailVerificationController;
 use Illuminate\Support\Facades\Route;
 use Inertia\Inertia;
@@ -13,11 +14,13 @@ use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\AlertController;
 use App\Http\Controllers\CategorieController;
+use App\Http\Controllers\DivisionAdministrativeController;
 use App\Http\Controllers\HopitalController;
 use App\Http\Controllers\KitController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingsController;
+use App\Models\DivisionAdministrave;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -137,10 +140,49 @@ Route::middleware(['auth', 'verified'])->group(function () {
         // Autres routes de paramètres
     });
 
-    Route::get('/settings', [SettingsController::class, 'index'])
+    Route::get('/settings', [DivisionAdministrativeController::class, 'index'])
          ->name('settings.index');
 });
 
+
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('divisions', DivisionAdministrativeController::class)->except(['create', 'store']);
+    
+    Route::get('divisions/create', [DivisionAdministrativeController::class, 'create'])
+        ->name('divisions.create')
+        ->middleware('can:create,App\Models\DivisionAdministrative');
+        
+    Route::post('divisions', [DivisionAdministrativeController::class, 'store'])
+        ->name('divisions.store')
+        ->middleware('can:create,App\Models\DivisionAdministrative');
+        
+    Route::get('divisions/by-type', [DivisionAdministrativeController::class, 'getByType'])
+        ->name('divisions.by-type');
+});
+
+
+
+Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
+    Route::get('/permissions/assign', [PermissionAssignmentController::class, 'index'])
+         ->name('admin.permissions.assign');
+         Route::get('/permissions', [PermissionAssignmentController::class, 'accueil'])
+         ->name('admin.permissions.index');
+         
+         Route::get('/permissions/create', [PermissionAssignmentController::class, 'create'])
+         ->name('admin.permissions.create');
+
+         Route::post('/permissions/create', [PermissionAssignmentController::class, 'storePermission'])
+         ->name('admin.permissions.store');
+
+         Route::get('/permissions/{permission}/edit', [PermissionAssignmentController::class, 'edit'])
+         ->name('admin.permissions.edit');
+            Route::put('/permissions/{permission}', [PermissionAssignmentController::class, 'update'])
+            ->name('admin.permissions.update');
+    Route::delete('/permissions/{permission}', [PermissionAssignmentController::class, 'destroy'])->name('admin.permissions.destroy');
+
+    Route::post('/permissions/assign', [PermissionAssignmentController::class, 'store']);
+});
 // Pour les besoins d'Inertia.js - route de fallback
 Route::fallback(function () {
     return inertia('Error/404');

@@ -112,4 +112,13 @@ class User extends Authenticatable implements MustVerifyEmail
             $q->where('hopital_id', $hospitalId);
         });
     }
+
+    public function hasPermission($permissionName)
+{
+    return $this->permissions()->whereHas('permission', function($q) use ($permissionName) {
+        $q->where('name', $permissionName);
+    })->exists();
+}
+
+
 }

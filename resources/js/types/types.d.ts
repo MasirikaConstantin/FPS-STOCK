@@ -45,6 +45,31 @@ declare module '@inertiajs/core' {
     
 }
 
+export interface DivisionAdministrative {
+    id: number;
+    nom: string;
+    type: 'province' | 'territoire' | 'ville';
+    code?: string;
+    is_active: boolean;
+    parent_id?: number;
+    created_by?: number;
+    created_at: string;
+    updated_at: string;
+    parent?: {
+        id: number;
+        nom: string;
+        type: string;
+    };
+    children?: Array<{
+        id: number;
+        nom: string;
+        type: string;
+    }>;
+    creator?: {
+        id: number;
+        name: string;
+    };
+}
 export interface Permission {
     id: number;
     name: string;

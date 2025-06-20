@@ -9,7 +9,9 @@ class UserPermission extends Model
     protected $fillable = [
         'user_id',
         'permission_id',
-        'ref'
+        'ref',
+        'granted_at',
+        'granted_by',
     ];
 
     protected $casts = [
@@ -25,5 +27,13 @@ class UserPermission extends Model
         static::creating(function ($model) {
             $model->ref = \Illuminate\Support\Str::uuid();
         });
+    }
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+    public function permission()
+    {
+        return $this->belongsTo(Permission::class);
     }
 }

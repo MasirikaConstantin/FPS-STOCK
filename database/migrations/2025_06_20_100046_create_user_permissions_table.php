@@ -29,11 +29,9 @@ return new class extends Migration
                       ->nullable()
                       ->constrained('users')
                       ->nullOnDelete();
-                
-                $table->timestampTz('granted_at')->useCurrent();
+                    $table->timestampTz('granted_at')->useCurrent();
             $table->uuid('ref')->unique();
             $table->timestampsTz();
-
             });
     }
 

@@ -9,7 +9,11 @@ class Permission extends Model
     protected $fillable = [
         'name',
         'description',
-        'ref'
+        'ref',
+        'module',
+        'action',
+        
+
     ];
 
     protected $casts = [
