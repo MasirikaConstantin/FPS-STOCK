@@ -15,7 +15,6 @@ use App\Http\Controllers\TransferController;
 use App\Http\Controllers\AlertController;
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\DivisionAdministrativeController;
-use App\Http\Controllers\HopitalController;
 use App\Http\Controllers\KitController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
@@ -79,10 +78,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
              ->name('hospital-stocks.index');
     });
     
-    // Hôpitaux
-    Route::resource('hospitals', HopitalController::class)
-         ->except(['show']); // Exclure la route show si non utilisée
-    
+   
     // Médicaments
     Route::resource('medicaments', MedicineController::class);
     
@@ -185,6 +181,29 @@ Route::prefix('admin')->middleware(['auth', 'verified'])->group(function () {
     Route::delete('/permissions/{permission}', [PermissionAssignmentController::class, 'destroy'])->name('admin.permissions.destroy');
 
     Route::post('/permissions/assign', [PermissionAssignmentController::class, 'store']);
+});
+
+Route::prefix('hopitals')->group(function () {
+    Route::get('/', [HospitalController::class, 'index'])
+        ->name('hopitals.index');
+
+    Route::get('/create', [HospitalController::class, 'create'])
+        ->name('hopitals.create');
+
+    Route::post('/', [HospitalController::class, 'store'])
+        ->name('hopitals.store');
+
+    Route::get('/{hopital}', [HospitalController::class, 'show'])
+        ->name('hopitals.show');
+
+    Route::get('/{hopital}/edit', [HospitalController::class, 'edit'])
+        ->name('hopitals.edit');
+
+    Route::put('/{hopital}', [HospitalController::class, 'update'])
+        ->name('hopitals.update');
+
+    Route::delete('/{hopital}', [HospitalController::class, 'destroy'])
+        ->name('hopitals.destroy');
 });
 // Pour les besoins d'Inertia.js - route de fallback
 Route::fallback(function () {

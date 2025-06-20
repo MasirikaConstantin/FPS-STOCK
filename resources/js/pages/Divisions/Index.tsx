@@ -57,7 +57,7 @@ export default function Index({ provinces, territoires, villes,communes, canCrea
                                 </TableCell>
                                 <TableCell className="text-right space-x-2">
                                     <Button size="sm" variant="outline" asChild>
-                                        <Link href={route('divisions.show', item.id)}>
+                                        <Link href={route('divisions.show', item.ref)}>
                                             Détails
                                         </Link>
                                     </Button>

@@ -51,6 +51,7 @@ export interface DivisionAdministrative {
     type: 'province' | 'territoire' | 'ville' | 'commune' ;
     code?: string;
     is_active: boolean;
+    ref: string;
     parent_id?: number;
     created_by?: number;
     created_at: string;
@@ -70,6 +71,35 @@ export interface DivisionAdministrative {
         name: string;
     };
 }
+
+
+export interface Hospital {
+    id: number;
+    ref: string;
+    nom: string;
+    type: 'central' | 'general' | 'reference' | 'centre_sante' | null;
+    province: string;
+    ville: string;
+    address: string | null;
+    contact_person: string | null;
+    phone: string | null;
+    email: string | null;
+    capacite: number;
+    is_active: boolean;
+    coordonees: {
+        latitude: number;
+        longitude: number;
+    } | null;
+    division_administrative_id: number | null;
+    created_by: number | null;
+    updated_by: number | null;
+    created_at: string;
+    updated_at: string;
+    divisionAdministrative?: DivisionAdministrative;
+    creator?: User;
+    updater?: User;
+}
+
 export interface Permission {
     id: number;
     name: string;

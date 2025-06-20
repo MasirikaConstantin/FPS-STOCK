@@ -41,7 +41,7 @@ console.log(canEdit)
                 {canEdit && (
                     <>
                     <Button variant="outline" asChild>
-                        <Link href={route('divisions.edit', division.id)}>
+                        <Link href={route('divisions.edit', division.ref)}>
                         <PencilIcon className="mr-2 h-4 w-4" />
                         Modifier
                         </Link>

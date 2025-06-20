@@ -36,7 +36,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Hôpitaux',
-        href: '/hospitals',
+        href: '/hopitals',
         icon: Hospital,
     },
     {

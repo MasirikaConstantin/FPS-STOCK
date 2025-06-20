@@ -83,8 +83,9 @@ class DivisionAdministrativeController extends Controller
             ->with('success', 'Division administrative créée avec succès');
     }
 
-    public function show(DivisionAdministrative $division)
+    public function show(string $division)
     {
+        $division = DivisionAdministrative::where('ref', $division)->firstOrFail();
         $division->load(['parent', 'children', 'creator']);
         return Inertia::render('Divisions/Show', [
             'division' => $division,
@@ -94,8 +95,9 @@ class DivisionAdministrativeController extends Controller
         ]);
     }
 
-    public function edit(DivisionAdministrative $division)
+    public function edit(string $division)
     {
+        $division = DivisionAdministrative::where('ref', $division)->firstOrFail();
         $types = ['province', 'territoire', 'ville','commune'];
         $parents = DivisionAdministrative::query()
             ->where('id', '!=', $division->id)
