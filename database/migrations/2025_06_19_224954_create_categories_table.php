@@ -18,6 +18,7 @@ return new class extends Migration
             $table->boolean('is_active')->default(true);
             $table->uuid('ref')->unique();
             $table->foreignid('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignid('updated_by')->nullable()->constrained('users')->nullOnDelete();
             $table->timestamps();
         });
     }

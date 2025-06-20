@@ -12,6 +12,7 @@ use App\Http\Controllers\HospitalController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\AlertController;
+use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\HopitalController;
 use App\Http\Controllers\KitController;
 use App\Http\Controllers\UserController;
@@ -84,6 +85,14 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
     // Transferts
     Route::resource('transfers', TransferController::class);
+
+    Route::get('/categories', [CategorieController::class, 'index'])->name('categories.index');
+    Route::get('/categories/create', [CategorieController::class, 'create'])->name('categories.create');
+    Route::post('/categories', [CategorieController::class, 'store'])->name('categories.store');
+    Route::get('/categories/{category}', [CategorieController::class, 'show'])->name('categories.show');
+    Route::get('/categories/{category}/edit', [CategorieController::class, 'edit'])->name('categories.edit');
+    Route::put('/categories/{category}', [CategorieController::class, 'update'])->name('categories.update');
+    Route::delete('/categories/{category}', [CategorieController::class, 'destroy'])->name('categories.destroy');
     
     // Alertes
     Route::get('/alerts', [AlertController::class, 'index'])

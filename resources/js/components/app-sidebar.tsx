@@ -4,7 +4,7 @@ import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
 import { Link } from '@inertiajs/react';
-import { AlertTriangle, BarChart3, BookOpen, Building2, Folder, Hospital, LayoutGrid, Package, Pill, Settings, Truck, Users } from 'lucide-react';
+import { AlertTriangle, BarChart3, BookOpen, Building2, CassetteTape, Folder, Hospital, LayoutGrid, Package, Pill, Settings, Truck, Users } from 'lucide-react';
 import AppLogo from './app-logo';
 
 const mainNavItems: NavItem[] = [
@@ -32,6 +32,11 @@ const mainNavItems: NavItem[] = [
         title: 'Médicaments',
         href: '/medicaments',
         icon: Pill,
+      },
+      {
+        title: 'Categories',
+        href: '/categories',
+        icon: CassetteTape,
       },
       {
         title: 'Transferts',
