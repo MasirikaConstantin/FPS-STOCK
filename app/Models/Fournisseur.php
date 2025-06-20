@@ -4,9 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-class Hopital extends Model
+class Fournisseur extends Model
 {
-    protected $table = 'hopitals';
+    protected $table = 'fournisseurs';
 
     protected $fillable = [
         'nom',
@@ -17,19 +17,12 @@ class Hopital extends Model
         'province',
         'ville',
         'contact_person',
-        'capacite',
         'is_active',
         'coordonees',
-        'division_administrative_id',
         'created_by',
         'updated_by',
         'ref',
     ];
-
-    public function profils()
-    {
-        return $this->hasMany(Profil::class);
-    }
 
     protected static function boot()
     {

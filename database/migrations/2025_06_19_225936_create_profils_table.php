@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
+
 return new class extends Migration
 {
     /**
@@ -13,14 +13,11 @@ return new class extends Migration
     {
         Schema::create('profils', function (Blueprint $table) {
             $table->id('id');
-            $table->uuid('hospital_id')->nullable();
-            $table->uuid('user_id')->nullable();
             $table->string('phone')->nullable();
             $table->string('address')->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
-
-            $table->foreign('hospital_id')->references('id')->on('hopitals');
-            $table->uuid('ref')->primary()->default(DB::raw('gen_random_uuid()'));
+            $table->uuid('ref')->unique();
+            $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
+            $table->foreignId('hospital_id')->nullable()->constrained('hopitals')->nullOnDelete();
 
             $table->timestamps();
         });

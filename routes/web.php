@@ -12,6 +12,7 @@ use App\Http\Controllers\HospitalController;
 use App\Http\Controllers\MedicineController;
 use App\Http\Controllers\TransferController;
 use App\Http\Controllers\AlertController;
+use App\Http\Controllers\HopitalController;
 use App\Http\Controllers\KitController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
@@ -75,11 +76,11 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
     
     // Hôpitaux
-    Route::resource('hospitals', HospitalController::class)
+    Route::resource('hospitals', HopitalController::class)
          ->except(['show']); // Exclure la route show si non utilisée
     
     // Médicaments
-    Route::resource('medicines', MedicineController::class);
+    Route::resource('medicaments', MedicineController::class);
     
     // Transferts
     Route::resource('transfers', TransferController::class);

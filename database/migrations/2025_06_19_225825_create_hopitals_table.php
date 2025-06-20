@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Facades\DB;
+
 return new class extends Migration
 {
     /**
@@ -17,15 +17,18 @@ return new class extends Migration
             $table->enum('type', ['central', 'general', 'reference', 'centre_sante'])->nullable();
             $table->string('province');
             $table->string('ville');
-            $table->text('adresse')->nullable();
-            $table->string('contact')->nullable();
-            $table->string('telephone')->nullable();
+            $table->text('address')->nullable();
+            $table->string('contact_person')->nullable();
+            $table->string('phone')->nullable();
             $table->string('email')->nullable();
             $table->integer('capacite')->default(0);
-            $table->boolean('est_actif')->default(true);
-            $table->jsonb('coordonnees')->nullable();
-            $table->uuid('ref')->primary()->default(DB::raw('gen_random_uuid()'));
-
+            $table->boolean('is_active')->default(true);
+            $table->jsonb('coordonees')->nullable();
+            $table->uuid('ref')->unique();
+            $table->foreignId('division_administrative_id')->nullable()->constrained('division_administraves')->nullOnDelete();
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
+            
             $table->timestampsTz();
         });
     }

@@ -30,7 +30,7 @@ const mainNavItems: NavItem[] = [
       },
       {
         title: 'Médicaments',
-        href: '/medicines',
+        href: '/medicaments',
         icon: Pill,
       },
       {
