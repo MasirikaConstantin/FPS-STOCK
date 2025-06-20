@@ -2,7 +2,7 @@ import { Loading } from '@/components/loandig';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Head } from '@inertiajs/react';
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 
 interface Medicine {
     id: number;
@@ -18,7 +18,6 @@ const MedicinesIndex: React.FC = () => {
         {
             title: 'Gestion Médicaments',
             href: '/medicaments',
-
         },
     ];
     useEffect(() => {
@@ -48,43 +47,39 @@ const MedicinesIndex: React.FC = () => {
         }
     };
 
-    
-
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Gestion Médicaments" />
-            {loading && <>
-                
-
-                <Loading/>
-
-                </>}
-            <div className="flex h-full flex-1 flex-col gap-4 rounded-xl p-4 overflow-x-auto">
-                
-            <h1>Medicines Management</h1>
-            <table>
-                <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>Description</th>
-                        <th>Quantity</th>
-                        <th>Actions</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {medicines.map((medicine) => (
-                        <tr key={medicine.id}>
-                            <td>{medicine.name}</td>
-                            <td>{medicine.description}</td>
-                            <td>{medicine.quantity}</td>
-                            <td>
-                                <button onClick={() => handleDelete(medicine.id)}>Delete</button>
-                            </td>
+            {loading && (
+                <>
+                    <Loading />
+                </>
+            )}
+            <div className="flex h-full flex-1 flex-col gap-4 overflow-x-auto rounded-xl p-4">
+                <h1>Medicines Management</h1>
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Name</th>
+                            <th>Description</th>
+                            <th>Quantity</th>
+                            <th>Actions</th>
                         </tr>
-                    ))}
-                </tbody>
-            </table>
-        </div>
+                    </thead>
+                    <tbody>
+                        {medicines.map((medicine) => (
+                            <tr key={medicine.id}>
+                                <td>{medicine.name}</td>
+                                <td>{medicine.description}</td>
+                                <td>{medicine.quantity}</td>
+                                <td>
+                                    <button onClick={() => handleDelete(medicine.id)}>Delete</button>
+                                </td>
+                            </tr>
+                        ))}
+                    </tbody>
+                </table>
+            </div>
         </AppLayout>
     );
 };

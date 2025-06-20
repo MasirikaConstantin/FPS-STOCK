@@ -58,7 +58,6 @@ declare namespace App {
             email: string;
         } | null;
     }
-    
 
     interface User {
         id: number;
@@ -80,5 +79,4 @@ export interface PageProps<T extends Record<string, unknown> = {}> extends Page<
     };
     props: T;
     categories?: T; // Add the optional categories property
-
 }

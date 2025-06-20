@@ -26,23 +26,27 @@ export default function Register() {
     });
     const handleResendVerification = () => {
         console.log('handleResendVerification called with email:', data.email);
-        router.post(route('verification.resend'), { email: data.email }, {
-            onSuccess: () => toast.success('Un lien de vérification a été envoyé !'),
-            onError: (errors) => {
-                if (errors.email) {
-                    toast.error(errors.email);
-                } else {
-                    toast.error('Erreur lors de l\'envoi du email de vérification');
-                }
-            }
-        });
+        router.post(
+            route('verification.resend'),
+            { email: data.email },
+            {
+                onSuccess: () => toast.success('Un lien de vérification a été envoyé !'),
+                onError: (errors) => {
+                    if (errors.email) {
+                        toast.error(errors.email);
+                    } else {
+                        toast.error("Erreur lors de l'envoi du email de vérification");
+                    }
+                },
+            },
+        );
     };
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
         post(route('register'), {
             onFinish: () => {
                 reset('password', 'password_confirmation');
-                console.log("handleResendVerification()");
+                console.log('handleResendVerification()');
             },
         });
     };

@@ -8,13 +8,11 @@ const StocksCentral: React.FC = () => {
         {
             title: 'Stocks Central',
             href: '/central-stocks',
-
         },
     ];
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Stocks Central" />
-
         </AppLayout>
     );
 };

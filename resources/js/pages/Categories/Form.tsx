@@ -1,23 +1,21 @@
-
-import { Head, Link, useForm } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
-import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
-import { PageProps } from '@/types/types';
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { toast } from 'sonner';
-import { App } from '@/types/types';
+import { Textarea } from '@/components/ui/textarea';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
+import { App, PageProps } from '@/types/types';
+import { Head, Link, useForm } from '@inertiajs/react';
+import { toast } from 'sonner';
 
 interface FormProps {
     auth: PageProps['auth'];
     category?: App.Category;
 }
 
-export default function Form({ auth, category }: FormProps) {
+export default function Form({  category }: FormProps) {
     const { data, setData, post, put, processing, errors } = useForm({
         nom: category?.nom || '',
         description: category?.description || '',
@@ -27,10 +25,8 @@ export default function Form({ auth, category }: FormProps) {
     console.log('Category data:', data);
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        
-        const submitAction = category
-            ? () => put(route('categories.update', category.id))
-            : () => post(route('categories.store'));
+
+        const submitAction = category ? () => put(route('categories.update', category.id)) : () => post(route('categories.store'));
 
         submitAction();
         toast.success(`Catégorie ${category ? 'mise à jour' : 'créée'} avec succès`);
@@ -47,20 +43,15 @@ export default function Form({ auth, category }: FormProps) {
     ];
 
     return (
-        <AppLayout breadcrumbs={breadcrumbs}
-            
-        >
-
+        <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={category ? 'Modifier catégorie' : 'Nouvelle catégorie'} />
 
             <div className="py-12">
-                <div className="max-w-7xl mx-auto sm:px-6 lg:px-8">
+                <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <Card>
                         <CardHeader>
                             <CardTitle>{category ? 'Modifier la catégorie' : 'Créer une nouvelle catégorie'}</CardTitle>
-                            <CardDescription>
-                                Remplissez les champs ci-dessous pour {category ? 'modifier' : 'créer'} une catégorie
-                            </CardDescription>
+                            <CardDescription>Remplissez les champs ci-dessous pour {category ? 'modifier' : 'créer'} une catégorie</CardDescription>
                         </CardHeader>
                         <form onSubmit={onSubmit}>
                             <CardContent className="space-y-4">
@@ -88,12 +79,8 @@ export default function Form({ auth, category }: FormProps) {
                                     {errors.description && <p className="text-sm text-red-500">{errors.description}</p>}
                                 </div>
 
-                                <div className="flex items-center space-x-2 mb-2">
-                                    <Switch
-                                        id="is_active"
-                                        checked={data.is_active}
-                                        onCheckedChange={(checked) => setData('is_active', checked)}
-                                    />
+                                <div className="mb-2 flex items-center space-x-2">
+                                    <Switch id="is_active" checked={data.is_active} onCheckedChange={(checked) => setData('is_active', checked)} />
                                     <Label htmlFor="is_active">Actif</Label>
                                 </div>
                             </CardContent>

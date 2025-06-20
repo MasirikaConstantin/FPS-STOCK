@@ -1,6 +1,6 @@
 import { Head, router, useForm, usePage } from '@inertiajs/react';
 import { LoaderCircle } from 'lucide-react';
-import { FormEventHandler, useState, useEffect, use } from 'react';
+import { FormEventHandler, useEffect, useState } from 'react';
 
 import InputError from '@/components/input-error';
 import TextLink from '@/components/text-link';
@@ -9,10 +9,8 @@ import { Checkbox } from '@/components/ui/checkbox';
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { Toaster } from "@/components/ui/sonner";
 import AuthLayout from '@/layouts/auth-layout';
 import { toast } from 'sonner';
-import { SonnerDemo } from '@/components/ui/mon-toast';
 
 type LoginForm = {
     email: string;
@@ -30,27 +28,25 @@ type RegisterForm = {
 export default function AuthCombined() {
     const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
     //const { toast } = Toaster();
-    const { errors: pageErrors, flash, verifyMessage } = usePage().props;
+    const { errors: pageErrors, flash, verifyMessage } = usePage<{ flash: { error?: string }; auth: { user: { id: number; name: string; email: string } } }>().props;
     //console.log(usePage().props);
     // Gestion des erreurs spécifiques
-console.log(flash);
+    console.log(flash);
 
     useEffect(() => {
         if (flash?.error) {
-
             //console.log(flash.error);
-
             //toast("Erreur de connexion");
         }
         const handleResendVerification = () => {
             router.get(route('verification-mail'));
         };
-        
+
         if (verifyMessage) {
-            toast("Email non vérifié", {
+            toast('Email non vérifié', {
                 description: typeof verifyMessage === 'string' ? verifyMessage : String(verifyMessage),
                 action: {
-                    label: "Vérifier",
+                    label: 'Vérifier',
                     onClick: handleResendVerification,
                 },
             });
@@ -58,13 +54,13 @@ console.log(flash);
     }, [flash, toast]);
 
     // Login form
-    const { 
-        data: loginData, 
-        setData: setLoginData, 
-        post: loginPost, 
-        processing: loginProcessing, 
-        errors: loginErrors, 
-        reset: resetLogin 
+    const {
+        data: loginData,
+        setData: setLoginData,
+        post: loginPost,
+        processing: loginProcessing,
+        errors: loginErrors,
+        reset: resetLogin,
     } = useForm<Required<LoginForm>>({
         email: '',
         password: '',
@@ -72,13 +68,13 @@ console.log(flash);
     });
 
     // Register form
-    const { 
-        data: registerData, 
-        setData: setRegisterData, 
-        post: registerPost, 
-        processing: registerProcessing, 
-        errors: registerErrors, 
-        reset: resetRegister 
+    const {
+        data: registerData,
+        setData: setRegisterData,
+        post: registerPost,
+        processing: registerProcessing,
+        errors: registerErrors,
+        reset: resetRegister,
     } = useForm<Required<RegisterForm>>({
         name: '',
         email: '',
@@ -103,16 +99,20 @@ console.log(flash);
 
     const handleResendVerification = () => {
         console.log('handleResendVerification called with email:', registerData.email);
-        router.post(route('verification.send-to'), { email: registerData.email }, {
-            onSuccess: () => toast.success('Un lien de vérification a été envoyé !'),
-            onError: (errors) => {
-                if (errors.email) {
-                    toast.error(errors.email);
-                } else {
-                    toast.error('Erreur lors de l\'envoi du email de vérification');
-                }
-            }
-        });
+        router.post(
+            route('verification.send-to'),
+            { email: registerData.email },
+            {
+                onSuccess: () => toast.success('Un lien de vérification a été envoyé !'),
+                onError: (errors) => {
+                    if (errors.email) {
+                        toast.error(errors.email);
+                    } else {
+                        toast.error("Erreur lors de l'envoi du email de vérification");
+                    }
+                },
+            },
+        );
     };
     const handleRegister: FormEventHandler = (e) => {
         e.preventDefault();
@@ -125,16 +125,14 @@ console.log(flash);
     };
 
     return (
-        <AuthLayout 
-            title={activeTab === 'login' ? 'Connexion' : 'Inscription'} 
-            description={activeTab === 'login' 
-                ? 'Entrez votre email et mot de passe pour vous connecter' 
-                : 'Créez votre compte en remplissant le formulaire'}
+        <AuthLayout
+            title={activeTab === 'login' ? 'Connexion' : 'Inscription'}
+            description={
+                activeTab === 'login' ? 'Entrez votre email et mot de passe pour vous connecter' : 'Créez votre compte en remplissant le formulaire'
+            }
         >
             <Head title={activeTab === 'login' ? 'Connexion' : 'Inscription'} />
-            {flash?.verifyMessage && (
-                <InputError message={pageErrors.verifyMessage} />
-            )}
+            {flash?.verifyMessage && <InputError message={pageErrors.verifyMessage} />}
             <Tabs value={activeTab} onValueChange={(value) => setActiveTab(value as 'login' | 'register')} className="w-full">
                 <TabsList className="grid w-full grid-cols-2">
                     <TabsTrigger value="login">Connexion</TabsTrigger>
@@ -274,15 +272,13 @@ console.log(flash);
 
             <div className="mt-4 text-center text-sm text-muted-foreground">
                 {activeTab === 'login' ? (
-                    <>Pas encore de compte ?{' '}
-                    <TextLink onClick={() => setActiveTab('register')}>
-                        S'inscrire
-                    </TextLink></>
+                    <>
+                        Pas encore de compte ? <TextLink onClick={() => setActiveTab('register')}>S'inscrire</TextLink>
+                    </>
                 ) : (
-                    <>Déjà un compte ?{' '}
-                    <TextLink onClick={() => setActiveTab('login')}>
-                        Se connecter
-                    </TextLink></>
+                    <>
+                        Déjà un compte ? <TextLink onClick={() => setActiveTab('login')}>Se connecter</TextLink>
+                    </>
                 )}
             </div>
         </AuthLayout>

@@ -46,28 +46,32 @@ export default function Login({ status, canResetPassword }: LoginProps) {
     };
 
     const handleResendVerification = () => {
-        router.post(route('verification.resend'), { email: data.email }, {
-            onSuccess: () => toast.success('Un nouveau lien de vérification a été envoyé !'),
-            onError: (errors) => {
-                if (errors.email) {
-                    toast.error(errors.email);
-                } else {
-                    toast.error('Erreur lors de l\'envoi du email de vérification');
-                }
-            }
-        });
+        router.post(
+            route('verification.resend'),
+            { email: data.email },
+            {
+                onSuccess: () => toast.success('Un nouveau lien de vérification a été envoyé !'),
+                onError: (errors) => {
+                    if (errors.email) {
+                        toast.error(errors.email);
+                    } else {
+                        toast.error("Erreur lors de l'envoi du email de vérification");
+                    }
+                },
+            },
+        );
     };
 
     useEffect(() => {
         if (flash?.error) {
             toast.error(flash.error);
         }
-        
+
         if (verifyMessage) {
-            toast.warning("Email non vérifié", {
+            toast.warning('Email non vérifié', {
                 description: verifyMessage,
                 action: {
-                    label: "Renvoyer",
+                    label: 'Renvoyer',
                     onClick: handleResendVerification,
                 },
             });
@@ -130,7 +134,7 @@ export default function Login({ status, canResetPassword }: LoginProps) {
                     </div>
 
                     <Button type="submit" className="mt-4 w-full" tabIndex={4} disabled={processing}>
-                        {processing && <LoaderCircle className="h-4 w-4 animate-spin mr-2" />}
+                        {processing && <LoaderCircle className="mr-2 h-4 w-4 animate-spin" />}
                         Log in
                     </Button>
                 </div>
