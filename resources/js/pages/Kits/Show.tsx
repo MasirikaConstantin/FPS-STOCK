@@ -52,10 +52,7 @@ export default function Show({ kit, categories }: PageProps<{
                                         <CardTitle>Informations de base</CardTitle>
                                     </CardHeader>
                                     <CardContent className="space-y-4">
-                                        <div>
-                                            <p className="text-sm text-gray-500">Référence</p>
-                                            <p>{kit.ref}</p>
-                                        </div>
+                                        
                                         <div>
                                             <p className="text-sm text-gray-500">Catégorie</p>
                                             <p>{getCategoryName(kit.categorie_id)}</p>

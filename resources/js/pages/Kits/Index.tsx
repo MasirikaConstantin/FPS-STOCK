@@ -75,7 +75,7 @@ export default function Index({ kits, categories, stats }: PageProps<{
                     <div className="overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6">
                             <div className="flex justify-between items-center mb-6">
-                                <h1 className="text-2xl font-bold">Kits Médicaux</h1>
+                                <h1 className="text-2xl font-bold">Kits Médicaux Configurés</h1>
 
                                 <Button asChild>
                                     <Link href={route('kits.create')}>
