@@ -3,6 +3,8 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 
 class Kit extends Model
 {
@@ -39,5 +41,34 @@ class Kit extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
+    public function created_by()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+    public function updated_by()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
+    public function items(): BelongsToMany
+    {
+        return $this->belongsToMany(MedicalProduit::class, 'article_kits')
+                    ->withPivot('quantite', 'ref')
+                    ->withTimestamps();
+    }
+
+    // Relation avec la catégorie
+    public function category(): BelongsTo
+    {
+        return $this->belongsTo(Categorie::class, 'categorie_id');
+    }
+
+    
+
+    public function articles()
+    {
+        return $this->hasMany(ArticleKit::class);
+    }
+
+    
         
 }

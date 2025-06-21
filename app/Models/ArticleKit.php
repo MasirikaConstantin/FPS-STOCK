@@ -35,4 +35,19 @@ class ArticleKit extends Model
     {
         return $this->belongsTo(MedicalProduit::class);
     }
+
+    public function medical_produit()
+    {
+        return $this->belongsTo(MedicalProduit::class, 'medical_produit_id');
+    }
+
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+
+    public function updatedBy()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
 }

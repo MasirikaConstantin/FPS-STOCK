@@ -158,6 +158,32 @@ declare namespace App {
         };
     }
 
+    export type Kit = {
+        id: number;
+        ref: string;
+        nom: string;
+        description: string | null;
+        categorie_id: number;
+        is_active: boolean;
+        created_at: string;
+        updated_at: string;
+        created_by?: User | null;
+        updated_by?: User | null;
+        categorie?: Categorie;
+        articles?: ArticleKit[];
+    };
+      export type ArticleKit = {
+        id: number;
+        ref: string;
+        kit_id: number;
+        medical_produit_id: number;
+        quantite: number;
+        created_at: string;
+        updated_at: string;
+        created_by?: User | null;
+        updated_by?: User | null;
+        medical_produit?: MedicalProduit;
+    };
     export interface Hopital {
         id: number;
         ref: string;
@@ -279,4 +305,23 @@ export interface PageProps<T extends Record<string, unknown> = {}> extends Page<
     props: T;
     categories?: T; // Add the optional categories property
     fournisseurs?: T; // Add the optional categories property
+    kit?: {
+        nom: string;
+        ref: string;
+        is_active: boolean;
+        created_at: string;
+        updated_at: string;
+        created_by?: App.User | null;
+        updated_by?: App.User | null;
+        articles?: App.ArticleKit[];
+        categorie_id?: number;
+        description?: string | null;
+    }; // Add the optional categories property
+    stats?: {
+       
+        active_kits:number;
+        inactive_kits:number;
+        total_items:number;
+        unique_types:number;
+    };
 }
