@@ -17,10 +17,10 @@ class UserController extends Controller
     {
         $user = Auth::user();
         $users = User::query()
-            ->with(['profile', 'profile.hospital'])
+            ->with(['profile', 'profile.hopital'])
             ->when($user->isAdmin(), function($query) use ($user) {
                 $query->whereHas('profile', function($q) use ($user) {
-                    $q->where('hospital_id', $user->profile->hospital_id);
+                    $q->where('hopital_id', $user->profile->hopital_id);
                 });
             })
             ->when($user->isMedicalStaff(), function($query) use ($user) {
@@ -38,16 +38,16 @@ class UserController extends Controller
     public function create()
     {
         $user = Auth::user();
-        $hospitals = [];
+        $hopitals = [];
 
         if ($user->isAdminCentral()) {
-            $hospitals = Hopital::all();
+            $hopitals = Hopital::all();
         } elseif ($user->isAdmin()) {
-            $hospitals = Hopital::where('id', $user->profile->hospital_id)->get();
+            $hopitals = Hopital::where('id', $user->profile->hopital_id)->get();
         }
 
         return Inertia::render('Users/Create', [
-            'hospitals' => $hospitals,
+            'hopitals' => $hopitals,
             'roles' => $user->isAdminCentral() 
                 ? ['admin_central', 'admin', 'medecin', 'pharmacien', 'magasinier']
                 : ['admin', 'medecin', 'pharmacien', 'magasinier'],
@@ -63,9 +63,9 @@ class UserController extends Controller
             'role' => 'required|in:admin_central,admin,medecin,pharmacien,magasinier',
             'phone' => 'nullable|string|max:20',
             'address' => 'nullable|string|max:255',
-            'hospital_id' => [
+            'hopital_id' => [
                 'required_if:role,admin,medecin,pharmacien,magasinier',
-                'exists:hospitals,id'
+                'exists:hopitals,id'
             ],
         ]);
 
@@ -80,7 +80,7 @@ class UserController extends Controller
         $user->profile()->create([
             'phone' => $request->phone,
             'address' => $request->address,
-            'hospital_id' => $request->hospital_id,
+            'hopital_id' => $request->hopital_id,
         ]);
 
         return redirect()->route('users.index')->with('success', 'Utilisateur créé avec succès');
@@ -90,7 +90,7 @@ class UserController extends Controller
     {
         $user = User::where('ref', $user)->firstOrFail();
         $this->authorizeView($user);
-        $user->load(['profile', 'profile.hospital', 'permissions']);
+        $user->load(['profile', 'profile.hopital', 'permissions']);
 
         return Inertia::render('Users/Show', [
             'user' => $user,
@@ -104,18 +104,18 @@ class UserController extends Controller
         $this->authorizeView($user);
         $authUser = Auth::user();
 
-        $hospitals = [];
+        $hopitals = [];
         if ($authUser->isAdminCentral()) {
-            $hospitals = Hopital::all();
+            $hopitals = Hopital::all();
         } elseif ($authUser->isAdmin()) {
-            $hospitals = Hopital::where('id', $authUser->profile->hospital_id)->get();
+            $hopitals = Hopital::where('id', $authUser->profile->hopital_id)->get();
         }
 
         $user->load('profile');
 
         return Inertia::render('Users/Edit', [
             'user' => $user,
-            'hospitals' => $hospitals,
+            'hopitals' => $hopitals,
             'roles' => $authUser->isAdminCentral() 
                 ? ['admin_central', 'admin', 'medecin', 'pharmacien', 'magasinier']
                 : ['admin', 'medecin', 'pharmacien', 'magasinier'],
@@ -132,9 +132,9 @@ class UserController extends Controller
         'role' => 'required|in:admin_central,admin,medecin,pharmacien,magasinier',
         'phone' => 'nullable|string|max:20',
         'address' => 'nullable|string|max:255',
-        'hospital_id' => [
+        'hopital_id' => [
             'required_if:role,admin,medecin,pharmacien,magasinier',
-            'exists:hospitals,id'
+            'exists:hopitals,id'
         ],
         'is_active' => 'boolean',
     ]);
@@ -151,7 +151,7 @@ class UserController extends Controller
     $profileData = [
         'phone' => $validated['phone'],
         'address' => $validated['address'],
-        'hospital_id' => $validated['hospital_id'] ?? null,
+        'hopital_id' => $validated['hopital_id'] ?? null,
     ];
 
     // Utilisation de updateOrCreate pour gérer les deux cas
@@ -177,7 +177,7 @@ class UserController extends Controller
         $authUser = Auth::user();
 
         if ($authUser->isAdmin()) {
-            if ($user->profile->hospital_id !== $authUser->profile->hospital_id) {
+            if ($user->profile->hopital_id !== $authUser->profile->hopital_id) {
                 abort(403);
             }
         } elseif ($authUser->isMedicalStaff() && $user->id !== $authUser->id) {
@@ -190,7 +190,7 @@ class UserController extends Controller
         $authUser = Auth::user();
         
         return $authUser->isAdminCentral() || 
-               ($authUser->isAdmin() && $user->profile->hospital_id === $authUser->profile->hospital_id) ||
+               ($authUser->isAdmin() && $user->profile->hopital_id === $authUser->profile->hopital_id) ||
                $authUser->id === $user->id;
     }
 }

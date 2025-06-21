@@ -12,7 +12,7 @@ class Profil extends Model
         'phone',
         'address',
         'user_id',
-        'hospital_id',
+        'hopital_id',
         'ref',
     ];
 
@@ -21,7 +21,7 @@ class Profil extends Model
         return $this->belongsTo(User::class);
     }
 
-    public function hospital()
+    public function hopital()
     {
         return $this->belongsTo(Hopital::class);
     }
@@ -34,4 +34,5 @@ class Profil extends Model
             $model->ref = Str::uuid();
         }); 
     }
+    
 }

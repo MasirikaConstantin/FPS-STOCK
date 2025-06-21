@@ -5,11 +5,11 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
-import { PageProps } from '@/types/types';
+import { App, PageProps } from '@/types/types';
 import { Head, Link, useForm } from '@inertiajs/react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { toast } from 'sonner';
-import { Hospital, Role } from '@/types/types';
+import {  Role } from '@/types/types';
 
 interface FormProps extends PageProps {
     user?: {
@@ -21,14 +21,14 @@ interface FormProps extends PageProps {
         profile?: {
             phone?: string;
             address?: string;
-            hospital_id?: number;
+            hopital_id?: number;
         };
     };
-    hospitals: Hospital[];
+    hopitals: App.Hopital[];
     roles: Role[];
 }
 
-export default function Form({ user, hospitals, roles }: FormProps) {
+export default function Form({ user, hopitals, roles }: FormProps) {
     const { data, setData, post, put, processing, errors } = useForm({
         name: user?.name || '',
         email: user?.email || '',
@@ -37,7 +37,7 @@ export default function Form({ user, hospitals, roles }: FormProps) {
         role: user?.role || 'admin',
         phone: user?.profile?.phone || '',
         address: user?.profile?.address || '',
-        hospital_id: user?.profile?.hospital_id || undefined,
+        hopital_id: user?.profile?.hopital_id || undefined,
         is_active: user?.is_active ?? true,
     });
 
@@ -159,24 +159,24 @@ export default function Form({ user, hospitals, roles }: FormProps) {
                                     </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="hospital_id">Hôpital</Label>
+                                        <Label htmlFor="hopital_id">Hôpital</Label>
                                         <Select
-                                            value={data.hospital_id?.toString() || ''}
-                                            onValueChange={(value) => setData('hospital_id', value ? parseInt(value) : undefined)}
+                                            value={data.hopital_id?.toString() || ''}
+                                            onValueChange={(value) => setData('hopital_id', value ? parseInt(value) : undefined)}
                                             disabled={data.role === 'admin_central'}
                                         >
                                             <SelectTrigger>
                                                 <SelectValue placeholder="Sélectionnez un hôpital" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                {hospitals.map((hospital) => (
-                                                    <SelectItem key={hospital.id} value={hospital.id.toString()}>
-                                                        {hospital.name}
+                                                {hopitals.map((hopital) => (
+                                                    <SelectItem key={hopital.id} value={hopital.id.toString()}>
+                                                        {hopital.nom}
                                                     </SelectItem>
                                                 ))}
                                             </SelectContent>
                                         </Select>
-                                        {errors.hospital_id && <p className="text-sm text-red-500">{errors.hospital_id}</p>}
+                                        {errors.hopital_id && <p className="text-sm text-red-500">{errors.hopital_id}</p>}
                                     </div>
                                 </div>
 

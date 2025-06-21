@@ -103,8 +103,9 @@ class TransfertController extends Controller
         return redirect()->route('transferts.index')->with('success', 'Transfert créé avec succès');
     }
 
-    public function show(Transfert $transfert)
+    public function show(string $transfert)
     {
+        $transfert = Transfert::where('ref', $transfert)->firstOrFail();
         $transfert->load([
             'fromHospital',
             'toHospital',
@@ -119,8 +120,9 @@ class TransfertController extends Controller
         ]);
     }
 
-    public function approve(Transfert $transfert)
+    public function approve(string $transfert)
     {
+        $transfert = Transfert::where('ref', $transfert)->firstOrFail();
         abort_if($transfert->status !== 'en_attente', 403);
 
         DB::transaction(function () use ($transfert) {
@@ -136,8 +138,9 @@ class TransfertController extends Controller
         return back()->with('success', 'Transfert approuvé avec succès');
     }
 
-    public function complete(Transfert $transfert)
+    public function complete(string $transfert)
     {
+        $transfert = Transfert::where('ref', $transfert)->firstOrFail();
         abort_if($transfert->status !== 'approuve', 403);
 
         DB::transaction(function () use ($transfert) {
@@ -166,8 +169,9 @@ class TransfertController extends Controller
         return back()->with('success', 'Transfert marqué comme livré');
     }
 
-    public function cancel(Transfert $transfert)
+    public function cancel(string $transfert)
     {
+        $transfert = Transfert::where('ref', $transfert)->firstOrFail();
         abort_if(!in_array($transfert->status, ['en_attente', 'approuve']), 403);
 
         DB::transaction(function () use ($transfert) {

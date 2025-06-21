@@ -13,19 +13,19 @@ const statusColors = {
   annule: 'bg-red-100 text-red-800',
 };
 
-export default function Show({ transfert }: { transfert: any }) {
+export default function Show({ auth, transfert }: { auth: any; transfert: any }) {
   const canApprove = transfert.status === 'en_attente';
   const canComplete = transfert.status === 'approuve';
   const canCancel = ['en_attente', 'approuve'].includes(transfert.status);
-
+    console.log(auth);
   const breadcrumbs: BreadcrumbItem[] = [
     {
       title: 'Gestion des Transferts',
       href: '/transferts',
     },
     {
-      title: `Transfert ${transfert.ref}`,
-      href: `/transferts/${transfert.id}`,
+      title: `Transfert #${transfert.id}`,
+      href: `/transferts/${transfert.ref}`,
     },
   ];
 
@@ -36,7 +36,7 @@ export default function Show({ transfert }: { transfert: any }) {
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-6">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold">Transfert {transfert.ref}</h1>
+            <h1 className="text-2xl font-bold">Transfert #{transfert.id}</h1>
             <div className="flex gap-2">
               <Badge className={statusColors[transfert.status]}>
                 {transfert.status}
@@ -50,18 +50,18 @@ export default function Show({ transfert }: { transfert: any }) {
           <div className="flex gap-2">
             {canApprove && (
               <Button asChild>
-                <a href={route('transferts.approve', transfert.id)}>Approuver</a>
+                <a href={route('transferts.approve', transfert.ref)}>Approuver</a>
               </Button>
             )}
             {canComplete && (
               <Button variant="secondary" asChild>
-                <a href={route('transferts.complete', transfert.id)}>Marquer comme Livré</a>
+                <a href={route('transferts.complete', transfert.ref)}>Marquer comme Livré</a>
               </Button>
             )}
-            {canCancel && (
-              <Button variant="destructive" asChild>
-                <a href={route('transferts.cancel', transfert.id)}>Annuler</a>
-              </Button>
+            {canCancel && auth.user.role === 'admin_central' && (
+                <Button variant="destructive" asChild>
+                    <a href={route('transferts.cancel', transfert.ref)}>Annuler</a>
+                </Button>
             )}
           </div>
 

@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('address')->nullable();
             $table->uuid('ref')->unique();
             $table->foreignId('user_id')->constrained('users')->cascadeOnDelete();
-            $table->foreignId('hospital_id')->nullable()->constrained('hopitals')->nullOnDelete();
+            $table->foreignId('hopital_id')->nullable()->constrained('hopitals')->nullOnDelete();
 
             $table->timestamps();
         });

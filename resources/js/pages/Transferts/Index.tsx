@@ -82,7 +82,7 @@ export default function Index({ transferts }: { transferts: any }) {
                     <TableCell>{new Date(transfert.created_at).toLocaleDateString()}</TableCell>
                     <TableCell>
                         <Button variant="outline" size="sm" asChild>
-                        <Link href={route('transferts.show', transfert.id)}>Détails</Link>
+                        <Link href={route('transferts.show', transfert.ref)}>Détails</Link>
                         </Button>
                     </TableCell>
                     </TableRow>
