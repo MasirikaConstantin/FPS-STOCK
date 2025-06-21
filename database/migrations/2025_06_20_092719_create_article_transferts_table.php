@@ -15,11 +15,11 @@ return new class extends Migration
     {
         Schema::create('article_transferts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('source_location_id')->constrained("hopitals")->onDelete('cascade');
-            $table->foreignId('destination_location_id')->constrained('hopitals')->onDelete('cascade');
+            $table->foreignId('transfert_id')->constrained()->onDelete('cascade');
+            $table->foreignId('medical_produit_id')->constrained()->onDelete('cascade');
+            $table->foreignId('stock_source_id')->constrained('stocks')->onDelete('cascade');
             $table->integer('quantite')->unsigned();
-            $table->foreignIdFor(MedicalProduit::class)->constrained()->cascadeOnDelete();
-            $table->foreignIdFor(Transfert::class)->constrained()->cascadeOnDelete();
+            $table->enum('status', ['en_attente', 'preleve', 'livre', 'annule'])->default('en_attente');
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
             $table->uuid('ref')->unique();

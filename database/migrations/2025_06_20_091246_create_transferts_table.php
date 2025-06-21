@@ -13,20 +13,20 @@ return new class extends Migration
     {
         Schema::create('transferts', function (Blueprint $table) {
             $table->id();
-                $table->foreignId('from_hospital_id')->constrained('hopitals');
-                $table->foreignId('to_hospital_id')->constrained('hopitals');
-                $table->enum('status', ['en attente', 'approuvé', 'en transit', 'livré', 'annulé'])->default('en attente');
-                $table->enum('priorité', ['faible', 'moyen', 'élevé', 'urgent'])->default('moyen');
-                $table->foreignId('demander_par')->nullable()->constrained('users')->nullOnDelete();
-                $table->foreignId('approuver_par')->nullable()->constrained('users')->nullOnDelete();
-                $table->text('notes')->nullable();
-                $table->timestampTz('approuver__le')->nullable();
-                $table->timestampTz('delivrer_le')->nullable();
-                $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
-                $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
-                $table->timestampsTz();
-                $table->uuid('ref')->unique();
-            });
+            $table->foreignId('from_hospital_id')->constrained('hopitals')->onDelete('cascade');
+            $table->foreignId('to_hospital_id')->constrained('hopitals')->onDelete('cascade');
+            $table->enum('status', ['en_attente', 'approuve', 'en_transit', 'livre', 'annule'])->default('en_attente');
+            $table->enum('priorite', ['faible', 'moyen', 'eleve', 'urgent'])->default('moyen');
+            $table->foreignId('demandeur_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('approbateur_id')->nullable()->constrained('users')->nullOnDelete();
+            $table->text('notes')->nullable();
+            $table->timestampTz('approuve_le')->nullable();
+            $table->timestampTz('livre_le')->nullable();
+            $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
+            $table->timestampsTz();
+            $table->uuid('ref')->unique();
+        });
     }
 
     /**
