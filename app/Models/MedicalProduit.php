@@ -9,9 +9,9 @@ class MedicalProduit extends Model
     protected $table = 'medical_produits';
 
     protected $fillable = [
-        'nom',
+        'name',
         'description',
-        'prix',
+        'prix_unitaire',
         'quantite',
         'date_expiration',
         'ref',
@@ -36,5 +36,21 @@ class MedicalProduit extends Model
         static::creating(function ($model) {
             $model->ref = \Illuminate\Support\Str::uuid();
         });
+    }
+    public function categorie()
+    {
+        return $this->belongsTo(Categorie::class);
+    }
+    public function fournisseur()
+    {
+        return $this->belongsTo(Fournisseur::class);
+    }
+    public function creator()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+    public function updater()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
     }
 }

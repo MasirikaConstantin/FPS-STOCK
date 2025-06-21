@@ -79,9 +79,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
     
    
-    // Médicaments
-    Route::resource('medicaments', MedicineController::class);
-    
     // Transferts
     Route::resource('transfers', TransferController::class);
 

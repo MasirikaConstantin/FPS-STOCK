@@ -95,25 +95,7 @@ export type MedicalProduit = {
     fournisseur?: Fournisseur | null;
 };
 
-export interface Fournisseur {
-    id: number;
-    ref: string;
-    nom: string;
-    contact_person: string | null;
-    phone: string | null;
-    email: string | null;
-    address: string | null;
-    specialties: string[];
-    is_active: boolean;
-    contract_start_date: string | null;
-    contract_end_date: string | null;
-    created_by: number | null;
-    updated_by: number | null;
-    created_at: string;
-    updated_at: string;
-    creator?: User;
-    updater?: User;
-}
+
 
 export interface Hospital {
     id: number;
@@ -197,8 +179,31 @@ declare namespace App {
             email: string;
         } | null;
     }
-
+    export interface Fournisseur {
+        id: number;
+        ref: string;
+        nom: string;
+        contact_person: string | null;
+        phone: string | null;
+        email: string | null;
+        address: string | null;
+        specialties: string[];
+        is_active: boolean;
+        contract_start_date: string | null;
+        contract_end_date: string | null;
+        created_by: number | null;
+        updated_by: number | null;
+        created_at: string;
+        updated_at: string;
+        creator?: User;
+        updater?: User;
+    }
     
+    export type Categorie = {
+        id: number;
+        nom: string;
+        description?: string | null;  
+    };
 }
 
 // Exportez le type PageProps pour l'utiliser dans vos composants
@@ -212,4 +217,5 @@ export interface PageProps<T extends Record<string, unknown> = {}> extends Page<
     };
     props: T;
     categories?: T; // Add the optional categories property
+    fournisseurs?: T; // Add the optional categories property
 }

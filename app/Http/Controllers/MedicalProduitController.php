@@ -61,17 +61,23 @@ class MedicalProduitController extends Controller
         return redirect()->route('medical-produits.index');
     }
 
-    public function show(MedicalProduit $medicalProduit)
+    public function show(string $medicalProduit)
     {
+        $medicalProduit = MedicalProduit::where('ref', $medicalProduit)
+            ->with(['categorie', 'fournisseur', 'creator', 'updater'])
+            ->firstOrFail();
         return Inertia::render('MedicalProduits/Show', [
-            'produit' => $medicalProduit->load(['categorie', 'fournisseur', 'creator', 'updater']),
+            'produit' => $medicalProduit,
             'categories' => Categorie::all(),
             'fournisseurs' => Fournisseur::all(),
         ]);
     }
 
-    public function edit(MedicalProduit $medicalProduit)
+    public function edit(string $medicalProduit)
     {
+        $medicalProduit = MedicalProduit::where('ref', $medicalProduit)
+            ->with(['categorie', 'fournisseur', 'creator', 'updater'])
+            ->firstOrFail();
         return Inertia::render('MedicalProduits/Edit', [
             'produit' => $medicalProduit,
             'categories' => Categorie::all(),
@@ -109,8 +115,9 @@ class MedicalProduitController extends Controller
         return redirect()->route('medical-produits.index');
     }
 
-    public function destroy(MedicalProduit $medicalProduit)
+    public function destroy(string $medicalProduit)
     {
+        $medicalProduit = MedicalProduit::where('ref', $medicalProduit)->firstOrFail();
         $medicalProduit->delete();
         return redirect()->route('medical-produits.index');
     }

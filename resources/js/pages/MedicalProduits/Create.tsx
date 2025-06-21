@@ -1,6 +1,6 @@
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
-import { PageProps } from '@/types/types';
+import { App, PageProps } from '@/types/types';
 import { Head, Link, router, useForm } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -9,13 +9,13 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
-import { FormEventHandler, useEffect } from 'react';
+import { FormEventHandler, JSXElementConstructor, Key, ReactElement, ReactNode, ReactPortal,     useEffect } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
 
-export default function Create({ categories, fournisseurs }: PageProps<{ 
+export default function Create({ categories, fournisseurs }: { 
     categories: App.Categorie[], 
     fournisseurs: App.Fournisseur[] 
-}>) {
+}) {
     const { data, setData, post, processing, errors } = useForm({
         name: '',
         categorie_id: '',
@@ -23,7 +23,7 @@ export default function Create({ categories, fournisseurs }: PageProps<{
         unite: '',
         description: '',
         fabrican: '',
-        fournisseur_id: '',
+        fournisseur_id: null as string | null,
         requires_refrigeration: false,
         duree_vie: 36,
         seuil_min: 0,
@@ -80,23 +80,27 @@ export default function Create({ categories, fournisseurs }: PageProps<{
                                     <div className="space-y-2">
                                         <Label htmlFor="categorie_id">Catégorie*</Label>
                                         <Select
-                                            value={data.categorie_id}
+                                            value={data.categorie_id || undefined} // Use undefined instead of empty string
                                             onValueChange={(value) => setData('categorie_id', value)}
                                             required
                                         >
                                             <SelectTrigger>
-                                                <SelectValue placeholder="Sélectionner une catégorie" />
+                                            <SelectValue placeholder="Sélectionner une catégorie" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                {categories.map((categorie) => (
-                                                    <SelectItem key={categorie.id} value={categorie.id.toString()}>
-                                                        {categorie.name}
-                                                    </SelectItem>
-                                                ))}
+                                            {categories?.map((categorie: { id: Key | null | undefined; nom: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; }) => (
+                                                // Ensure the value is never an empty string
+                                                <SelectItem 
+                                                key={categorie.id} 
+                                                value={categorie.id?.toString() || String(categorie.id)} // Fallback to String() if toString() fails
+                                                >
+                                                {categorie.nom}
+                                                </SelectItem>
+                                            ))}
                                             </SelectContent>
                                         </Select>
                                         {errors.categorie_id && <p className="text-sm text-red-500">{errors.categorie_id}</p>}
-                                    </div>
+                                        </div>
 
                                     <div className="space-y-2">
                                         <Label htmlFor="sous_category">Sous-catégorie</Label>
@@ -131,30 +135,29 @@ export default function Create({ categories, fournisseurs }: PageProps<{
                                         />
                                         {errors.fabrican && <p className="text-sm text-red-500">{errors.fabrican}</p>}
                                     </div>
-
                                     <div className="space-y-2">
                                         <Label htmlFor="fournisseur_id">Fournisseur</Label>
                                         <Select
-                                            value={data.fournisseur_id}
-                                            onValueChange={(value) => setData('fournisseur_id', value)}
+                                            value={data.fournisseur_id || undefined} // Utilisez `undefined` pour le placeholder
+                                            onValueChange={(value) => setData('fournisseur_id', value === "null" ? null : value)}
                                         >
                                             <SelectTrigger>
-                                                <SelectValue placeholder="Sélectionner un fournisseur" />
+                                            <SelectValue placeholder="Sélectionner un fournisseur" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="">Aucun fournisseur</SelectItem>
-                                                {fournisseurs.map((fournisseur) => (
-                                                    <SelectItem key={fournisseur.id} value={fournisseur.id.toString()}>
-                                                        {fournisseur.nom}
-                                                    </SelectItem>
-                                                ))}
+                                            <SelectItem value="null">Aucun fournisseur</SelectItem> {/* ← "null" au lieu de "" */}
+                                            {fournisseurs.map((fournisseur: { id: Key | null | undefined; nom: string | number | bigint | boolean | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | ReactPortal | Promise<string | number | bigint | boolean | ReactPortal | ReactElement<unknown, string | JSXElementConstructor<any>> | Iterable<ReactNode> | null | undefined> | null | undefined; }) => (
+                                                <SelectItem key={fournisseur.id} value={fournisseur.id ? fournisseur.id.toString() : 'null'}>
+                                                {fournisseur.nom}
+                                                </SelectItem>
+                                            ))}
                                             </SelectContent>
                                         </Select>
                                         {errors.fournisseur_id && <p className="text-sm text-red-500">{errors.fournisseur_id}</p>}
-                                    </div>
+                                        </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="prix_unitaire">Prix unitaire (€)*</Label>
+                                        <Label htmlFor="prix_unitaire">Prix unitaire (FC)*</Label>
                                         <Input
                                             id="prix_unitaire"
                                             type="number"

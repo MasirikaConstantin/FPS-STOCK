@@ -41,7 +41,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Médicaments',
-        href: '/medicaments',
+        href: '/medical-produits',
         icon: Pill,
     },
 

@@ -46,7 +46,7 @@ export default function Edit({ produit, categories, fournisseurs }: PageProps<{
     const submit: FormEventHandler = (e) => {
         e.preventDefault();
 
-        put(route('medical-produits.update', produit.ref), {
+        put(route('medical-produits.update', produit.id), {
             onSuccess: () => {
                 toast.success('Produit mis à jour avec succès');
             },
@@ -81,23 +81,26 @@ export default function Edit({ produit, categories, fournisseurs }: PageProps<{
                                     <div className="space-y-2">
                                         <Label htmlFor="categorie_id">Catégorie*</Label>
                                         <Select
-                                            value={data.categorie_id}
+                                            value={data.categorie_id || undefined} // Convertit "" en undefined pour le placeholder
                                             onValueChange={(value) => setData('categorie_id', value)}
                                             required
                                         >
                                             <SelectTrigger>
-                                                <SelectValue placeholder="Sélectionner une catégorie" />
+                                            <SelectValue placeholder="Sélectionner une catégorie" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                {categories.map((categorie) => (
-                                                    <SelectItem key={categorie.id} value={categorie.id.toString()}>
-                                                        {categorie.name}
-                                                    </SelectItem>
-                                                ))}
+                                            {categories.map((categorie) => (
+                                                <SelectItem 
+                                                key={categorie.id} 
+                                                value={categorie.id?.toString() || "undefined"} // Garantit une valeur non-vide
+                                                >
+                                                {categorie.name}
+                                                </SelectItem>
+                                            ))}
                                             </SelectContent>
                                         </Select>
                                         {errors.categorie_id && <p className="text-sm text-red-500">{errors.categorie_id}</p>}
-                                    </div>
+                                        </div>
 
                                     <div className="space-y-2">
                                         <Label htmlFor="sous_category">Sous-catégorie</Label>
@@ -136,26 +139,29 @@ export default function Edit({ produit, categories, fournisseurs }: PageProps<{
                                     <div className="space-y-2">
                                         <Label htmlFor="fournisseur_id">Fournisseur</Label>
                                         <Select
-                                            value={data.fournisseur_id}
-                                            onValueChange={(value) => setData('fournisseur_id', value)}
+                                            value={data.fournisseur_id || "null"} // "null" est utilisé pour représenter "Aucun fournisseur"
+                                            onValueChange={(value) => setData('fournisseur_id', value === "null" ? null : value)}
                                         >
                                             <SelectTrigger>
-                                                <SelectValue placeholder="Sélectionner un fournisseur" />
+                                            <SelectValue placeholder="Sélectionner un fournisseur" />
                                             </SelectTrigger>
                                             <SelectContent>
-                                                <SelectItem value="">Aucun fournisseur</SelectItem>
-                                                {fournisseurs.map((fournisseur) => (
-                                                    <SelectItem key={fournisseur.id} value={fournisseur.id.toString()}>
-                                                        {fournisseur.nom}
-                                                    </SelectItem>
-                                                ))}
+                                            <SelectItem value="null">Aucun fournisseur</SelectItem> {/* Valeur spéciale */}
+                                            {fournisseurs.map((fournisseur) => (
+                                                <SelectItem 
+                                                key={fournisseur.id} 
+                                                value={fournisseur.id.toString()}
+                                                >
+                                                {fournisseur.nom}
+                                                </SelectItem>
+                                            ))}
                                             </SelectContent>
                                         </Select>
                                         {errors.fournisseur_id && <p className="text-sm text-red-500">{errors.fournisseur_id}</p>}
-                                    </div>
+                                        </div>
 
                                     <div className="space-y-2">
-                                        <Label htmlFor="prix_unitaire">Prix unitaire (€)*</Label>
+                                        <Label htmlFor="prix_unitaire">Prix unitaire (FC)*</Label>
                                         <Input
                                             id="prix_unitaire"
                                             type="number"

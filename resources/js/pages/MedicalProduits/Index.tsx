@@ -66,7 +66,7 @@ export default function Index({ produits, categories, fournisseurs }: PageProps<
     };
 
     const getCategoryName = (id: number) => {
-        return categories.find(c => c.id === id)?.name || 'Inconnue';
+        return categories.find(c => c.id === id)?.nom || 'Inconnue';
     };
 
     const getFournisseurName = (id: number | null) => {
@@ -88,7 +88,6 @@ export default function Index({ produits, categories, fournisseurs }: PageProps<
                             <Table className="dark:text-gray-400cell w-full text-left text-sm text-gray-500 rtl:text-right">
                                 <TableHeader>
                                     <TableRow>
-                                        <TableHead>Référence</TableHead>
                                         <TableHead>Nom</TableHead>
                                         <TableHead>Catégorie</TableHead>
                                         <TableHead>Sous-catégorie</TableHead>
@@ -105,9 +104,7 @@ export default function Index({ produits, categories, fournisseurs }: PageProps<
                                     {produits && produits.length > 0 ? (
                                         produits.map((produit) => (
                                             <TableRow key={produit.id}>
-                                                <TableCell className="font-medium text-gray-500">
-                                                    {produit.ref}
-                                                </TableCell>
+                                                
                                                 <TableCell className="font-medium text-black dark:text-white">
                                                     {produit.name}
                                                 </TableCell>
@@ -127,7 +124,7 @@ export default function Index({ produits, categories, fournisseurs }: PageProps<
                                                     {getFournisseurName(produit.fournisseur_id)}
                                                 </TableCell>
                                                 <TableCell>
-                                                    {produit.prix_unitaire.toFixed(2)} €
+                                                    {produit.prix_unitaire ? parseFloat(produit.prix_unitaire).toFixed(2) : '0.00'}FC
                                                 </TableCell>
                                                 <TableCell>
                                                     <Badge variant={produit.seuil_min > 0 ? 'default' : 'secondary'}>
@@ -139,7 +136,7 @@ export default function Index({ produits, categories, fournisseurs }: PageProps<
                                                         <Badge variant={produit.is_active ? 'default' : 'destructive'}>
                                                             {produit.is_active ? 'Actif' : 'Inactif'}
                                                         </Badge>
-                                                        {produit.requires_refrigeration && (
+                                                        {produit.requires_refrigeration === 1 && (
                                                             <Snowflake className="h-4 w-4 text-blue-500" />
                                                         )}
                                                     </div>

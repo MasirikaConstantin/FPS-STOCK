@@ -58,10 +58,7 @@ export default function Show({ produit, categories, fournisseurs }: PageProps<{
                                         <CardTitle>Informations de base</CardTitle>
                                     </CardHeader>
                                     <CardContent className="space-y-4">
-                                        <div>
-                                            <p className="text-sm text-gray-500">Référence</p>
-                                            <p>{produit.ref}</p>
-                                        </div>
+                                        
                                         <div>
                                             <p className="text-sm text-gray-500">Catégorie</p>
                                             <p>{getCategoryName(produit.categorie_id)}</p>
@@ -80,6 +77,23 @@ export default function Show({ produit, categories, fournisseurs }: PageProps<{
                                                 {produit.is_active ? 'Actif' : 'Inactif'}
                                             </Badge>
                                         </div>
+                                        <div>
+                                            <p className="text-sm text-gray-500">Crée par</p>
+                                            <p>{produit.creator.name}</p>
+                                        </div>
+                                        {produit.updater && (
+                                            <>
+                                                <div>
+                                                    <h3 className="text-sm font-medium text-gray-500">Mis à jour par</h3>
+                                                    <p className="mt-1 text-sm">{produit.updater.name}</p>
+                                                </div>
+
+                                                <div>
+                                                    <h3 className="text-sm font-medium text-gray-500">Dernière mise à jour</h3>
+                                                    <p className="mt-1 text-sm">{new Date(produit.updated_at).toLocaleString()}</p>
+                                                </div>
+                                            </>
+                                        )}
                                     </CardContent>
                                 </Card>
 
@@ -98,7 +112,9 @@ export default function Show({ produit, categories, fournisseurs }: PageProps<{
                                         </div>
                                         <div>
                                             <p className="text-sm text-gray-500">Prix unitaire</p>
-                                            <p>{produit.prix_unitaire.toFixed(2)} €</p>
+                                            <p>{produit.prix_unitaire ? parseFloat(produit.prix_unitaire).toFixed(2) : '0.00'} FC</p>
+                                            
+
                                         </div>
                                         <div>
                                             <p className="text-sm text-gray-500">Seuil minimum</p>
