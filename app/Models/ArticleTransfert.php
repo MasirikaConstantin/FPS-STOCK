@@ -70,5 +70,9 @@ class ArticleTransfert extends Model
     {
         return $this->belongsTo(Stock::class, 'stock_source_id');
     }
-    
+
+    public function hopital()
+    {
+        return $this->belongsTo(Hopital::class, 'source_location_id');
+    }
 }

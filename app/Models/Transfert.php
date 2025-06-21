@@ -21,7 +21,10 @@ class Transfert extends Model
         'notes',
         'approuve_le',
         'livre_le',
-        'ref'
+        'ref',
+        'created_by',
+        'updated_by',
+
     ];
     public function demanderPar()
     {

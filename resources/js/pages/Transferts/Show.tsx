@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
+import { router } from '@inertiajs/react';
 
 const statusColors = {
   en_attente: 'bg-amber-100 text-amber-800',
@@ -17,7 +18,6 @@ export default function Show({ auth, transfert }: { auth: any; transfert: any })
   const canApprove = transfert.status === 'en_attente';
   const canComplete = transfert.status === 'approuve';
   const canCancel = ['en_attente', 'approuve'].includes(transfert.status);
-    console.log(auth);
   const breadcrumbs: BreadcrumbItem[] = [
     {
       title: 'Gestion des Transferts',
@@ -28,7 +28,19 @@ export default function Show({ auth, transfert }: { auth: any; transfert: any })
       href: `/transferts/${transfert.ref}`,
     },
   ];
-  console.log(transfert);
+
+
+const handleApprove = () => {
+    router.post(route('approve-transfert.approve', transfert.ref));
+};
+
+const handleComplete = () => {
+    router.post(route('complete.transferts.complete', transfert.ref));
+};
+
+const handleCancel = () => {
+    router.post(route('cancel.transferts.cancel', transfert.ref));
+};
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
@@ -50,18 +62,18 @@ export default function Show({ auth, transfert }: { auth: any; transfert: any })
 
           <div className="flex gap-2">
             {canApprove && (
-              <Button asChild>
-                <a href={route('transferts.approve', transfert.ref)}>Approuver</a>
+              <Button onClick={handleApprove}>
+                Approuver
               </Button>
             )}
             {canComplete && (
-              <Button variant="secondary" asChild>
-                <a href={route('transferts.complete', transfert.ref)}>Marquer comme Livré</a>
+              <Button variant="secondary" onClick={handleComplete}>
+                Marquer comme Livré
               </Button>
             )}
-            {canCancel && auth.user.role === 'admin_central' && (
-                <Button variant="destructive" asChild>
-                    <a href={route('transferts.cancel', transfert.ref)}>Annuler</a>
+            {canCancel && auth.user.role === 'admin_central' || auth.user.role === 'admin' && (
+                <Button variant="destructive" onClick={handleCancel}>
+                    Annuler
                 </Button>
             )}
           </div>
@@ -73,8 +85,10 @@ export default function Show({ auth, transfert }: { auth: any; transfert: any })
               </CardHeader>
               <CardContent className="space-y-4">
                 <div>
-                  <p className="text-sm text-muted-foreground">Source</p>
-                  <p className="font-medium">{transfert.from_central ? 'Stock Central' : transfert.from_hospital?.nom}</p>
+                  <p className="text-sm text-muted-foreground">Par :</p>
+
+                  <p className="font-medium">{transfert.created_by?.name ? transfert.created_by.name : "Nul"}</p>
+
                 </div>
                 <div>
                   <p className="text-sm text-muted-foreground">Destination</p>

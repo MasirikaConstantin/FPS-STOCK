@@ -6,7 +6,11 @@ use App\Models\Transfert;
 use App\Models\MedicalProduit;
 use App\Models\Hopital;
 use App\Models\Stock;
+use COM;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\Paginator;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Validation\Rule;
 
@@ -14,13 +18,35 @@ class TransfertController extends Controller
 {
     public function index()
     {
-        $transferts = Transfert::with(['fromHospital', 'toHospital', 'demandeur', 'items.medicalProduit'])
-            ->latest()
-            ->paginate(10);
-
+        
+        if(Auth::user()->profile){
+            if(Auth::user()->profile->hopital_id){
+                $hopital = Auth::user()->profile->hopital_id;
+                $transferts = Transfert::where('from_hospital_id', $hopital)->
+                orWhere('to_hospital_id', $hopital)
+                ->with(['fromHospital', 'toHospital', 'demandeur', 'items.medicalProduit'])
+                ->latest()
+                ->paginate(10);
+                return inertia('Transferts/Index', [
+                    'transferts' => $transferts,
+                ]);
+            }
+            
+        }elseif(Auth::user()->role === "admin_central"){
+                $transferts = Transfert::with(['fromHospital', 'toHospital', 'demandeur', 'items.medicalProduit'])
+                ->latest()
+                ->paginate(10);
+                return inertia('Transferts/Index', [
+                    'transferts' => $transferts,
+                ]);
+        }
         return inertia('Transferts/Index', [
-            'transferts' => $transferts,
+            'transferts' =>  new Paginator([], 10, 1, [
+                'path' => Paginator::resolveCurrentPath(),
+            ]),
         ]);
+
+        
     }
 
         public function create()
@@ -60,6 +86,7 @@ class TransfertController extends Controller
                         return !$request->input('items.*.from_central');
                     })
                 ],
+                "created_by" => ['nullable', 'exists:users,id'],
             ]);
         } catch (\Illuminate\Validation\ValidationException $e) {
             dd($e->validator->errors());
@@ -79,6 +106,7 @@ class TransfertController extends Controller
                 'priorite' => $validated['priorite'],
                 'demandeur_id' => auth()->id(),
                 'notes' => $validated['notes'],
+                'created_by' => $validated['created_by'] ?? auth()->id(),
                 'ref' => \Illuminate\Support\Str::uuid(),
             ]);
 
@@ -111,8 +139,9 @@ class TransfertController extends Controller
             'toHospital',
             'demandeur',
             'approbateur',
+            'createdBy',
             'items.medicalProduit',
-            'items.stockSource'
+            'items.stockSource.hopital' // Charge l'hôpital du stock source
         ]);
 
         return inertia('Transferts/Show', [
@@ -120,9 +149,12 @@ class TransfertController extends Controller
         ]);
     }
 
-    public function approve(string $transfert)
+    public function approve(string $letransfert)
     {
-        $transfert = Transfert::where('ref', $transfert)->firstOrFail();
+        
+        
+        $transfert = Transfert::where('ref', $letransfert)->firstOrFail();
+        
         abort_if($transfert->status !== 'en_attente', 403);
 
         DB::transaction(function () use ($transfert) {
@@ -138,14 +170,15 @@ class TransfertController extends Controller
         return back()->with('success', 'Transfert approuvé avec succès');
     }
 
-    public function complete(string $transfert)
+    public function complete(string $letransferta)
     {
-        $transfert = Transfert::where('ref', $transfert)->firstOrFail();
+        $transfert = Transfert::where('ref', $letransferta)->firstOrFail();
         abort_if($transfert->status !== 'approuve', 403);
-
         DB::transaction(function () use ($transfert) {
             foreach ($transfert->items as $item) {
                 // Créer le nouveau stock dans l'hôpital destination
+                //dd($item->stockSource);
+
                 Stock::create([
                     'medical_produit_id' => $item->medical_produit_id,
                     'hopital_id' => $transfert->to_central ? null : $transfert->to_hospital_id,
@@ -169,9 +202,9 @@ class TransfertController extends Controller
         return back()->with('success', 'Transfert marqué comme livré');
     }
 
-    public function cancel(string $transfert)
+    public function cancel(string $letransfertb)
     {
-        $transfert = Transfert::where('ref', $transfert)->firstOrFail();
+        $transfert = Transfert::where('ref', $letransfertb)->firstOrFail();
         abort_if(!in_array($transfert->status, ['en_attente', 'approuve']), 403);
 
         DB::transaction(function () use ($transfert) {

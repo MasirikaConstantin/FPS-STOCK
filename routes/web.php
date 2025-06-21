@@ -212,7 +212,9 @@ Route::resource('stocks', \App\Http\Controllers\StockController::class)
 Route::resource('central-stocks', StockCentalController::class)->middleware(['auth', 'verified']);
 // Pour les besoins d'Inertia.js - route de fallback
 
-
+Route::post('/transfert-gest/{letransfert}/approve', [TransfertController::class, 'approve'])->name('approve-transfert.approve');
+Route::post('/transfert-gesta/{letransferta}/complete', [TransfertController::class, 'complete'])->name('complete.transferts.complete');
+Route::post('/transfert-gestb/{letransfertb}/cancel', [TransfertController::class, 'cancel'])->name('cancel.transferts.cancel');
 
 Route::middleware('auth')->group(function () {
     Route::get('/transferts', [TransfertController::class, 'index'])->name('transferts.index');
@@ -220,9 +222,7 @@ Route::middleware('auth')->group(function () {
     Route::post('/transferts', [TransfertController::class, 'store'])->name('transferts.store');
     Route::get('/transferts/{transfert}', [TransfertController::class, 'show'])->name('transferts.show');
     Route::get('/transferts/{transfert}/edit', [TransfertController::class, 'show'])->name('transferts.edit');
-    Route::post('/transferts/{transfert}/approve', [TransfertController::class, 'approve'])->name('transferts.approve');
-    Route::post('/transferts/{transfert}/complete', [TransfertController::class, 'complete'])->name('transferts.complete');
-    Route::post('/transferts/{transfert}/cancel', [TransfertController::class, 'cancel'])->name('transferts.cancel');
+    
 });
 Route::fallback(function () {
     return inertia('Error/404');
