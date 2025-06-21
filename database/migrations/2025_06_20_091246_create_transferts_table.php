@@ -13,8 +13,10 @@ return new class extends Migration
     {
         Schema::create('transferts', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('from_hospital_id')->constrained('hopitals')->onDelete('cascade');
-            $table->foreignId('to_hospital_id')->constrained('hopitals')->onDelete('cascade');
+            $table->foreignId('from_hospital_id')->nullable()->constrained('hopitals')->onDelete('cascade');
+            $table->foreignId('to_hospital_id')->nullable()->constrained('hopitals')->onDelete('cascade');
+            $table->boolean('from_central')->default(false);
+            $table->boolean('to_central')->default(false);
             $table->enum('status', ['en_attente', 'approuve', 'en_transit', 'livre', 'annule'])->default('en_attente');
             $table->enum('priorite', ['faible', 'moyen', 'eleve', 'urgent'])->default('moyen');
             $table->foreignId('demandeur_id')->nullable()->constrained('users')->nullOnDelete();

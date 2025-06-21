@@ -17,7 +17,8 @@ return new class extends Migration
             $table->id();
             $table->foreignId('transfert_id')->constrained()->onDelete('cascade');
             $table->foreignId('medical_produit_id')->constrained()->onDelete('cascade');
-            $table->foreignId('stock_source_id')->constrained('stocks')->onDelete('cascade');
+            $table->foreignId('stock_source_id')->nullable()->constrained('stocks')->onDelete('cascade');
+            $table->boolean('from_central')->default(false);
             $table->integer('quantite')->unsigned();
             $table->enum('status', ['en_attente', 'preleve', 'livre', 'annule'])->default('en_attente');
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();

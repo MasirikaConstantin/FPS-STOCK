@@ -48,4 +48,9 @@ class Stock extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
+    public function medicalProduit()
+    {
+        return $this->belongsTo(MedicalProduit::class);
+    }
+    
 }

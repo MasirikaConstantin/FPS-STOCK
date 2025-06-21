@@ -11,7 +11,6 @@ use App\Http\Controllers\CentralStockController;
 use App\Http\Controllers\HospitalStockController;
 use App\Http\Controllers\HospitalController;
 use App\Http\Controllers\MedicineController;
-use App\Http\Controllers\TransferController;
 use App\Http\Controllers\AlertController;
 use App\Http\Controllers\CategorieController;
 use App\Http\Controllers\DivisionAdministrativeController;
@@ -20,6 +19,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StockCentalController;
+use App\Http\Controllers\TransfertController;
 use App\Models\DivisionAdministrave;
 
 Route::get('/', function () {
@@ -76,7 +76,19 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
    
     // Transferts
-    Route::resource('transfers', TransferController::class);
+    Route::resource('transferts', TransfertController::class);
+
+    Route::post('/transferts/{transfert}/approve', [TransfertController::class, 'approve'])
+    ->name('transferts.approve')
+    ->middleware(['auth', 'verified']);
+
+Route::post('/transferts/{transfert}/deliver', [TransfertController::class, 'deliver'])
+    ->name('transferts.deliver')
+    ->middleware(['auth', 'verified']);
+
+Route::post('/transferts/{transfert}/cancel', [TransfertController::class, 'cancel'])
+    ->name('transferts.cancel')
+    ->middleware(['auth', 'verified']);
 
     Route::get('/categories', [CategorieController::class, 'index'])->name('categories.index');
     Route::get('/categories/create', [CategorieController::class, 'create'])->name('categories.create');

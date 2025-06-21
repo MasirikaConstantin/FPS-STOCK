@@ -158,6 +158,49 @@ declare namespace App {
         };
     }
 
+
+    export type Transfert = {
+        id: number;
+        ref: string;
+        from_hospital_id: number;
+        to_hospital_id: number;
+        status: 'en_attente' | 'approuve' | 'en_transit' | 'livre' | 'annule';
+        priorite: 'faible' | 'moyen' | 'eleve' | 'urgent';
+        notes: string | null;
+        demandeur_id: number | null;
+        approbateur_id: number | null;
+        approuve_le: string | null;
+        livre_le: string | null;
+        created_at: string;
+        updated_at: string;
+        created_by?: User | null;
+        updated_by?: User | null;
+        from_hospital_id: number | null;
+        to_hospital_id: number | null;
+        from_central: boolean;
+        to_central: boolean;
+        demandeur?: User;
+        approbateur?: User;
+        articles?: ArticleTransfert[];
+    };
+    
+    export type ArticleTransfert = {
+        id: number;
+        ref: string;
+        transfert_id: number;
+        stock_id: number;
+        medical_produit_id: number;
+        quantite: number;
+        from_central: boolean;
+        status: 'en_attente' | 'preleve' | 'livre' | 'annule';
+        created_at: string;
+        updated_at: string;
+        created_by?: User | null;
+        updated_by?: User | null;
+        stock?: Stock & { medical_produit: MedicalProduit };
+    };
+    
+    
     export type Kit = {
         id: number;
         ref: string;
