@@ -187,6 +187,24 @@ export type MedicalProduit = {
     categorie?: Categorie;
     fournisseur?: Fournisseur | null;
 };
+export type Stock = {
+    id: number;
+    ref: string;
+    quantite: number;
+    numero_lot: string | null;
+    date_expiration: string | null;
+    prix_unitaire: number | null;
+    received_date: string;
+    status: 'disponible' | 'reservee' | 'expirer' | 'endommage';
+    medical_produit_id: number;
+    hopital_id: number | null;
+    created_at: string;
+    updated_at: string;
+    created_by?: User | null;
+    updated_by?: User | null;
+    medical_produit?: MedicalProduit;
+    hopital?: Hopital | null;
+};
     interface Category {
         id: number;
         nom: string;

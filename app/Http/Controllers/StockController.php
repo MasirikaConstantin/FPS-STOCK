@@ -3,63 +3,103 @@
 namespace App\Http\Controllers;
 
 use App\Models\Stock;
+use App\Models\MedicalProduit;
+use App\Models\Hopital;
 use Illuminate\Http\Request;
+use Inertia\Inertia;
+use Illuminate\Support\Str;
 
 class StockController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
     public function index()
     {
-        //
+        return Inertia::render('Stocks/Index', [
+            'stocks' => Stock::with(['medical_produit', 'hopital', 'created_by', 'updated_by'])
+                ->orderBy('created_at', 'desc')
+                ->get(),
+            'produits' => MedicalProduit::all(),
+            'hopitals' => Hopital::all(),
+        ]);
     }
 
-    /**
-     * Show the form for creating a new resource.
-     */
     public function create()
     {
-        //
+        return Inertia::render('Stocks/Create', [
+            'produits' => MedicalProduit::all(),
+            'hopitals' => Hopital::all(),
+        ]);
     }
 
-    /**
-     * Store a newly created resource in storage.
-     */
     public function store(Request $request)
     {
-        //
+        $request->validate([
+            'medical_produit_id' => 'required|exists:medical_produits,id',
+            'quantite' => 'required|integer|min:1',
+            'status' => 'required|in:disponible,reservee,expirer,endommage',
+            'received_date' => 'required|date',
+        ]);
+
+        Stock::create([
+            'ref' => Str::uuid(),
+            'medical_produit_id' => $request->medical_produit_id,
+            'quantite' => $request->quantite,
+            'numero_lot' => $request->numero_lot,
+            'date_expiration' => $request->date_expiration,
+            'prix_unitaire' => $request->prix_unitaire,
+            'received_date' => $request->received_date,
+            'status' => $request->status,
+            'hopital_id' => $request->hopital_id,
+            'created_by' => auth()->id(),
+        ]);
+
+        return redirect()->route('stocks.index');
     }
 
-    /**
-     * Display the specified resource.
-     */
     public function show(Stock $stock)
     {
-        //
+        return Inertia::render('Stocks/Show', [
+            'stock' => $stock->load(['medical_produit', 'hopital', 'created_by', 'updated_by']),
+            'produits' => MedicalProduit::all(),
+            'hopitals' => Hopital::all(),
+        ]);
     }
 
-    /**
-     * Show the form for editing the specified resource.
-     */
     public function edit(Stock $stock)
     {
-        //
+        return Inertia::render('Stocks/Edit', [
+            'stock' => $stock,
+            'produits' => MedicalProduit::all(),
+            'hopitals' => Hopital::all(),
+        ]);
     }
 
-    /**
-     * Update the specified resource in storage.
-     */
     public function update(Request $request, Stock $stock)
     {
-        //
+        $request->validate([
+            'medical_produit_id' => 'required|exists:medical_produits,id',
+            'quantite' => 'required|integer|min:1',
+            'status' => 'required|in:disponible,reservee,expirer,endommage',
+            'received_date' => 'required|date',
+        ]);
+
+        $stock->update([
+            'medical_produit_id' => $request->medical_produit_id,
+            'quantite' => $request->quantite,
+            'numero_lot' => $request->numero_lot,
+            'date_expiration' => $request->date_expiration,
+            'prix_unitaire' => $request->prix_unitaire,
+            'received_date' => $request->received_date,
+            'status' => $request->status,
+            'hopital_id' => $request->hopital_id,
+            'updated_by' => auth()->id(),
+        ]);
+
+        return redirect()->route('stocks.index');
     }
 
-    /**
-     * Remove the specified resource from storage.
-     */
     public function destroy(Stock $stock)
     {
-        //
+        $stock->delete();
+        return redirect()->route('stocks.index');
     }
 }

@@ -31,7 +31,7 @@ const mainNavItems: NavItem[] = [
     },
     {
         title: 'Stocks Hôpitaux',
-        href: '/hospital-stocks',
+        href: '/stocks',
         icon: Building2,
     },
     {
