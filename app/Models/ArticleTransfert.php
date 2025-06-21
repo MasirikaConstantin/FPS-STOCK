@@ -70,4 +70,5 @@ class ArticleTransfert extends Model
     {
         return $this->belongsTo(Stock::class, 'stock_source_id');
     }
+    
 }

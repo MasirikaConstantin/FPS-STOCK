@@ -88,7 +88,7 @@ export default function Index({ users, canCreate }: IndexProps) {
                                                 </Badge>
                                             </TableCell>
                                             <TableCell>
-                                                {user.profile?.hospital?.name || '-'}
+                                                {user.profile?.hopital?.nom || '-'}
                                             </TableCell>
                                             <TableCell>
                                                 <Badge variant={user.is_active ? 'default' : 'destructive'}>

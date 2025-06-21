@@ -46,9 +46,9 @@ export interface User {
         profile?: {
             phone?: string;
             address?: string;
-            hospital?: {
+            hopital?: {
                 id: number;
-                name: string;
+                nom: string;
             };
         };
         permissions?: Permission[];

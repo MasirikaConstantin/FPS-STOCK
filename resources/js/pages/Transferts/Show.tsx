@@ -28,6 +28,7 @@ export default function Show({ auth, transfert }: { auth: any; transfert: any })
       href: `/transferts/${transfert.ref}`,
     },
   ];
+  console.log(transfert);
 
   return (
     <AppLayout breadcrumbs={breadcrumbs}>

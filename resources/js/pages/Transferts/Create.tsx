@@ -156,7 +156,6 @@ export default function TransfertCreate({ produits, hopitals }: { produits: any[
                         ...formData,
                         to_hospital_id: parseInt(value),
                         to_central: false,
-                        from_central: true,
                       });
                     }
                   }}
