@@ -164,6 +164,29 @@ declare namespace App {
         };
     }
 
+
+export type MedicalProduit = {
+    id: number;
+    ref: string;
+    name: string;
+    categorie_id: number;
+    sous_category: string | null;
+    unite: string;
+    description: string | null;
+    fabrican: string | null;
+    fournisseur_id: number | null;
+    requires_refrigeration: boolean;
+    duree_vie: number;
+    seuil_min: number;
+    prix_unitaire: number;
+    is_active: boolean;
+    created_at: string;
+    updated_at: string;
+    created_by?: User | null;
+    updated_by?: User | null;
+    categorie?: Categorie;
+    fournisseur?: Fournisseur | null;
+};
     interface Category {
         id: number;
         nom: string;
