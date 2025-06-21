@@ -76,19 +76,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     
    
     // Transferts
-    Route::resource('transferts', TransfertController::class);
-
-    Route::post('/transferts/{transfert}/approve', [TransfertController::class, 'approve'])
-    ->name('transferts.approve')
-    ->middleware(['auth', 'verified']);
-
-Route::post('/transferts/{transfert}/deliver', [TransfertController::class, 'deliver'])
-    ->name('transferts.deliver')
-    ->middleware(['auth', 'verified']);
-
-Route::post('/transferts/{transfert}/cancel', [TransfertController::class, 'cancel'])
-    ->name('transferts.cancel')
-    ->middleware(['auth', 'verified']);
+    
 
     Route::get('/categories', [CategorieController::class, 'index'])->name('categories.index');
     Route::get('/categories/create', [CategorieController::class, 'create'])->name('categories.create');
@@ -223,6 +211,19 @@ Route::resource('stocks', \App\Http\Controllers\StockController::class)
 
 Route::resource('central-stocks', StockCentalController::class)->middleware(['auth', 'verified']);
 // Pour les besoins d'Inertia.js - route de fallback
+
+
+
+Route::middleware('auth')->group(function () {
+    Route::get('/transferts', [TransfertController::class, 'index'])->name('transferts.index');
+    Route::get('/transferts/create', [TransfertController::class, 'create'])->name('transferts.create');
+    Route::post('/transferts', [TransfertController::class, 'store'])->name('transferts.store');
+    Route::get('/transferts/{transfert}', [TransfertController::class, 'show'])->name('transferts.show');
+    Route::get('/transferts/{transfert}/edit', [TransfertController::class, 'show'])->name('transferts.edit');
+    Route::post('/transferts/{transfert}/approve', [TransfertController::class, 'approve'])->name('transferts.approve');
+    Route::post('/transferts/{transfert}/complete', [TransfertController::class, 'complete'])->name('transferts.complete');
+    Route::post('/transferts/{transfert}/cancel', [TransfertController::class, 'cancel'])->name('transferts.cancel');
+});
 Route::fallback(function () {
     return inertia('Error/404');
 });

@@ -1,10 +1,12 @@
 import { Head } from '@inertiajs/react'
-import AppLayout from '@/layouts/app-layout'
 import { Link } from 'lucide-react'
+import AuthLayout from '@/layouts/auth-layout'
 
 export default function Page404() {
   return (
-    <AppLayout>
+    <AuthLayout title="404 Error" description="The requested page could not be found." >
+      
+      
       <Head title="Page not found" />
       <div className="flex flex-col items-center px-4 py-8">
         <h1 className="text-4xl font-bold">Page not found</h1>
@@ -18,6 +20,6 @@ export default function Page404() {
           Go back home
         </Link>
       </div>
-    </AppLayout>
+    </AuthLayout>
   )
 }

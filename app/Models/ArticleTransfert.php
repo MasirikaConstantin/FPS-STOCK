@@ -16,9 +16,11 @@ class ArticleTransfert extends Model
         'quantite',
         'status',
         'ref',
+        "from_central",
         'created_by',
         'updated_by'
     ];
+
 
     public function sourceLocation()
     {
@@ -63,5 +65,9 @@ class ArticleTransfert extends Model
     public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+    public function stock()
+    {
+        return $this->belongsTo(Stock::class, 'stock_source_id');
     }
 }

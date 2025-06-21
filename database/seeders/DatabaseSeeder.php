@@ -42,7 +42,7 @@ class DatabaseSeeder extends Seeder
         //MedicalProduit::factory(50)->create();
         //Stock::factory(100)->create();
         //Kit::factory(100)->create();
-        ArticleKit::factory(300)->create();
+        //ArticleKit::factory(300)->create();
 
 
 

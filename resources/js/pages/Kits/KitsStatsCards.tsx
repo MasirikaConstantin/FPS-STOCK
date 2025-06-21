@@ -41,7 +41,7 @@ interface KitsStatsCardsProps {
 
 export const KitsStatsCards = ({ stats }: KitsStatsCardsProps) => {
   return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
+    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3">
       <StatsCard
         title="Kits Actifs"
         value={stats.active_kits}
@@ -60,11 +60,12 @@ export const KitsStatsCards = ({ stats }: KitsStatsCardsProps) => {
         icon={Package}
         variant="info"
       />
+      {/* Assuming unique_types is the number of different kit types 
       <StatsCard
         title="Types de Kits"
         value={stats.unique_types}
         icon={Package}
-      />
+      />*/}
     </div>
   );
 };

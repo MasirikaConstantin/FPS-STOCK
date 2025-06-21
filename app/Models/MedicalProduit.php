@@ -54,4 +54,8 @@ class MedicalProduit extends Model
     {
         return $this->belongsTo(User::class, 'updated_by');
     }
+    public function stocks()
+    {
+        return $this->hasMany(Stock::class);
+    }
 }

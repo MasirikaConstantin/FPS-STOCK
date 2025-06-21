@@ -12,6 +12,8 @@ class Transfert extends Model
     protected $fillable = [
         'from_hospital_id',
         'to_hospital_id',
+        'from_central',
+        'to_central',
         'status',
         'priorite',
         'demandeur_id',
@@ -19,9 +21,7 @@ class Transfert extends Model
         'notes',
         'approuve_le',
         'livre_le',
-        'ref',
-        'created_by',
-        'updated_by'
+        'ref'
     ];
     public function demanderPar()
     {
@@ -41,6 +41,8 @@ class Transfert extends Model
     }
 
     protected $casts = [
+        'from_central' => 'boolean',
+        'to_central' => 'boolean',
         'approuve_le' => 'datetime',
         'livre_le' => 'datetime',
     ];
@@ -78,6 +80,10 @@ class Transfert extends Model
     public function updatedBy()
     {
         return $this->belongsTo(User::class, 'updated_by');
+    }
+    public function items()
+    {
+        return $this->hasMany(ArticleTransfert::class);
     }
 
 }
