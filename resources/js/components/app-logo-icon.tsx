@@ -4,7 +4,7 @@ export default function AppLogoIcon(props: SVGAttributes<SVGElement>) {
     return (
         <svg
             version="1.1"
-            {...props}
+            
             id="Layer_1"
             xmlns="http://www.w3.org/2000/svg"
             xmlnsXlink="http://www.w3.org/1999/xlink"
@@ -15,6 +15,7 @@ export default function AppLogoIcon(props: SVGAttributes<SVGElement>) {
             xmlSpace="preserve"
         >
             <path
+            {...props}
                 opacity="000000"
                 stroke="none"
                 d="

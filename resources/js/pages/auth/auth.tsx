@@ -29,9 +29,7 @@ export default function AuthCombined() {
     const [activeTab, setActiveTab] = useState<'login' | 'register'>('login');
     //const { toast } = Toaster();
     const { errors: pageErrors, flash, verifyMessage } = usePage<{ flash: { error?: string }; auth: { user: { id: number; name: string; email: string } } }>().props;
-    //console.log(usePage().props);
     // Gestion des erreurs spécifiques
-    console.log(flash);
 
     useEffect(() => {
         if (flash?.error) {
@@ -87,9 +85,7 @@ export default function AuthCombined() {
         loginPost(route('login'), {
             onFinish: () => resetLogin('password'),
             onError: () => {
-                // Gestion spécifique des erreurs
-                //console.log(flash);
-                //console.log(pageErrors);
+             
                 if (pageErrors.email) {
                     //toast( "Erreur : " +pageErrors.email);
                 }
@@ -98,7 +94,6 @@ export default function AuthCombined() {
     };
 
     const handleResendVerification = () => {
-        console.log('handleResendVerification called with email:', registerData.email);
         router.post(
             route('verification.send-to'),
             { email: registerData.email },

@@ -30,7 +30,6 @@ return new class extends Migration
             $table->uuid('ref')->unique();
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
-            
             $table->timestampsTz();
         });
     }
