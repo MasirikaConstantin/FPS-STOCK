@@ -83,7 +83,9 @@ export default function Index({  categories }: PageProps<{ categories: App.Categ
                                         categories.map((category) => (
                                             <TableRow key={category.id}>
                                                 <TableCell className="font-medidum text-black dark:text-white">{category.nom}</TableCell>
-                                                <TableCell>{category.description || '-'}</TableCell>
+                                                <TableCell>{category.description?.slice(0, 30) || '-'}
+                                                    
+                                                </TableCell>
                                                 <TableCell>
                                                     <Badge variant={category.is_active ? 'default' : 'destructive'}>
                                                         {category.is_active ? 'Actif' : 'Inactif'}

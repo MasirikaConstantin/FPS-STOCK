@@ -12,9 +12,9 @@ class DivisionAdministrativeController extends Controller
 {
     public function index()
 {
-    if (Gate::denies('viewAny', DivisionAdministrative::class)) {
+    /*if (Gate::denies('viewAny', DivisionAdministrative::class)) {
         abort(403);
-    }
+    }*/
 
     $divisions = DivisionAdministrative::query()
         ->with(['parent', 'creator'])

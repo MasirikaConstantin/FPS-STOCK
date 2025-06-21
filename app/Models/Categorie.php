@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Categorie extends Model
 {
+    use \Illuminate\Database\Eloquent\Factories\HasFactory;
     protected $fillable = [
         'nom',
         'description',

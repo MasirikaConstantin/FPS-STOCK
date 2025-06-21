@@ -9,6 +9,7 @@ use Illuminate\Support\Str;
 
 class DivisionAdministrative extends Model
 {
+    use \Illuminate\Database\Eloquent\Factories\HasFactory;
     protected $table = 'division_administraves';
     protected $fillable = [
         'nom',
