@@ -28,7 +28,6 @@ export default function Edit({ stock, produits, hopitals }: PageProps<{
         prix_unitaire: stock.prix_unitaire,
         received_date: new Date(stock.received_date),
         status: stock.status,
-        hopital_id: stock.hopital_id?.toString() || null,
     });
 
     const breadcrumbs: BreadcrumbItem[] = [
@@ -52,7 +51,7 @@ export default function Edit({ stock, produits, hopitals }: PageProps<{
             received_date: format(data.received_date, 'yyyy-MM-dd')
         };
 
-        put(route('stocks.update', stock.ref), {
+        put(route('central-stocks.update', stock.ref), {
             data: formattedData,
             onSuccess: () => {
                 toast.success('Entrée de stock mise à jour avec succès');
@@ -212,27 +211,7 @@ export default function Edit({ stock, produits, hopitals }: PageProps<{
                                         {errors.date_expiration && <p className="text-sm text-red-500">{errors.date_expiration}</p>}
                                     </div>
 
-                                    {/* Emplacement - Corrigé */}
-                                    <div className="space-y-2">
-                                        <Label htmlFor="hopital_id">Emplacement</Label>
-                                        <Select
-                                            value={data.hopital_id === null ? "null" : data.hopital_id || undefined}
-                                            onValueChange={(value) => setData('hopital_id', value === "null" ? null : value)}
-                                        >
-                                            <SelectTrigger>
-                                                <SelectValue placeholder="Stock central" />
-                                            </SelectTrigger>
-                                            <SelectContent>
-                                                <SelectItem value="null">Stock central</SelectItem>
-                                                {hopitals.map((hopital) => (
-                                                    <SelectItem key={hopital.id} value={hopital.id.toString()}>
-                                                        {hopital.nom}
-                                                    </SelectItem>
-                                                ))}
-                                            </SelectContent>
-                                        </Select>
-                                        {errors.hopital_id && <p className="text-sm text-red-500">{errors.hopital_id}</p>}
-                                    </div>
+                                    
 
                                     {/* Statut - Corrigé */}
                                     <div className="space-y-2">
@@ -258,7 +237,7 @@ export default function Edit({ stock, produits, hopitals }: PageProps<{
 
                                 <div className="flex justify-end space-x-4">
                                     <Button variant="outline" asChild>
-                                        <Link href={route('stocks.index')}>Annuler</Link>
+                                        <Link href={route('central-stocks.index')}>Annuler</Link>
                                     </Button>
                                     <Button type="submit" disabled={processing}>
                                         {processing ? 'Enregistrement...' : 'Enregistrer'}

@@ -19,6 +19,7 @@ use App\Http\Controllers\KitController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingsController;
+use App\Http\Controllers\StockCentalController;
 use App\Models\DivisionAdministrave;
 
 Route::get('/', function () {
@@ -65,12 +66,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/coc', [CocController::class, 'index'])
          ->name('coc');
     
-    // Stocks Central
-    Route::prefix('central-stocks')->group(function () {
-        Route::get('/', [CentralStockController::class, 'index'])
-             ->name('central-stocks.index');
-        // Ajoutez d'autres routes CRUD si nécessaire
-    });
+   
     
     // Stocks Hôpitaux
     Route::prefix('hospital-stocks')->group(function () {
@@ -213,8 +209,7 @@ Route::resource('medical-produits', \App\Http\Controllers\MedicalProduitControll
 Route::resource('stocks', \App\Http\Controllers\StockController::class)
     ->middleware(['auth', 'verified']);
 
-    Route::resource('central-stocks', \App\Http\Controllers\StockController::class)
-    ->middleware(['auth', 'verified']);
+Route::resource('central-stocks', StockCentalController::class)->middleware(['auth', 'verified']);
 // Pour les besoins d'Inertia.js - route de fallback
 Route::fallback(function () {
     return inertia('Error/404');
