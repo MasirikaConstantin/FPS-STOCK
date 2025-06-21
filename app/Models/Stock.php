@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class Stock extends Model
 {
+    use \Illuminate\Database\Eloquent\Factories\HasFactory;
     protected $table = 'stocks';
 
     protected $fillable = [

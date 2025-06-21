@@ -2,11 +2,15 @@
 
 namespace Database\Seeders;
 
+use App\Models\ArticleKit;
 use App\Models\Categorie;
 use App\Models\User;
 use App\Models\DivisionAdministrative;
 use App\Models\Fournisseur;
 use App\Models\Hopital;
+use App\Models\Kit;
+use App\Models\MedicalProduit;
+use App\Models\Stock;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
@@ -17,7 +21,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        //User::factory(100)->create();
 
         //DivisionAdministrative::factory()->province()->create();
         /*DivisionAdministrative::factory()->ville()->create([
@@ -34,7 +38,12 @@ class DatabaseSeeder extends Seeder
         //Categorie::factory(30)->create();
         //Categorie::factory()->medicaments()->count(5)->create();
         //Hopital::factory(30)->create();
-        Fournisseur::factory(50)->create();
+        //Fournisseur::factory(50)->create();
+        //MedicalProduit::factory(50)->create();
+        //Stock::factory(100)->create();
+        //Kit::factory(100)->create();
+        ArticleKit::factory(300)->create();
+
 
 
     }

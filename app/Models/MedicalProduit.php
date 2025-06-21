@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class MedicalProduit extends Model
 {
+    use \Illuminate\Database\Eloquent\Factories\HasFactory;
     protected $table = 'medical_produits';
 
     protected $fillable = [

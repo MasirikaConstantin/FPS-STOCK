@@ -6,6 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 
 class ArticleKit extends Model
 {
+    use \Illuminate\Database\Eloquent\Factories\HasFactory;
     protected $table = 'article_kits';
 
     protected $fillable = [
