@@ -212,6 +212,9 @@ Route::resource('medical-produits', \App\Http\Controllers\MedicalProduitControll
     ->middleware(['auth', 'verified']);
 Route::resource('stocks', \App\Http\Controllers\StockController::class)
     ->middleware(['auth', 'verified']);
+
+    Route::resource('central-stocks', \App\Http\Controllers\StockController::class)
+    ->middleware(['auth', 'verified']);
 // Pour les besoins d'Inertia.js - route de fallback
 Route::fallback(function () {
     return inertia('Error/404');

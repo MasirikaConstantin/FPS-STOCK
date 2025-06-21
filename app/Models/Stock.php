@@ -31,4 +31,20 @@ class Stock extends Model
         });
     }
     
+    public function medical_produit()
+    {
+        return $this->belongsTo(MedicalProduit::class);
+    }
+    public function hopital()
+    {
+        return $this->belongsTo(Hopital::class);
+    }
+    public function created_by()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
+    public function updated_by()
+    {
+        return $this->belongsTo(User::class, 'updated_by');
+    }
 }

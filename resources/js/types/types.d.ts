@@ -131,12 +131,6 @@ export interface Permission {
     module: string;
     action: string;
 }
-export interface Hospital {
-    id: number;
-    name: string;
-    address?: string;
-    phone?: string;
-}
 
 // Types spécifiques à votre application
 declare namespace App {
@@ -164,6 +158,32 @@ declare namespace App {
         };
     }
 
+    export interface Hopital {
+        id: number;
+        ref: string;
+        nom: string;
+        type: 'central' | 'general' | 'reference' | 'centre_sante' | null;
+        province: string;
+        ville: string;
+        address: string | null;
+        contact_person: string | null;
+        phone: string | null;
+        email: string | null;
+        capacite: number;
+        is_active: boolean;
+        coordonees: {
+            latitude: number;
+            longitude: number;
+        } | null;
+        division_administrative_id: number | null;
+        created_by: number | null;
+        updated_by: number | null;
+        created_at: string;
+        updated_at: string;
+        divisionAdministrative?: DivisionAdministrative;
+        creator?: User;
+        updater?: User;
+    }
 
 export type MedicalProduit = {
     id: number;
