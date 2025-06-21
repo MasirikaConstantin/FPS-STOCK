@@ -20,7 +20,7 @@ class MedicalProduit extends Model
         'categorie_id',
         'sous_category',
         'unite',
-        'fabricant',
+        'fabrican',
         'fournisseur_id',
         'requires_refrigeration',
         'duree_vie',

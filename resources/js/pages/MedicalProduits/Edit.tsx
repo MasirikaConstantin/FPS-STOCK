@@ -94,7 +94,7 @@ export default function Edit({ produit, categories, fournisseurs }: PageProps<{
                                                 key={categorie.id} 
                                                 value={categorie.id?.toString() || "undefined"} // Garantit une valeur non-vide
                                                 >
-                                                {categorie.name}
+                                                {categorie.nom}
                                                 </SelectItem>
                                             ))}
                                             </SelectContent>
