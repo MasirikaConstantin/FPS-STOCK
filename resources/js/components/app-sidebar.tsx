@@ -17,95 +17,97 @@ import {
     Users,
 } from 'lucide-react';
 import AppLogo from './app-logo';
-
-const mainNavItems: NavItem[] = [
+const getMainNavItems = (userRole: string): NavItem[] => {
+    const allItems: NavItem[] = [
     {
         title: 'Dashboard',
         href: '/dashboard',
         icon: LayoutGrid,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
     {
         title: 'Stocks Central',
         href: '/central-stocks',
         icon: Package,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        roles : ["admin_central"],
 
     },
     {
         title: 'Stocks Hôpitaux',
         href: '/stocks',
         icon: Building2,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
     {
         title: 'Hôpitaux',
         href: '/hopitals',
         icon: Hospital,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
     {
         title: 'Médicaments',
         href: '/medical-produits',
         icon: Pill,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
 
     {
         title: 'Fournisseurs',
         href: '/fournisseurs',
         icon: Building2,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
     {
         title: 'Categories',
         href: '/categories',
         icon: CassetteTape,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
     {
         title: 'Transferts',
         href: '/transferts',
         icon: Truck,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
     {
         title: 'Alertes',
         href: '/alerts',
         icon: AlertTriangle,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
     {
         title: 'Kits',
         href: '/kits',
         icon: Package,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
     {
         title: 'Utilisateurs',
         href: '/users',
         icon: Users,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
     {
         title: 'Rapports',
         href: '/reports',
         icon: BarChart3,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
     {
         title: 'Paramètres',
         href: '/settings',
         icon: Settings,
-        role : ["admin_central"],
+        roles : ["admin_central"],
     },
 ];
-
+return allItems.filter(item => item.roles?.includes(userRole));
+}
 
 
 export function AppSidebar() {
     const { auth } = usePage().props;
     const userRole = auth.user.role;
+    const filteredNavItems = getMainNavItems(userRole);
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
@@ -121,7 +123,7 @@ export function AppSidebar() {
             </SidebarHeader>
 
             <SidebarContent>
-                <NavMain items={mainNavItems} />
+                <NavMain items={filteredNavItems} />
             </SidebarContent>
 
             <SidebarFooter>
