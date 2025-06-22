@@ -93,7 +93,10 @@ class UserController extends Controller
     {
         $user = User::where('ref', $user)->firstOrFail();
         $this->authorizeView($user);
-        $user->load(['profile', 'profile.hopital', 'permissions']);
+        $user->load(['profile'=>function($query){
+            $query->select('id','user_id','phone','address','hopital_id');
+            
+        }, 'profile.hopital:id,nom', 'permissions','createdBy:id,name,avatar','updatedBy:id,name,avatar']);
 
         return Inertia::render('Users/Show', [
             'user' => $user,

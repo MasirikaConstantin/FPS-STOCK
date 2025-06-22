@@ -10,6 +10,7 @@ import { CheckCircle2Icon, PencilIcon, TrashIcon, UserIcon } from 'lucide-react'
 import { useState } from 'react';
 import DeleteUserDialog from '@/components/DeleteUserDialog';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 
 interface ShowProps extends PageProps {
     user: User;
@@ -20,7 +21,7 @@ interface ShowProps extends PageProps {
 
 export default function Show({ user, canEdit }: ShowProps) {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-
+    console.log(user);
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Utilisateurs',
@@ -71,7 +72,7 @@ export default function Show({ user, canEdit }: ShowProps) {
                                 {canEdit && (
                                     <>
                                         <Button variant="outline" asChild>
-                                            <Link href={route('users.edit', user.id)}>
+                                            <Link href={route('users.edit', user.ref)}>
                                                 <PencilIcon className="mr-2 h-4 w-4" />
                                                 Modifier
                                             </Link>
@@ -104,7 +105,7 @@ export default function Show({ user, canEdit }: ShowProps) {
                                         </div>
                                         <div>
                                             <h4 className="text-sm font-medium text-gray-500">Hôpital</h4>
-                                            <p>{user.profile?.hospital?.name || '-'}</p>
+                                            <p>{user.profile?.hopital?.nom || '-'}</p>
                                         </div>
                                     </div>
 
@@ -127,17 +128,41 @@ export default function Show({ user, canEdit }: ShowProps) {
                                         <h4 className="text-sm font-medium text-gray-500">Adresse</h4>
                                         <p>{user.profile?.address || '-'}</p>
                                     </div>
-                                    {user.createdBy ? (
+                                    {user.created_by ? (
                                         <div>
                                             <h4 className="text-sm font-medium text-gray-500">Créé par</h4>
-                                            <p>{user.createdBy?.name}</p>
+                                            <p>{user.created_by?.name}</p>
+                                            {user.created_by?.avatar ?(
+                                                <Avatar>
+                                                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                                <AvatarFallback>CN</AvatarFallback>
+                                              </Avatar>
+                                            )
+                                            : (
+                                                <div className="h-6 w-6 rounded-full bg-gray-100 flex items-center justify-center">
+                                                    <UserIcon className="h-3 w-3 text-gray-400" />
+                                                </div>
+                                            )
+                                            } 
                                         </div>
                                     ) : null}
-                                    {user.updatedBy ?  (
+                                    {user.updated_by ?  (
                                         <div>
-                                            <h4 className="text-sm font-medium text-gray-500">Mis à jour par</h4>
-                                            <p>{user.updatedBy?.name}</p>
-                                        </div>
+                                        <h4 className="text-sm font-medium text-gray-500">Modifier par</h4>
+                                        <p>{user.updated_by?.name}</p>
+                                        {user.updated_by?.avatar ?(
+                                            <Avatar>
+                                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                            <AvatarFallback>CN</AvatarFallback>
+                                          </Avatar>
+                                        )
+                                        : (
+                                            <div className="h-6 w-6 rounded-full bg-gray-100 flex items-center justify-center">
+                                                <UserIcon className="h-3 w-3 text-gray-400" />
+                                            </div>
+                                        )
+                                        } 
+                                    </div>
                                     ) : null}
                                 </div>
                             </CardContent>

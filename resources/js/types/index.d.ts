@@ -47,6 +47,7 @@ export interface User {
     name: string;
     email: string;
     role: string;
+    ref: string;
     avatar?: string;
     email_verified_at: string | null;
     created_at: string;
@@ -65,6 +66,9 @@ export interface User {
         };
         permissions?: Permission[];
         createdBy?: User;
+        created_by?: User;
         updatedBy?: User;
+        updated_by?: User;
+        
     [key: string]: unknown; // This allows for additional properties...
 }

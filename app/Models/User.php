@@ -29,6 +29,8 @@ class User extends Authenticatable implements MustVerifyEmail
         'avatar',
         'last_login_at',
         'last_login_ip',
+        'created_by',
+        'updated_by',
     ];
     protected $keyType = 'string';
     /**
