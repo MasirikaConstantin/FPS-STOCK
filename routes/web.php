@@ -107,9 +107,7 @@ Route::middleware(['auth', 'verified'])->group(function () {
     });
     
     // Alertes
-    Route::get('/alerts', [AlertController::class, 'index'])
-         ->name('alerts.index');
-    
+  
     // Kits
     Route::resource('kits', KitController::class);
     
@@ -224,6 +222,22 @@ Route::middleware('auth')->group(function () {
     Route::get('/transferts/{transfert}/edit', [TransfertController::class, 'show'])->name('transferts.edit');
     
 });
+
+
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::resource('alerts', \App\Http\Controllers\AlertController::class)
+        ->except(['edit', 'update']); // On utilise notre propre logique pour edit/update
+    
+    Route::get('alerts/{alert}/edit', [\App\Http\Controllers\AlertController::class, 'edit'])
+        ->name('alerts.edit');
+    Route::put('alerts/{alert}', [\App\Http\Controllers\AlertController::class, 'update'])
+        ->name('alerts.update');
+    Route::post('alerts-les/{cetalert}/resolve', [\App\Http\Controllers\AlertController::class, 'resolve'])
+        ->name('alerts.resolve');
+});
+
+
 Route::fallback(function () {
     return inertia('Error/404');
 });

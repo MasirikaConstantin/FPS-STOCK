@@ -10,7 +10,7 @@ return new class extends Migration
 {
     public function up()
     {
-        Schema::create('alerts', function (Blueprint $table) {
+      Schema::create('alerts', function (Blueprint $table) {
             $table->id();
             
             $table->enum('type', ['stock_faible', 'avertissement_expiration', 'expire', 'demande_transfert', 'systeme'])
