@@ -3,6 +3,7 @@ import type { Config } from 'ziggy-js';
 
 export interface Auth {
     user: User;
+    profil: Profil | null;
 }
 
 export interface BreadcrumbItem {
@@ -31,6 +32,16 @@ export interface SharedData {
     [key: string]: unknown;
 }
 
+export interface Profil {
+    id: number;
+    phone?: string;
+    address?: string;
+    hopital_id?: number;
+    hopital?: {
+        id: number;
+        nom: string;
+    };
+}
 export interface User {
     id: number;
     name: string;
@@ -41,6 +52,7 @@ export interface User {
     created_at: string;
     last_login_at: string;
     updated_at: string;
+    profil : Profil | null; 
     created_at: string;
         updated_at: string;
         profile?: {

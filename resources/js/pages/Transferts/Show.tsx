@@ -4,7 +4,7 @@ import { Badge } from '@/components/ui/badge';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem } from '@/types';
+import { Auth, BreadcrumbItem } from '@/types';
 import { router } from '@inertiajs/react';
 
 const statusColors = {
@@ -14,7 +14,7 @@ const statusColors = {
   annule: 'bg-red-100 text-red-800',
 };
 
-export default function Show({ auth, transfert }: { auth: any; transfert: any }) {
+export default function Show({ auth, transfert }: { auth: Auth; transfert: any }) {
   const canApprove = transfert.status === 'en_attente';
   const canComplete = transfert.status === 'approuve';
   const canCancel = ['en_attente', 'approuve'].includes(transfert.status);
@@ -42,6 +42,9 @@ const handleCancel = () => {
     router.post(route('cancel.transferts.cancel', transfert.ref));
 };
 
+  const peutApprouver = auth.profil && auth.profil.hopital_id === transfert.to_hospital_id && (auth.user.role === 'admin' || auth.user.role === 'admin_central');
+  const peutCompleter = auth.profil && auth.profil.hopital_id === transfert.to_hospital_id && auth.user.role === 'admin';
+  const peutAnnuler = auth.profil && auth.profil.hopital_id === transfert.to_hospital_id  || (auth.user.role === 'admin' || auth.user.role === 'admin_central');
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title={`Détails du Transfert ${transfert.ref}`} />
@@ -61,17 +64,17 @@ const handleCancel = () => {
           </div>
 
           <div className="flex gap-2">
-            {canApprove && (
+            {canApprove && peutApprouver && (
               <Button onClick={handleApprove}>
                 Approuver
               </Button>
             )}
-            {canComplete && (
+            {canComplete &&  peutCompleter &&(
               <Button variant="secondary" onClick={handleComplete}>
                 Marquer comme Livré
               </Button>
             )}
-            {canCancel && auth.user.role === 'admin_central' || auth.user.role === 'admin' && (
+            {canCancel && peutAnnuler&& (
                 <Button variant="destructive" onClick={handleCancel}>
                     Annuler
                 </Button>
