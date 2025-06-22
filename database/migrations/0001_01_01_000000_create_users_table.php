@@ -25,6 +25,8 @@ return new class extends Migration
             $table->rememberToken();
             $table->timestampsTz();
             $table->uuid('ref')->unique();
+            $table->foreignId("created_by")->nullable()->constrained("users")->cascadeOnDelete();
+            $table->foreignId("updated_by")->nullable()->constrained("users")->cascadeOnDelete();
 
             $table->softDeletesTz();
         });

@@ -64,5 +64,7 @@ export interface User {
             };
         };
         permissions?: Permission[];
+        createdBy?: User;
+        updatedBy?: User;
     [key: string]: unknown; // This allows for additional properties...
 }

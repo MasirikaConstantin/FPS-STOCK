@@ -40,7 +40,6 @@ export default function Form({ user, hopitals, roles }: FormProps) {
         hopital_id: user?.profile?.hopital_id || undefined,
         is_active: user?.is_active ?? true,
     });
-
     const onSubmit = (e: React.FormEvent) => {
         e.preventDefault();
 

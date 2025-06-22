@@ -44,6 +44,7 @@ class UserController extends Controller
             $hopitals = Hopital::all();
         } elseif ($user->isAdmin()) {
             $hopitals = Hopital::where('id', $user->profile->hopital_id)->get();
+            //dd($hopitals);
         }
 
         return Inertia::render('Users/Create', [
@@ -67,6 +68,7 @@ class UserController extends Controller
                 'required_if:role,admin,medecin,pharmacien,magasinier',
                 'exists:hopitals,id'
             ],
+            'created_by' => 'nullable|exists:users,id',
         ]);
 
         $user = User::create([
@@ -75,6 +77,7 @@ class UserController extends Controller
             'password' => Hash::make($request->password),
             'role' => $request->role,
             'is_active' => true,
+            'created_by' => Auth::user()->id,
         ]);
 
         $user->profile()->create([
@@ -137,6 +140,7 @@ class UserController extends Controller
             'exists:hopitals,id'
         ],
         'is_active' => 'boolean',
+        'updated_by' => 'nullable|exists:users,id',
     ]);
 
     // Mise à jour des informations de base de l'utilisateur
@@ -145,6 +149,7 @@ class UserController extends Controller
         'email' => $validated['email'],
         'role' => $validated['role'],
         'is_active' => $validated['is_active'] ?? false,
+        'updated_by' => Auth::user()->id,
     ]);
 
     // Gestion du profil (création ou mise à jour)

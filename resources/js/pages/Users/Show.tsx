@@ -14,6 +14,8 @@ import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 interface ShowProps extends PageProps {
     user: User;
     canEdit: boolean;
+    createdBy: User;
+    updatedBy: User;
 }
 
 export default function Show({ user, canEdit }: ShowProps) {
@@ -125,6 +127,18 @@ export default function Show({ user, canEdit }: ShowProps) {
                                         <h4 className="text-sm font-medium text-gray-500">Adresse</h4>
                                         <p>{user.profile?.address || '-'}</p>
                                     </div>
+                                    {user.createdBy ? (
+                                        <div>
+                                            <h4 className="text-sm font-medium text-gray-500">Créé par</h4>
+                                            <p>{user.createdBy?.name}</p>
+                                        </div>
+                                    ) : null}
+                                    {user.updatedBy ?  (
+                                        <div>
+                                            <h4 className="text-sm font-medium text-gray-500">Mis à jour par</h4>
+                                            <p>{user.updatedBy?.name}</p>
+                                        </div>
+                                    ) : null}
                                 </div>
                             </CardContent>
                         </Card>
