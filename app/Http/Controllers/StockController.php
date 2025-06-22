@@ -7,6 +7,7 @@ use App\Models\MedicalProduit;
 use App\Models\Hopital;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Support\Str;
 
@@ -14,10 +15,28 @@ class StockController extends Controller
 {
     public function index()
     {
+        $user = Auth::user();
+
+        if ($user->isAdminCentral()) {
+            $stocks = Stock::with(['medical_produit', 'hopital', 'created_by', 'updated_by'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+        } elseif ($user->isAdmin()) {
+            $stocks = Stock::where('hopital_id', $user->profile->hopital_id)->with(['medical_produit', 'hopital', 'created_by', 'updated_by'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+        } elseif ($user->isMedicalStaff()) {
+            $stocks = Stock::where('created_by', $user->id)->with(['medical_produit', 'hopital', 'created_by', 'updated_by'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+        }else{
+            $stocks = Stock::where('created_by', $user->id)->with(['medical_produit', 'hopital', 'created_by', 'updated_by'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+        }
+
         return Inertia::render('Stocks/Index', [
-            'stocks' => Stock::with(['medical_produit', 'hopital', 'created_by', 'updated_by'])
-                ->orderBy('created_at', 'desc')
-                ->get(),
+            'stocks' => $stocks,
             'produits' => MedicalProduit::all(),
             'hopitals' => Hopital::all(),
         ]);

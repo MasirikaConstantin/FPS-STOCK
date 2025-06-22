@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem } from '@/types';
+import { BreadcrumbItem, User } from '@/types';
 import { App, PageProps } from '@/types/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { Eye, MoreHorizontal, Pencil, Trash2, Box, PackageCheck, PackageX } from 'lucide-react';
@@ -22,14 +22,19 @@ import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
-export default function Index({ stocks, produits, hopitals }: PageProps<{ 
+export default function Index({ stocks, produits, hopitals, auth }: PageProps<{ 
     stocks: App.Stock[],
     produits: App.MedicalProduit[],
-    hopitals: App.Hopital[]
+    hopitals: App.Hopital[],
+    auth: User
 }>) {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [stockToDelete, setStockToDelete] = useState<App.Stock | null>(null);
     const [openDropdownId, setOpenDropdownId] = useState<string | null>(null);
+    const canCreateStock = auth.user.permissions.some(p => p.action === 'create' && p.module === 'stocks');
+    const canUpdateStock = auth.user.permissions.some(p => p.action === 'update' && p.module === 'stocks');
+    const canDeleteStock = auth.user.permissions.some(p => p.action === 'delete' && p.module === 'stocks');
+    console.log(canCreateStock);
 
     const breadcrumbs: BreadcrumbItem[] = [
         {

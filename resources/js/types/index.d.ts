@@ -56,20 +56,20 @@ export interface User {
     updated_at: string;
     profil : Profil | null; 
     created_at: string;
-        updated_at: string;
-        profile?: {
-            phone?: string;
-            address?: string;
-            hopital?: {
-                id: number;
-                nom: string;
-            };
+    updated_at: string;
+    profile?: {
+        phone?: string;
+        address?: string;
+        hopital?: {
+            id: number;
+            nom: string;
         };
-        permissions?: Permission[];
-        createdBy?: User;
-        created_by?: User;
-        updatedBy?: User;
-        updated_by?: User;
+    };
+    permissions?: Permission[];
+    createdBy?: User;
+    created_by?: User;
+    updatedBy?: User;
+    updated_by?: User;
         
     [key: string]: unknown; // This allows for additional properties...
 }

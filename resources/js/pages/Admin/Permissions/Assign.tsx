@@ -8,6 +8,7 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Label } from '@/components/ui/label';
 import { Checkbox } from '@/components/ui/checkbox';
 import { Badge } from '@/components/ui/badge';
+import { toast } from 'sonner';
 
 interface Permission {
     id: number;
@@ -75,6 +76,12 @@ export default function PermissionAssignment({ users, permissions, current_permi
 
         post(route('admin.permissions.assign'), {
             preserveScroll: true,
+            onSuccess: () => {
+                toast.success('Permissions attribuées avec succès');
+            },
+            onError: () => {
+                toast.error('Une erreur est survenue lors de l\'attribution des permissions');
+            },
         });
     };
 

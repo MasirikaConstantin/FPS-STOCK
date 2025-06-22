@@ -369,8 +369,16 @@ export interface PageProps<T extends Record<string, unknown> = {}> extends Page<
             id: number;
             name: string;
             email: string;
+            permissions: {
+                id: number;
+                name: string;
+                action: string;
+                module: string;
+            }[];
         };
+        
     };
+    
     props: T;
     categories?: T; // Add the optional categories property
     fournisseurs?: T; // Add the optional categories property
@@ -395,5 +403,7 @@ export interface PageProps<T extends Record<string, unknown> = {}> extends Page<
     };
     hopitals?: T;
     roles?: T;
-    user?: User; 
+    user?: User;
+    stocks?: T;
+    produits?: T; 
 }

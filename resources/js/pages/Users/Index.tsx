@@ -6,7 +6,7 @@ import { PageProps } from '@/types/types';
 import { Head, Link } from '@inertiajs/react';
 import { Badge } from '@/components/ui/badge';
 import { BreadcrumbItem, User } from '@/types';
-import { Eye, PencilIcon, TrashIcon, UserPlusIcon } from 'lucide-react';
+import { Eye, PencilIcon, PlusIcon, TrashIcon, UserCheck, UserPlusIcon } from 'lucide-react';
 import { useState } from 'react';
 import DeleteUserDialog from '@/components/DeleteUserDialog';
 //import DeleteUserDialog from '@/components/delete-user-dialog';
@@ -45,12 +45,27 @@ export default function Index({ users, canCreate }: IndexProps) {
                                     <CardDescription>Liste de tous les utilisateurs du système</CardDescription>
                                 </div>
                                 {canCreate && (
-                                    <Button asChild>
-                                        <Link href={route('users.create')}>
-                                            <UserPlusIcon className="mr-2 h-4 w-4" />
-                                            Nouvel utilisateur
-                                        </Link>
-                                    </Button>
+                                    <div className="flex gap-2">
+                                        <Button asChild>
+                                            <Link href={route('users.create')}>
+                                                <UserPlusIcon className="mr-2 h-4 w-4" />
+                                                Nouvel utilisateur
+                                            </Link>
+                                        </Button>
+
+                                        <Button asChild>
+                                            <Link href={route('admin.permissions.create')}>
+                                                <PlusIcon className="mr-2 h-4 w-4" />
+                                                Nouvelle permission
+                                            </Link>
+                                        </Button>
+                                        <Button asChild>
+                                            <Link href={route('admin.permissions.assign')}>
+                                                <UserCheck className="mr-2 h-4 w-4" />
+                                                Assigner des Permissions
+                                            </Link>
+                                        </Button>
+                                    </div>
                                 )}
                             </div>
                         </CardHeader>

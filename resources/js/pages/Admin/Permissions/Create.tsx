@@ -8,6 +8,7 @@ import { useState } from 'react';
 import AppLayout from '@/layouts/app-layout';
 import { BreadcrumbItem } from '@/types';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { toast } from 'sonner';
 
 interface Props {
     models: string[];
@@ -26,7 +27,12 @@ export default function CreatePermission({ models, defaultPermissions }: Props) 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
         post(route('admin.permissions.store'), {
-            onSuccess: () => router.visit(route('admin.permissions.index')),
+            onSuccess: () => {
+                toast.success('Permission créée avec succès');
+                router.visit(route('admin.permissions.index'));
+            },
+            onError: () => 
+                toast.error('Une erreur est survenue lors de la création'),
         });
     };
 
