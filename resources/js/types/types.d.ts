@@ -10,6 +10,7 @@ declare module '@inertiajs/core' {
                 id: number;
                 name: string;
                 email: string;
+                role : string
                 // Ajoutez d'autres propriétés utilisateur si nécessaire
             };
         };

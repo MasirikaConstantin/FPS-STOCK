@@ -2,7 +2,7 @@ import { NavMain } from '@/components/nav-main';
 import { NavUser } from '@/components/nav-user';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
-import { Link, usePage } from '@inertiajs/react';
+import { Link } from '@inertiajs/react';
 import {
     AlertTriangle,
     BarChart3,
@@ -23,89 +23,74 @@ const mainNavItems: NavItem[] = [
         title: 'Dashboard',
         href: '/dashboard',
         icon: LayoutGrid,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        role : ["admin"]
     },
     {
         title: 'Stocks Central',
         href: '/central-stocks',
         icon: Package,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
-
     },
     {
         title: 'Stocks Hôpitaux',
         href: '/stocks',
         icon: Building2,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
     {
         title: 'Hôpitaux',
         href: '/hopitals',
         icon: Hospital,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
     {
         title: 'Médicaments',
         href: '/medical-produits',
         icon: Pill,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
 
     {
         title: 'Fournisseurs',
         href: '/fournisseurs',
         icon: Building2,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
     {
         title: 'Categories',
         href: '/categories',
         icon: CassetteTape,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
     {
         title: 'Transferts',
         href: '/transferts',
         icon: Truck,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
     {
         title: 'Alertes',
         href: '/alerts',
         icon: AlertTriangle,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
     {
         title: 'Kits',
         href: '/kits',
         icon: Package,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
     {
         title: 'Utilisateurs',
         href: '/users',
         icon: Users,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
     {
         title: 'Rapports',
         href: '/reports',
         icon: BarChart3,
-        role : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
     },
     {
         title: 'Paramètres',
         href: '/settings',
         icon: Settings,
-        role : ["admin_central"],
     },
 ];
 
 
 
 export function AppSidebar() {
-    const { auth } = usePage().props;
-    const userRole = auth.user.role;
     return (
         <Sidebar collapsible="icon" variant="inset">
             <SidebarHeader>
