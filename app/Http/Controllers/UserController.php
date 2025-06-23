@@ -93,16 +93,29 @@ class UserController extends Controller
     {
         $user = User::where('ref', $user)->firstOrFail();
         $this->authorizeView($user);
-        $user->load(['profile'=>function($query){
-            $query->select('id','user_id','phone','address','hopital_id');
-            
-        }, 'profile.hopital:id,nom', 'permissions','createdBy:id,name,avatar','updatedBy:id,name,avatar']);
-
+        $user->load(["createdBy","updatedBy", "profile"]);
+        $permissions = \DB::table('user_permissions')
+            ->where('user_id', $user->id)
+            ->join('permissions', 'user_permissions.permission_id', '=', 'permissions.id')
+            ->leftJoin('users as grantors', 'user_permissions.granted_by', '=', 'grantors.id')
+            ->select([
+                'permissions.id',
+                'permissions.name',
+                'permissions.module',
+                'permissions.action',
+                'grantors.name as granted_by_name',
+                'user_permissions.granted_at',
+            ])
+            ->get();
+    
+        // ⬇️ Injecter la collection dans l'objet User
+        $user->permissions = $permissions;
+    
         return Inertia::render('Users/Show', [
             'user' => $user,
             'canEdit' => $this->canEdit($user),
         ]);
-    }
+    }    
 
     public function edit(string $user)
     {

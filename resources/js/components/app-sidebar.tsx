@@ -42,7 +42,7 @@ const getMainNavItems = (userRole: string): NavItem[] => {
         title: 'Hôpitaux',
         href: '/hopitals',
         icon: Hospital,
-        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        roles : ["admin_central"],
     },
     {
         title: 'Médicaments',

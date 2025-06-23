@@ -36,4 +36,8 @@ class Permission extends Model
                     ->withTimestamps()
                     ->withPivot('granted_by', 'granted_at');
     }
+    public function user()
+    {
+        return $this->belongsTo(User::class, 'granted_by');
+    }
 }

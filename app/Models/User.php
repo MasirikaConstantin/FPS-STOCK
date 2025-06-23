@@ -123,6 +123,8 @@ public function permissions()
         ->withTimestamps();
 }
 
+
+
 public function createdBy()
 {
     return $this->belongsTo(User::class, 'created_by');
@@ -131,6 +133,11 @@ public function createdBy()
 public function updatedBy()
 {
     return $this->belongsTo(User::class, 'updated_by');
+}
+
+public function grantedBy1()
+{
+    return $this->belongsTo(User::class, 'granted_by');
 }
 
 }

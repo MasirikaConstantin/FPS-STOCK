@@ -13,17 +13,18 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem } from '@/types';
+import { BreadcrumbItem, User } from '@/types';
 import { App, PageProps } from '@/types/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { Eye, MoreHorizontal, Pencil, Trash2, Snowflake } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-export default function Index({ produits, categories, fournisseurs }: PageProps<{ 
+export default function Index({ produits, categories, fournisseurs  , auth }: PageProps<{ 
     produits: App.MedicalProduit[], 
     categories: App.Categorie[],
-    fournisseurs: App.Fournisseur[]
+    fournisseurs: App.Fournisseur[],
+    auth: User
 }>) {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [produitToDelete, setProduitToDelete] = useState<App.MedicalProduit | null>(null);
@@ -73,6 +74,9 @@ export default function Index({ produits, categories, fournisseurs }: PageProps<
         if (!id) return '-';
         return fournisseurs.find(f => f.id === id)?.nom || 'Inconnu';
     };
+    const canCreateProduit = auth.user.permissions.some(p => p.action === 'create' && p.module === 'medical-produits');
+    const isAdminCentral = auth.user.role === 'admin_central';
+    const isAdmin = auth.user.role === 'admin';
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -82,9 +86,22 @@ export default function Index({ produits, categories, fournisseurs }: PageProps<
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden shadow-sm sm:rounded-lg">
                         <div className="p-6">
-                            <Button className="mb-3">
-                                <Link href={route('medical-produits.create')}>Ajouter un Produit</Link>
-                            </Button>
+                        <div className="flex justify-between items-center mb-6">
+
+                        <h1 className="text-2xl font-bold">Gestion des Produits Médicaux</h1>
+
+                            {canCreateProduit && (  
+                                <Button className="mb-3">
+                                    <Link href={route('medical-produits.create')}>Ajouter un Produit</Link>
+                                </Button>
+                            )}
+                            {isAdminCentral && (
+                                <Button className="mb-3">
+                                    <Link href={route('medical-produits.create')}>Ajouter un Produit</Link>
+                                </Button>
+                            )}
+                                
+                            </div>
                             <Table className="dark:text-gray-400cell w-full text-left text-sm text-gray-500 rtl:text-right">
                                 <TableHeader>
                                     <TableRow>

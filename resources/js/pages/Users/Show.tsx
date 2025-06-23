@@ -11,6 +11,7 @@ import { useState } from 'react';
 import DeleteUserDialog from '@/components/DeleteUserDialog';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
+import { P } from 'node_modules/framer-motion/dist/types.d-B_QPEvFK';
 
 interface ShowProps extends PageProps {
     user: User;
@@ -21,7 +22,7 @@ interface ShowProps extends PageProps {
 
 export default function Show({ user, canEdit }: ShowProps) {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
-    console.log(user);
+   // console.log(user);
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Utilisateurs',
@@ -32,7 +33,9 @@ export default function Show({ user, canEdit }: ShowProps) {
             href: '#',
         },
     ];
-
+    const isAdminCentral = user.role === 'admin_central';
+    const isAdmin = user.role === 'admin';
+    console.log(user);
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={user.name} />
@@ -128,15 +131,34 @@ export default function Show({ user, canEdit }: ShowProps) {
                                         <h4 className="text-sm font-medium text-gray-500">Adresse</h4>
                                         <p>{user.profile?.address || '-'}</p>
                                     </div>
-                                    {user.created_by ? (
-                                        <div>
-                                            <h4 className="text-sm font-medium text-gray-500">Créé par</h4>
-                                            <p>{user.created_by?.name}</p>
-                                            {user.created_by?.avatar ?(
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                        {user.created_by ? (
+                                            <div>
+                                                <h4 className="text-sm font-medium text-gray-500">Créé par</h4>
+                                                <p>{user.created_by?.name}</p>
+                                                {user.created_by?.avatar ?(
+                                                    <Avatar>
+                                                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                                    <AvatarFallback>CN</AvatarFallback>
+                                                </Avatar>
+                                                )
+                                                : (
+                                                    <div className="h-6 w-6 rounded-full bg-gray-100 flex items-center justify-center">
+                                                        <UserIcon className="h-3 w-3 text-gray-400" />
+                                                    </div>
+                                                )
+                                                } 
+                                            </div>
+                                        ) : null}
+                                        {user.updated_by ?  (
+                                            <div>
+                                            <h4 className="text-sm font-medium text-gray-500">Modifier par</h4>
+                                            <p>{user.updated_by?.name}</p>
+                                            {user.updated_by?.avatar ?(
                                                 <Avatar>
                                                 <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
                                                 <AvatarFallback>CN</AvatarFallback>
-                                              </Avatar>
+                                            </Avatar>
                                             )
                                             : (
                                                 <div className="h-6 w-6 rounded-full bg-gray-100 flex items-center justify-center">
@@ -145,25 +167,25 @@ export default function Show({ user, canEdit }: ShowProps) {
                                             )
                                             } 
                                         </div>
-                                    ) : null}
-                                    {user.updated_by ?  (
-                                        <div>
-                                        <h4 className="text-sm font-medium text-gray-500">Modifier par</h4>
-                                        <p>{user.updated_by?.name}</p>
-                                        {user.updated_by?.avatar ?(
-                                            <Avatar>
-                                            <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
-                                            <AvatarFallback>CN</AvatarFallback>
-                                          </Avatar>
-                                        )
-                                        : (
-                                            <div className="h-6 w-6 rounded-full bg-gray-100 flex items-center justify-center">
-                                                <UserIcon className="h-3 w-3 text-gray-400" />
-                                            </div>
-                                        )
-                                        } 
+                                        ) : null}
+
+                                        
                                     </div>
-                                    ) : null}
+                                            <div>
+                                            {isAdminCentral && (
+                                                <>
+                                                    <p> Les Permissions</p>
+                                                    {user.permissions?.map((permission) => (
+                                                        <div key={permission.id} className='mb-1'>
+                                                            <Badge variant="default" className='mr-1' >{permission.name}</Badge> <Badge variant={'secondary'}>Par : {permission.granted_by_name}</Badge> 
+                                                             
+                                                        </div>
+
+                                                    ))}
+                                                </>
+                                            )}
+                                            </div>
+                                    
                                 </div>
                             </CardContent>
                         </Card>

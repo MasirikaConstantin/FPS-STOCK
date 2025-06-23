@@ -36,4 +36,12 @@ class UserPermission extends Model
     {
         return $this->belongsTo(Permission::class);
     }
+    public function fromRawAttributes($parent, $attributes, $table, $exists = false)
+    {
+        return parent::fromRawAttributes($parent, $attributes, $table, $exists);
+    }
+    public function grantor()
+    {
+        return $this->belongsTo(User::class, 'granted_by');
+    }
 }
