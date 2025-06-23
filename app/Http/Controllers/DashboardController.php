@@ -8,6 +8,7 @@ use App\Models\Stock;
 use App\Models\Transfert;
 use Illuminate\Http\Request;
 use Inertia\Inertia;
+use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
@@ -26,6 +27,7 @@ class DashboardController extends Controller
             'stocks_total' => $stocks_total,
             'alertes_avertissement_expiration' => $alertes_avertissement_expiration,
             'transferts_en_attente' => $transferts_en_attente,
+            'recentActivities' => $this->recentActivity(),
         ]);
     }
 
@@ -75,5 +77,65 @@ class DashboardController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+    public function recentActivity()
+    {
+        $recentTransfers = Transfert::with(['fromHospital', 'toHospital'])
+        ->orderBy('created_at', 'desc')
+        ->limit(5)
+        ->get()
+        ->map(function ($transfer) {
+            return [
+                'type' => 'transfert',
+                'title' => $transfer->from_hospital_id ? 'Expédition vers' : 'Commande centrale',
+                'hospital' => $transfer->toHospital->nom ?? null,
+                'createdAt' => $transfer->created_at,
+                'status' => $transfer->status,
+            ];
+        });
+
+    // Récupération des alertes de stock
+    $stockAlerts = Stock::whereHas('medicalProduit', function($query) {
+        $query->whereColumn('stocks.quantite', '<=', 'medical_produits.seuil_min');
+    })
+    ->with(['medicalProduit', 'hopital'])
+    ->orderBy('created_at', 'desc')
+    ->limit(5)
+    ->get()
+    ->map(function ($stock) {
+        return [
+            'type' => 'alerte',
+            'title' => 'Stock critique',
+            'product' => $stock->medicalProduit->name,
+            'hospital' => $stock->hopital->nom ?? 'Entrepôt central',
+            'createdAt' => $stock->created_at,
+        ];
+    });
+
+    // Récupération des réceptions récentes
+    $recentReceptions = Transfert::where('status', 'livre')
+        ->with(['toHospital'])
+        ->orderBy('livre_le', 'desc')
+        ->limit(5)
+        ->get()
+        ->map(function ($transfer) {
+            return [
+                'type' => 'reception',
+                'title' => 'Réception confirmée',
+                'hospital' => $transfer->toHospital->nom,
+                'createdAt' => $transfer->livre_le,
+            ];
+        });
+
+    // Fusion et tri des activités
+    $recentActivities = collect()
+        ->merge($recentTransfers)
+        ->merge($stockAlerts)
+        ->merge($recentReceptions)
+        ->sortByDesc('createdAt')
+        ->take(5)
+        ->values()
+        ->all();
+        return $recentActivities;
     }
 }

@@ -13,7 +13,6 @@ const breadcrumbs: BreadcrumbItem[] = [
 ];
 
 export default function Dashboard({ stocks_total,hopitaux_connectes,alertes_avertissement_expiration,transferts_en_attente }: { stocks_total: number,hopitaux_connectes: number,alertes_avertissement_expiration: number,transferts_en_attente: number }) {
-    //console.log(stocks_total)
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title="Dashboard" />

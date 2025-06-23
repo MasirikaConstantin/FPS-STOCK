@@ -18,8 +18,15 @@ class TransfertController extends Controller
 {
     public function index()
     {
-        
-        if(Auth::user()->profile){
+        if(Auth::user()->role === "admin_central"){
+            $transferts = Transfert::with(['fromHospital', 'toHospital', 'demandeur', 'items.medicalProduit'])
+            ->latest()
+            ->paginate(10);
+            return inertia('Transferts/Index', [
+                'transferts' => $transferts,
+            ]);
+    }
+        elseif(Auth::user()->profile){
             if(Auth::user()->profile->hopital_id){
                 $hopital = Auth::user()->profile->hopital_id;
                 $transferts = Transfert::where('from_hospital_id', $hopital)->
@@ -32,13 +39,6 @@ class TransfertController extends Controller
                 ]);
             }
             
-        }elseif(Auth::user()->role === "admin_central"){
-                $transferts = Transfert::with(['fromHospital', 'toHospital', 'demandeur', 'items.medicalProduit'])
-                ->latest()
-                ->paginate(10);
-                return inertia('Transferts/Index', [
-                    'transferts' => $transferts,
-                ]);
         }
         return inertia('Transferts/Index', [
             'transferts' =>  new Paginator([], 10, 1, [

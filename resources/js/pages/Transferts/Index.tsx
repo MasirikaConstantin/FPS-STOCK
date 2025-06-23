@@ -54,7 +54,6 @@ export default function Index({ auth, transferts }: { auth: Auth, transferts: an
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Source</TableHead>
                     <TableHead>Destination</TableHead>
                     <TableHead>Priorité</TableHead>
                     <TableHead>Statut</TableHead>
@@ -65,9 +64,6 @@ export default function Index({ auth, transferts }: { auth: Auth, transferts: an
                 <TableBody>
                   {transferts.data.map((transfert: any) => (
                     <TableRow key={transfert.id}>
-                      <TableCell className="font-medium">
-                        {transfert.from_central ? 'Stock Central' : transfert.from_hospital?.nom}
-                      </TableCell>
                       <TableCell>
                         {transfert.to_central ? 'Stock Central' : transfert.to_hospital?.nom}
                       </TableCell>
