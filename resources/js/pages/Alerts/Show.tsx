@@ -40,7 +40,7 @@ export default function Show({ alert, types, priorities, auth }: any) {
       href: '/alerts',
     },
     {
-      title: `Alerte ${alert.ref}`,
+      title: `Alerte #${alert.id}`,
       href: `/alerts/${alert.ref}`,
     },
   ];
@@ -77,7 +77,7 @@ const confirmDelete = () => {
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8 space-y-6">
           <div className="flex justify-between items-center">
-            <h1 className="text-2xl font-bold">Alerte {alert.ref}</h1>
+            <h1 className="text-2xl font-bold">Alerte #{alert.id}</h1>
             <div className="flex gap-2">
               <Badge className={typeColors[alert.type]}>
                 {types[alert.type]}

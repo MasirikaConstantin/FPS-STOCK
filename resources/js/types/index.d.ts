@@ -60,6 +60,7 @@ export interface User {
     profile?: {
         phone?: string;
         address?: string;
+        hopital_id?: number;
         hopital?: {
             id: number;
             nom: string;

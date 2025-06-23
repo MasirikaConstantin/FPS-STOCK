@@ -20,7 +20,7 @@ interface ShowProps extends PageProps {
     updatedBy: User;
 }
 
-export default function Show({ user, canEdit }: ShowProps) {
+export default function Show({ user, canEdit, auth }: ShowProps) {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
    // console.log(user);
     const breadcrumbs: BreadcrumbItem[] = [
@@ -33,9 +33,10 @@ export default function Show({ user, canEdit }: ShowProps) {
             href: '#',
         },
     ];
-    const isAdminCentral = user.role === 'admin_central';
-    const isAdmin = user.role === 'admin';
-    console.log(user);
+    const isAdminCentral = auth.user.role === 'admin_central';
+    const peutVoirSesPropresUtilisateurs = auth.user.role === 'admin' && auth.user.profile?.hopital_id === user.profile?.hopital_id;
+    //console.log(auth.user);
+    //console.log(peutVoirSesPropresUtilisateurs );
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
             <Head title={user.name} />
@@ -172,7 +173,8 @@ export default function Show({ user, canEdit }: ShowProps) {
                                         
                                     </div>
                                             <div>
-                                            {isAdminCentral && (
+                                                
+                                            {isAdminCentral || peutVoirSesPropresUtilisateurs ? (
                                                 <>
                                                     <p> Les Permissions</p>
                                                     {user.permissions?.map((permission) => (
@@ -183,7 +185,7 @@ export default function Show({ user, canEdit }: ShowProps) {
 
                                                     ))}
                                                 </>
-                                            )}
+                                            ) : null}
                                             </div>
                                     
                                 </div>

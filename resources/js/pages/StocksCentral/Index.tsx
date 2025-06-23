@@ -104,16 +104,16 @@ export default function Index({ stocks, produits, hopitals, auth }: PageProps<{
                         <div className="p-6">
                             <div className="flex justify-between items-center mb-6">
                                 <h1 className="text-2xl font-bold">Gestion des Stocks Central</h1>
-                                {canCreateStock && (
+                                {canCreateStock ? (
                                     <Button asChild>
                                         <Link href={route('central-stocks.create')}>Ajouter une entrée</Link>
                                     </Button>
-                                )}
-                                {isAdminCentral && (
+                                ):
+                                isAdminCentral ? (
                                     <div className="text-red-500 text-sm font-bold w-1/2">
                                         <p>Vous êtes connecté en tant qu'admin central, Mais ne pouvez pas créer des stocks, vous devez ajouter des permissions pour y accéder</p>
                                     </div>
-                                )}
+                                ):null}
                             </div>
 
                             <Table className="dark:text-gray-400cell w-full text-left text-sm text-gray-500 rtl:text-right">

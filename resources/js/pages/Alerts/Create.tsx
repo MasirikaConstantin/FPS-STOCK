@@ -155,7 +155,7 @@ export default function Create({ hopitals, medicalProduits, types, priorities }:
                   </div>
                 </div>
               </CardContent>
-              <CardFooter className="flex justify-between">
+              <CardFooter className="flex justify-between mt-2">
                 <Button variant="outline" asChild>
                   <Link href={route('alerts.index')}>Annuler</Link>
                 </Button>
