@@ -268,11 +268,11 @@ export default function AuthCombined() {
             <div className="mt-4 text-center text-sm text-muted-foreground">
                 {activeTab === 'login' ? (
                     <>
-                        Pas encore de compte ? <TextLink onClick={() => setActiveTab('register')}>S'inscrire</TextLink>
+                        Pas encore de compte ? <TextLink href={route('register')} onClick={() => setActiveTab('register')}>S'inscrire</TextLink>
                     </>
                 ) : (
                     <>
-                        Déjà un compte ? <TextLink onClick={() => setActiveTab('login')}>Se connecter</TextLink>
+                        Déjà un compte ? <TextLink href={route('login')} onClick={() => setActiveTab('login')}>Se connecter</TextLink>
                     </>
                 )}
             </div>

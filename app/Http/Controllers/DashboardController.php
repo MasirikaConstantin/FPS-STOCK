@@ -6,6 +6,7 @@ use App\Models\Alert;
 use App\Models\Hopital;
 use App\Models\Stock;
 use App\Models\Transfert;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
@@ -82,7 +83,7 @@ class DashboardController extends Controller
     public function recentActivity()
     {
         $user = Auth::user();
-
+        $recentActivities = new Collection();
         if($user->isAdminCentral()){
             $recentTransfers = Transfert::with(['fromHospital', 'toHospital'])
                 ->orderBy('created_at', 'desc')
@@ -141,6 +142,16 @@ class DashboardController extends Controller
                     ];
                 });
 
+                 // Fusion et tri des activités
+            $recentActivities = collect()
+            ->merge($recentTransfers)
+            ->merge($stockAlerts)
+            ->merge($recentReceptions)
+            ->merge($entreStock)
+            ->sortByDesc('createdAt')
+            ->take(5)
+            ->values()
+            ->all();
         }elseif($user->isAdmin() || $user->isMedicalStaff()){
             if($user->profile->hopital_id){
                 $hospital_id = $user->profile->hopital_id;
@@ -202,22 +213,22 @@ class DashboardController extends Controller
                             'createdAt' => $transfer->livre_le,
                         ];
                     });
-
+                // Fusion et tri des activités
+                $recentActivities = collect()
+                ->merge($recentTransfers)
+                ->merge($stockAlerts)
+                ->merge($recentReceptions)
+                ->merge($entreStock)
+                ->sortByDesc('createdAt')
+                ->take(5)
+                ->values()
+                ->all();
             }
         }
         
 
     
-    // Fusion et tri des activités
-    $recentActivities = collect()
-        ->merge($recentTransfers)
-        ->merge($stockAlerts)
-        ->merge($recentReceptions)
-        ->merge($entreStock)
-        ->sortByDesc('createdAt')
-        ->take(5)
-        ->values()
-        ->all();
+   
         return $recentActivities;
     }
 }
