@@ -93,7 +93,7 @@ class UserController extends Controller
     {
         $user = User::where('ref', $user)->firstOrFail();
         $this->authorizeView($user);
-        $user->load(["createdBy","updatedBy", "profile"]);
+        $user->load(["createdBy","updatedBy", "profile.hopital"]);
         $permissions = \DB::table('user_permissions')
             ->where('user_id', $user->id)
             ->join('permissions', 'user_permissions.permission_id', '=', 'permissions.id')

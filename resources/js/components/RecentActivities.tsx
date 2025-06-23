@@ -2,9 +2,10 @@ import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Activity, Package, Truck, CheckCircle, AlertTriangle } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { fr } from "date-fns/locale";
+import { Badge } from "./ui/badge";
 
 interface RecentActivity {
-  id: number;
+  id: string | number; // Modifié pour accepter string ou number
   type: 'transfert' | 'stock' | 'alerte' | 'reception';
   title: string;
   description?: string;
@@ -21,35 +22,39 @@ interface RecentActivitiesProps {
 const RecentActivities = ({ activities }: RecentActivitiesProps) => {
   const getActivityIcon = (type: RecentActivity['type']) => {
     switch (type) {
-      case 'transfert':
-        return <Truck className="h-4 w-4" />;
-      case 'stock':
-        return <Package className="h-4 w-4" />;
-      case 'alerte':
-        return <AlertTriangle className="h-4 w-4" />;
-      case 'reception':
-        return <CheckCircle className="h-4 w-4" />;
-      default:
-        return <Activity className="h-4 w-4" />;
+      case 'transfert': return <Truck className="h-4 w-4" />;
+      case 'stock': return <Package className="h-4 w-4" />;
+      case 'alerte': return <AlertTriangle className="h-4 w-4" />;
+      case 'reception': return <CheckCircle className="h-4 w-4" />;
+      default: return <Activity className="h-4 w-4" />;
+    }
+  };
+  const getActivityVariant = (type: RecentActivity['type']) => {
+    switch (type) {
+      case 'transfert': return 'default';
+      case 'stock': return 'default';
+      case 'alerte': return 'destructive';
+      case 'reception': return 'default';
+      default: return 'default';
     }
   };
 
   const getStatusColor = (status?: string) => {
     switch (status) {
-      case 'approuve':
-        return 'text-green-500';
-      case 'en_transit':
-        return 'text-blue-500';
-      case 'livre':
-        return 'text-purple-500';
-      case 'annule':
-        return 'text-red-500';
-      case 'en_attente':
-        return 'text-yellow-500';
-      default:
-        return 'text-gray-500';
+      case 'approuve': return 'text-green-500';
+      case 'en_transit': return 'text-blue-500';
+      case 'livre': return 'text-purple-500';
+      case 'annule': return 'text-red-500';
+      case 'en_attente': return 'text-yellow-500';
+      default: return 'text-gray-500';
     }
   };
+
+  // Vérification des données et génération de clés uniques
+  const validatedActivities = activities.map(activity => ({
+    ...activity,
+    uniqueKey: activity.id || `${activity.type}-${activity.createdAt}-${Math.random().toString(36).substr(2, 9)}`
+  }));
 
   return (
     <Card className="col-span-12 lg:col-span-6">
@@ -58,8 +63,8 @@ const RecentActivities = ({ activities }: RecentActivitiesProps) => {
       </CardHeader>
       <CardContent>
         <div className="space-y-8">
-          {activities.map((activity) => (
-            <div key={activity.id} className="flex items-center">
+          {validatedActivities.map((activity) => (
+            <div key={activity.uniqueKey} className="flex items-center">
               <div className="flex h-9 w-9 items-center justify-center rounded-full bg-muted">
                 {getActivityIcon(activity.type)}
               </div>
@@ -86,6 +91,11 @@ const RecentActivities = ({ activities }: RecentActivitiesProps) => {
                   addSuffix: true,
                   locale: fr
                 })}
+                <br />
+                <Badge variant={getActivityVariant(activity.type)}>
+                  {activity.title.charAt(0).toUpperCase() + activity.title.slice(1)}
+                </Badge>
+
               </div>
             </div>
           ))}

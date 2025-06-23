@@ -35,7 +35,7 @@ export default function Show({ user, canEdit, auth }: ShowProps) {
     ];
     const isAdminCentral = auth.user.role === 'admin_central';
     const peutVoirSesPropresUtilisateurs = auth.user.role === 'admin' && auth.user.profile?.hopital_id === user.profile?.hopital_id;
-    //console.log(auth.user);
+    //console.log(user);
     //console.log(peutVoirSesPropresUtilisateurs );
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
