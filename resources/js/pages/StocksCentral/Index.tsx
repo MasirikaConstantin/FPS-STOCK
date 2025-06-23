@@ -13,7 +13,7 @@ import { Button } from '@/components/ui/button';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { BreadcrumbItem } from '@/types';
+import { BreadcrumbItem, User } from '@/types';
 import { App, PageProps } from '@/types/types';
 import { Head, Link, router } from '@inertiajs/react';
 import { Eye, MoreHorizontal, Pencil, Trash2, Box, PackageCheck, PackageX } from 'lucide-react';
@@ -22,10 +22,11 @@ import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
 
-export default function Index({ stocks, produits, hopitals }: PageProps<{ 
+export default function Index({ stocks, produits, hopitals, auth }: PageProps<{ 
     stocks: App.Stock[],
     produits: App.MedicalProduit[],
-    hopitals: App.Hopital[]
+    hopitals: App.Hopital[],
+    auth: User
 }>) {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [stockToDelete, setStockToDelete] = useState<App.Stock | null>(null);
@@ -90,6 +91,8 @@ export default function Index({ stocks, produits, hopitals }: PageProps<{
                 return <Badge variant="outline">Inconnu</Badge>;
         }
     };
+    const canCreateStock = auth.user.permissions.some(p => p.action === 'create' && p.module === 'stocks');
+    const isAdminCentral = auth.user.role === 'admin_central';
 
     return (
         <AppLayout breadcrumbs={breadcrumbs}>
@@ -101,9 +104,16 @@ export default function Index({ stocks, produits, hopitals }: PageProps<{
                         <div className="p-6">
                             <div className="flex justify-between items-center mb-6">
                                 <h1 className="text-2xl font-bold">Gestion des Stocks Central</h1>
-                                <Button asChild>
-                                    <Link href={route('central-stocks.create')}>Ajouter une entrée</Link>
-                                </Button>
+                                {canCreateStock && (
+                                    <Button asChild>
+                                        <Link href={route('central-stocks.create')}>Ajouter une entrée</Link>
+                                    </Button>
+                                )}
+                                {isAdminCentral && (
+                                    <div className="text-red-500 text-sm font-bold w-1/2">
+                                        <p>Vous êtes connecté en tant qu'admin central, Mais ne pouvez pas créer des stocks, vous devez ajouter des permissions pour y accéder</p>
+                                    </div>
+                                )}
                             </div>
 
                             <Table className="dark:text-gray-400cell w-full text-left text-sm text-gray-500 rtl:text-right">

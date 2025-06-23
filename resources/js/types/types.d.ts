@@ -375,6 +375,7 @@ export interface PageProps<T extends Record<string, unknown> = {}> extends Page<
                 action: string;
                 module: string;
             }[];
+            role?: string;
         };
         
     };

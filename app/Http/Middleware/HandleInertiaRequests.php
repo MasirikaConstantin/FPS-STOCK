@@ -44,6 +44,7 @@ class HandleInertiaRequests extends Middleware
             'permissions' => fn ($query) => $query->select(
                                 'permissions.id',
                                 'permissions.name',
+                                'permissions.module',
                                 'permissions.action'
                             ),        ]);
         return [

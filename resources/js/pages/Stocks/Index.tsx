@@ -34,8 +34,9 @@ export default function Index({ stocks, produits, hopitals, auth }: PageProps<{
     const canCreateStock = auth.user.permissions.some(p => p.action === 'create' && p.module === 'stocks');
     const canUpdateStock = auth.user.permissions.some(p => p.action === 'update' && p.module === 'stocks');
     const canDeleteStock = auth.user.permissions.some(p => p.action === 'delete' && p.module === 'stocks');
-    console.log(canCreateStock);
 
+    const isAdminCentral = auth.user.role === 'admin_central';
+    const isAdmin = auth.user.role === 'admin';
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Gestion des Stocks',
@@ -106,9 +107,21 @@ export default function Index({ stocks, produits, hopitals, auth }: PageProps<{
                         <div className="p-6">
                             <div className="flex justify-between items-center mb-6">
                                 <h1 className="text-2xl font-bold">Gestion des Stocks</h1>
-                                <Button asChild>
-                                    <Link href={route('stocks.create')}>Ajouter une entrée</Link>
-                                </Button>
+                                {canCreateStock && (
+                                    <Button asChild>
+                                        <Link href={route('stocks.create')}>Ajouter une entrée</Link>
+                                    </Button>
+                                )}
+                                {isAdminCentral && (
+                                    <div className="text-red-500 text-sm font-bold w-1/2">
+                                        <p>Vous êtes connecté en tant qu'admin central, Mais ne pouvez pas créer des stocks, vous devez ajouter des permissions pour y accéder</p>
+                                    </div>
+                                )}
+                                {isAdmin && (
+                                    <div className="text-red-500 text-sm font-bold w-1/2">
+                                        <p>Vous êtes connecté en tant qu'admin, Mais ne pouvez pas créer des stocks, vous devez ajouter des permissions pour y accéder</p>
+                                    </div>
+                                )}
                             </div>
 
                             <Table className="dark:text-gray-400cell w-full text-left text-sm text-gray-500 rtl:text-right">
