@@ -14,11 +14,10 @@ interface IndexProps extends PageProps {
     territoires: DivisionAdministrative[];
     villes: DivisionAdministrative[];
     communes: DivisionAdministrative[];
-    canCreate: boolean;
 }
 
 
-export default function Index({ provinces, territoires, villes,communes, canCreate }: IndexProps) {
+export default function Index({ provinces, territoires, villes,communes, auth }: IndexProps) {
 
     const breadcrumbs: BreadcrumbItem[] = [
         {
@@ -26,8 +25,7 @@ export default function Index({ provinces, territoires, villes,communes, canCrea
             href: route('divisions.index'),
         },
     ];
-
-
+const canCreate = auth.user.permissions.some((permission) => permission.action === 'create' && permission.module === 'divisionadministratives');
     const renderTable = (title: string, items: DivisionAdministrative[], type: string) => (
         <Card>
             <CardHeader>

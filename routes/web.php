@@ -27,9 +27,7 @@ Route::get('/', function () {
 })->name('home');
 
 Route::middleware(['auth', 'verified'])->group(function () {
-    Route::get('dashboard', function () {
-        return Inertia::render('dashboard');
-    })->name('dashboard');
+    Route::get('dashboard', [DashboardController::class, 'index'])->name('dashboard');
 });
 
 Route::get('/auth', function () {
@@ -44,40 +42,22 @@ Route::get('/email/verification', [EmailVerificationController::class, 'show'])
     ->name('verification-mail');
 Route::post('/email/verification-resend', [EmailVerificationController::class, 'resend'])
     ->name('verification.resend');
-
-
-
     // Route pour traiter la demande de vérification
 Route::post('/verify-email/send', [EmailVerificationController::class, 'send'])
 ->name('verification.send-to');
-
 // Route de vérification (sans auth)
 Route::get('/verify-email/{id}/{hash}', [EmailVerificationController::class, 'verify'])
 ->name('verification.verify');
-
-
-
 // Route group avec middleware d'authentification
 Route::middleware(['auth', 'verified'])->group(function () {
-    
-   
-    
-    // COCO
     Route::get('/coc', [CocController::class, 'index'])
          ->name('coc');
-    
-   
-    
     // Stocks Hôpitaux
     Route::prefix('hospital-stocks')->group(function () {
         Route::get('/', [HospitalStockController::class, 'index'])
              ->name('hospital-stocks.index');
     });
-    
-   
     // Transferts
-    
-
     Route::get('/categories', [CategorieController::class, 'index'])->name('categories.index');
     Route::get('/categories/create', [CategorieController::class, 'create'])->name('categories.create');
     Route::post('/categories', [CategorieController::class, 'store'])->name('categories.store');
@@ -85,10 +65,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
     Route::get('/categories/{category}/edit', [CategorieController::class, 'edit'])->name('categories.edit');
     Route::put('/categories/{category}', [CategorieController::class, 'update'])->name('categories.update');
     Route::delete('/categories/{category}', [CategorieController::class, 'destroy'])->name('categories.destroy');
-    
-
-
-
     Route::prefix('users')->middleware('can:viewAny,App\Models\User')->group(function () {
         Route::get('/', [UserController::class, 'index'])->name('users.index');
         Route::get('/{user}', [UserController::class, 'show'])->name('users.show');

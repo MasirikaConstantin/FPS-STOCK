@@ -27,7 +27,7 @@ class DivisionAdministrativeController extends Controller
         'territoires' => $divisions['territoire'] ?? [],
         'villes' => $divisions['ville'] ?? [],
         'communes' => $divisions['commune'] ?? [],
-        'canCreate' => auth()->user()->can('create', DivisionAdministrative::class),
+        //'canCreate' => auth()->user()->can('create', DivisionAdministrative::class),
     ]);
 }
     public function create()
