@@ -17,14 +17,14 @@ export const QuickActions = () => {
       description: 'Consommation/vente',
       icon: Minus,
       color: 'bg-red-500/90 hover:bg-red-600 text-white',
-      action: () => console.log('Sortie de stock')
+      action: () => router.visit('/stock/mouvements/')
     },
     {
-      title: 'Inventaire',
+      title: 'Stock',
       description: 'Compter les stocks',
       icon: Package,
       color: 'bg-blue-500/90 hover:bg-blue-600 text-white',
-      action: () => console.log('Inventaire')
+      action: () => router.visit('/stock/entree/activite')
     },
     {
       title: 'Rechercher',

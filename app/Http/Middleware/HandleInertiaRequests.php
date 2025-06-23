@@ -4,6 +4,7 @@ namespace App\Http\Middleware;
 
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Middleware;
 use Tighten\Ziggy\Ziggy;
 
@@ -38,22 +39,26 @@ class HandleInertiaRequests extends Middleware
     public function share(Request $request): array
     {
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
-        $user = $request->user()->loadMissing([
-            'profile' => fn ($query) => $query->select('id', 'user_id', 'hopital_id'),
-            'profile.hopital' => fn ($query) => $query->select('id', 'nom', 'ville'),
-            'permissions' => fn ($query) => $query->select(
-                                'permissions.id',
-                                'permissions.name',
-                                'permissions.module',
-                                'permissions.action'
-                            ),        ]);
+        if(Auth::check()){
+            $user = $request->user()->loadMissing([
+                'profile' => fn ($query) => $query->select('id', 'user_id', 'hopital_id'),
+                'profile.hopital' => fn ($query) => $query->select('id', 'nom', 'ville'),
+                'permissions' => fn ($query) => $query->select(
+                                    'permissions.id',
+                                    'permissions.name',
+                                    'permissions.module',
+                                    'permissions.action'
+                                ),        ]);
+        }else{
+            $user = null;
+        }
         return [
             ...parent::share($request),
             'name' => config('app.name'),
             'quote' => ['message' => trim($message), 'author' => trim($author)],
             'auth' => [
                 'user' => $request->user(),
-                'profil'=>  $user->profile 
+                'profil'=>  $user && $user->profile 
                 ? [
                     'hopital' => $user->profile->hopital
                         ? $user->profile->hopital->only('id', 'nom')

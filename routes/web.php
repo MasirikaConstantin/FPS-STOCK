@@ -19,8 +19,10 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StockCentalController;
+use App\Http\Controllers\StockEntreeController;
 use App\Http\Controllers\TransfertController;
-use App\Models\DivisionAdministrave;
+use App\Http\Controllers\StockMouvementController;
+use App\Models\Stock;
 
 Route::get('/', function () {
     return Inertia::render('welcome');
@@ -213,6 +215,47 @@ Route::middleware(['auth', 'verified'])->group(function () {
         ->name('alerts.resolve');
 });
 
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Mouvements de stock
+    Route::prefix('stock/mouvements')->group(function () {
+        Route::get('/', [StockMouvementController::class, 'index'])
+            ->name('stock.mouvements.index');
+            
+        Route::get('/direct-out', [StockMouvementController::class, 'createDirectOut'])
+            ->name('stock.mouvements.direct-out.create');
+
+        Route::get('/mouvements/direct-out', [StockMouvementController::class, 'index'])
+            ->name('stock.mouvements.direct-out.index');
+            
+        Route::post('/direct-out', [StockMouvementController::class, 'storeDirectOut'])
+            ->name('stock.mouvements.direct-out');
+    });
+});
+
+
+Route::middleware(['auth', 'verified'])->group(function () {
+    // Entrées de stock
+    Route::prefix('stock/entree')->group(function () {
+        Route::get('/', [StockEntreeController::class, 'create'])
+            ->name('stock.entree.create');
+            
+        Route::post('/', [StockEntreeController::class, 'store'])
+            ->name('stock.entree.store');
+            
+        Route::get('/activite', function () {
+            return Inertia::render('Stock/Activite', [
+                'stocks' => Stock::with('medicalProduit')
+                    ->whereNull('hopital_id')
+                    ->orderBy('created_at', 'desc')
+                    ->get()
+            ]);
+        })->name('stock.entree.activite');
+
+        Route::get('/activite/{id}', [StockEntreeController::class, 'show'])
+        ->name('stock.entree.show');
+    });
+});
 
 Route::fallback(function () {
     return inertia('Error/404');

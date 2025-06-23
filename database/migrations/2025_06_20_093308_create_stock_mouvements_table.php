@@ -37,8 +37,9 @@ return new class extends Migration
             
             // Référence à l'hôpital (source ou destination)
             $table->foreignIdFor(Hopital::class)
+                  ->nullable()
                   ->constrained()
-                  ->cascadeOnDelete()
+                  ->nullOnDelete()
                   ->comment('Hôpital concerné par le mouvement');
             
             // Utilisateur qui a effectué le mouvement

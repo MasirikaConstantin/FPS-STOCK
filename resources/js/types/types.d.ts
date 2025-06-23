@@ -361,7 +361,45 @@ export type Stock = {
         description?: string | null;  
     };
 }
+export interface StockMouvement {
+    id: number;
+    type: 'entree' | 'sortie' | 'transfert' | 'ajustement';
+    quantite: number;
+    raison: string;
+    notes?: string;
+    created_at: string;
+    medical_produit: {
+      id: number;
+      name: string;
+    };
+    hopital: {
+      id: number;
+      nom: string;
+    };
+    created_by: {
+      id: number;
+      name: string;
+    };
+  }
 
+  export interface Allocation {
+    stock_id: number;
+    quantity: number;
+    hopital: {
+      id: number;
+      nom: string;
+    };
+    numero_lot?: string;
+    date_expiration?: string;
+    max: number;
+  }
+  
+  export interface DirectOutFormData {
+    product_id: string;
+    allocations: Allocation[];
+    raison: string;
+    notes?: string;
+  }
 // Exportez le type PageProps pour l'utiliser dans vos composants
 export interface PageProps<T extends Record<string, unknown> = {}> extends Page<T> {
     auth: {
@@ -389,6 +427,16 @@ export interface PageProps<T extends Record<string, unknown> = {}> extends Page<
         
     };
     
+    Stock  :{
+        id: number;
+        quantite: number;
+        numero_lot?: string;
+        date_expiration?: string;
+        hopital: {
+          id: number;
+          nom: string;
+        };
+      };
     props: T;
     categories?: T; // Add the optional categories property
     fournisseurs?: T; // Add the optional categories property

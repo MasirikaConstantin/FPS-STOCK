@@ -71,6 +71,9 @@ export default function Show({ stock, produits, hopitals }: PageProps<{
                                     <Button asChild>
                                         <Link href={route('stocks.edit', stock.ref)}>Modifier</Link>
                                     </Button>
+                                    <Button asChild>
+                                        <Link href={route('stock.entree.show', stock.ref)}>Voir plus</Link>
+                                    </Button>
                                 </div>
                             </div>
 
