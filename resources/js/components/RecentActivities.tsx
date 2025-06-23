@@ -6,13 +6,13 @@ import { Badge } from "./ui/badge";
 
 interface RecentActivity {
   id: string | number; // Modifié pour accepter string ou number
-  type: 'transfert' | 'stock' | 'alerte' | 'reception';
+  type: 'transfert' | 'stock' | 'alerte' | 'reception' | 'entre_stock';
   title: string;
   description?: string;
   hospital?: string;
   product?: string;
   createdAt: string;
-  status?: 'en_attente' | 'approuve' | 'en_transit' | 'livre' | 'annule';
+  status?: 'en_attente' | 'approuve' | 'en_transit' | 'livre' | 'annule' | 'entre_stock';
 }
 
 interface RecentActivitiesProps {
@@ -26,6 +26,7 @@ const RecentActivities = ({ activities }: RecentActivitiesProps) => {
       case 'stock': return <Package className="h-4 w-4" />;
       case 'alerte': return <AlertTriangle className="h-4 w-4" />;
       case 'reception': return <CheckCircle className="h-4 w-4" />;
+      case 'entre_stock': return <Package className="h-4 w-4" />;
       default: return <Activity className="h-4 w-4" />;
     }
   };
@@ -35,6 +36,7 @@ const RecentActivities = ({ activities }: RecentActivitiesProps) => {
       case 'stock': return 'default';
       case 'alerte': return 'destructive';
       case 'reception': return 'default';
+      case 'entre_stock': return 'secondary';
       default: return 'default';
     }
   };
@@ -46,6 +48,7 @@ const RecentActivities = ({ activities }: RecentActivitiesProps) => {
       case 'livre': return 'text-purple-500';
       case 'annule': return 'text-red-500';
       case 'en_attente': return 'text-yellow-500';
+      case 'entre_stock': return 'text-primary-500';
       default: return 'text-gray-500';
     }
   };
