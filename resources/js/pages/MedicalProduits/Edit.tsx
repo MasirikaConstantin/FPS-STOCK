@@ -11,6 +11,7 @@ import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
 import { FormEventHandler } from 'react';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function Edit({ produit, categories, fournisseurs }: PageProps<{ 
     produit: App.MedicalProduit, 
@@ -63,7 +64,12 @@ export default function Edit({ produit, categories, fournisseurs }: PageProps<{
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Modifier {produit.name}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                            <div className="p-6">
                             <form onSubmit={submit} className="space-y-6">
                                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                     <div className="space-y-2">
@@ -244,6 +250,9 @@ export default function Edit({ produit, categories, fournisseurs }: PageProps<{
                                 </div>
                             </form>
                         </div>
+                            </CardContent>
+                        </Card>
+                        
                     </div>
                 </div>
             </div>

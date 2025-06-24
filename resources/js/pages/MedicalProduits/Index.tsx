@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
@@ -20,8 +21,8 @@ import { Eye, MoreHorizontal, Pencil, Trash2, Snowflake } from 'lucide-react';
 import { useState } from 'react';
 import { toast } from 'sonner';
 
-export default function Index({ produits, categories, fournisseurs  , auth }: PageProps<{ 
-    produits: App.MedicalProduit[], 
+export default function Index({ produits, categories, fournisseurs, auth }: PageProps<{
+    produits: App.MedicalProduit[],
     categories: App.Categorie[],
     fournisseurs: App.Fournisseur[],
     auth: User
@@ -85,34 +86,33 @@ export default function Index({ produits, categories, fournisseurs  , auth }: Pa
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6">
-                        <div className="flex justify-between items-center mb-6">
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0">
+                                <CardTitle className="text-2xl font-bold">Gestion des Produits Médicaux</CardTitle>
 
-                        <h1 className="text-2xl font-bold">Gestion des Produits Médicaux</h1>
 
-                            {canCreateProduit && (  
-                                <Button className="mb-3">
-                                    <Link href={route('medical-produits.create')}>Ajouter un Produit</Link>
-                                </Button>
-                            )}
-                            {isAdminCentral && (
-                                <Button className="mb-3">
-                                    <Link href={route('medical-produits.create')}>Ajouter un Produit</Link>
-                                </Button>
-                            )}
-                                
-                            </div>
+                                {canCreateProduit && (
+                                    <Button className="mb-3">
+                                        <Link href={route('medical-produits.create')}>Ajouter un Produit</Link>
+                                    </Button>
+                                )}
+                                {isAdminCentral && (
+                                    <Button className="mb-3">
+                                        <Link href={route('medical-produits.create')}>Ajouter un Produit</Link>
+                                    </Button>
+                                )}
+
+                            </CardHeader>
+                            <CardContent>
+                            <div className="p-6">
+                                    
                             <Table className="dark:text-gray-400cell w-full text-left text-sm text-gray-500 rtl:text-right">
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead>Nom</TableHead>
                                         <TableHead>Catégorie</TableHead>
-                                        <TableHead>Sous-catégorie</TableHead>
                                         <TableHead>Unité</TableHead>
-                                        <TableHead>Fabricant</TableHead>
                                         <TableHead>Fournisseur</TableHead>
-                                        <TableHead>Prix</TableHead>
-                                        <TableHead>Stock</TableHead>
                                         <TableHead>Statut</TableHead>
                                         <TableHead>Actions</TableHead>
                                     </TableRow>
@@ -121,43 +121,28 @@ export default function Index({ produits, categories, fournisseurs  , auth }: Pa
                                     {produits && produits.length > 0 ? (
                                         produits.map((produit) => (
                                             <TableRow key={produit.id}>
-                                                
+
                                                 <TableCell className="font-medium text-black dark:text-white">
-                                                    {produit.name}
+                                                    {produit.name.slice(0, 25)}
                                                 </TableCell>
                                                 <TableCell>
-                                                    {getCategoryName(produit.categorie_id)}
+                                                    {getCategoryName(produit.categorie_id).slice(0, 25)}...
                                                 </TableCell>
-                                                <TableCell>
-                                                    {produit.sous_category || '-'}
-                                                </TableCell>
+                                               
                                                 <TableCell>
                                                     {produit.unite}
                                                 </TableCell>
+                                                
                                                 <TableCell>
-                                                    {produit.fabrican || '-'}
+                                                    {getFournisseurName(produit.fournisseur_id) || '-'}
                                                 </TableCell>
-                                                <TableCell>
-                                                    {getFournisseurName(produit.fournisseur_id)}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {produit.prix_unitaire ? parseFloat(produit.prix_unitaire).toFixed(2) : '0.00'}FC
-                                                </TableCell>
+                                                
                                                 <TableCell>
                                                     <Badge variant={produit.seuil_min > 0 ? 'default' : 'secondary'}>
                                                         {produit.seuil_min} min
                                                     </Badge>
                                                 </TableCell>
-                                                <TableCell>
-                                                    <div className="flex items-center gap-2">
-                                                        <Badge variant={produit.is_active ? 'default' : 'destructive'}>
-                                                            {produit.is_active ? 'Actif' : 'Inactif'}
-                                                        </Badge>
-                                                        {produit.requires_refrigeration === 1 && (
-                                                            <Snowflake className="h-4 w-4 text-blue-500" />
-                                                        )}
-                                                    </div>
-                                                </TableCell>
+                                               
                                                 <TableCell>
                                                     <DropdownMenu
                                                         open={openDropdownId === produit.ref}
@@ -227,6 +212,9 @@ export default function Index({ produits, categories, fournisseurs  , auth }: Pa
                                 </TableBody>
                             </Table>
                         </div>
+                            </CardContent>
+                        </Card>
+                               
                     </div>
                 </div>
             </div>
