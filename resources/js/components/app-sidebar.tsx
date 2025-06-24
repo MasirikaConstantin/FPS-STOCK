@@ -28,7 +28,7 @@ const getMainNavItems = (userRole: string): NavItem[] => {
     },
     {
         title: 'Stocks Mouvement',
-        href: '/stock-mouvement',
+        href: '/stock/mouvements',
         icon: CarFront,
         roles : ["admin_central"],
     },

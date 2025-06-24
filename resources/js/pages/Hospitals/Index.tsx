@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
@@ -73,10 +74,16 @@ export default function Index({ hospitals }: PageProps<{ hospitals: App.Hospital
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6">
-                            <Button className="mb-3">
-                                <Link href={route('hopitals.create')}>Créer un Hôpital</Link>
-                            </Button>
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0">
+                                <CardTitle className="text-xl font-semibold">Hôpitaux</CardTitle>
+                                <Link href={route('hopitals.create')} className="text-white">
+                                    <Button>Nouveau Hôpital</Button>
+                                </Link>
+                            </CardHeader>
+                            <CardContent>
+                            <div className="p-6">
+                            
                             <Table className="dark:text-gray-400cell w-full text-left text-sm text-gray-500 rtl:text-right">
                                 <TableHeader>
                                     <TableRow>
@@ -85,7 +92,6 @@ export default function Index({ hospitals }: PageProps<{ hospitals: App.Hospital
                                         <TableHead>Province/Ville</TableHead>
                                         <TableHead>Capacité</TableHead>
                                         <TableHead>Statut</TableHead>
-                                        <TableHead>Créé par</TableHead>
                                         <TableHead>Date de création</TableHead>
                                         <TableHead>Actions</TableHead>
                                     </TableRow>
@@ -115,7 +121,6 @@ export default function Index({ hospitals }: PageProps<{ hospitals: App.Hospital
                                                         {hospital.is_active ? 'Actif' : 'Inactif'}
                                                     </Badge>
                                                 </TableCell>
-                                                <TableCell>{hospital.creator?.name || 'Système'}</TableCell>
                                                 <TableCell>{new Date(hospital.created_at).toLocaleDateString()}</TableCell>
                                                 <TableCell>
                                                     <DropdownMenu
@@ -186,6 +191,9 @@ export default function Index({ hospitals }: PageProps<{ hospitals: App.Hospital
                                 </TableBody>
                             </Table>
                         </div>
+                            </CardContent>
+                        </Card>
+                       
                     </div>
                 </div>
             </div>
