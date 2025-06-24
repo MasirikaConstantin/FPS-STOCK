@@ -19,6 +19,7 @@ use App\Http\Controllers\UserController;
 use App\Http\Controllers\ReportController;
 use App\Http\Controllers\SettingsController;
 use App\Http\Controllers\StockCentalController;
+use App\Http\Controllers\StockController;
 use App\Http\Controllers\StockEntreeController;
 use App\Http\Controllers\TransfertController;
 use App\Http\Controllers\StockMouvementController;
@@ -255,6 +256,9 @@ Route::middleware(['auth', 'verified'])->group(function () {
         Route::get('/activite/{id}', [StockEntreeController::class, 'show'])
         ->name('stock.entree.show');
     });
+    
+    Route::get('/lesstocks', [StockController::class, 'lesstocks'])
+    ->name('stock.lesstocks');
 });
 
 Route::fallback(function () {

@@ -400,6 +400,32 @@ export interface StockMouvement {
     raison: string;
     notes?: string;
   }
+
+  export interface auth {
+    user: {
+        id: number;
+        name: string;
+        email: string;
+        permissions: {
+            id: number;
+            name: string;
+            action: string;
+            module: string;
+        }[];
+        profile?: {
+            phone?: string;
+            address?: string;
+            hopital_id?: number;
+            hopital?: {
+                id: number;
+                nom: string;
+            };
+        };
+        role?: string;
+    };
+    
+};
+
 // Exportez le type PageProps pour l'utiliser dans vos composants
 export interface PageProps<T extends Record<string, unknown> = {}> extends Page<T> {
     auth: {

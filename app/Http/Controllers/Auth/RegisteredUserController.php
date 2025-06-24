@@ -20,7 +20,7 @@ class RegisteredUserController extends Controller
      */
     public function create(): Response
     {
-        return Inertia::render('auth/register');
+        return Inertia::render('auth/auth');
     }
 
     /**
@@ -30,13 +30,20 @@ class RegisteredUserController extends Controller
      */
     public function store(Request $request): RedirectResponse
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
-            'password' => ['required', 'confirmed', Rules\Password::defaults()],
-            'created_by' => 'required|exists:users,id',
-            'updated_by' => 'required|exists:users,id',
-        ]);
+        
+        try {
+            $request->validate([
+                'name' => 'required|string|max:255',
+                'email' => 'required|string|lowercase|email|max:255|unique:'.User::class,
+                'password' => ['required', 'confirmed', Rules\Password::defaults()],
+                'created_by' => 'nullable|exists:users,id',
+                'updated_by' => 'nullable|exists:users,id',
+            ]);
+        } catch (\Exception $e) {
+           return redirect()->back()->withErrors([
+               'error' => 'Une erreur est survenue',
+           ]);
+        }
 
         $user = User::create([
             'name' => $request->name,

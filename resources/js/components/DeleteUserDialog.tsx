@@ -3,6 +3,7 @@ import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, D
 import { User } from '@/types/types';
 import { useForm } from '@inertiajs/react';
 import { Loader2 } from 'lucide-react';
+import { toast } from 'sonner';
 
 interface DeleteUserDialogProps {
     open: boolean;
@@ -18,6 +19,9 @@ export default function DeleteUserDialog({ open, onOpenChange, user }: DeleteUse
         
         destroy(route('users.destroy', user.id), {
             onSuccess: () => {
+                toast.success(
+                    'Utilisateur supprimé ,  L\'utilisateur a été supprimé avec succès.',
+                );
                 onOpenChange(false);
             },
         });

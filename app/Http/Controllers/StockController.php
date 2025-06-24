@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Stock;
 use App\Models\MedicalProduit;
 use App\Models\Hopital;
+use App\Models\StockMouvement;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\Auth;
@@ -126,5 +127,36 @@ class StockController extends Controller
         $stock = Stock::where('ref', $stock)->firstOrFail();
         $stock->delete();
         return redirect()->route('stocks.index');
+    }
+    public function lesstocks()
+    {
+        $user = Auth::user();
+
+        if ($user->isAdminCentral()) {
+            $stocks = Stock::with(['medical_produit', 'hopital', 'created_by', 'updated_by'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+        } elseif ($user->isAdmin()) {
+            $stocks = Stock::where('hopital_id', $user->profile->hopital_id)->with(['medical_produit', 'hopital', 'created_by', 'updated_by'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+        } elseif ($user->isMedicalStaff()) {
+            $stocks = Stock::where('created_by', $user->id)->with(['medical_produit', 'hopital', 'created_by', 'updated_by'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+        }else{
+            $stocks = Stock::where('created_by', $user->id)->with(['medical_produit', 'hopital', 'created_by', 'updated_by'])
+            ->orderBy('created_at', 'desc')
+            ->get();
+        }
+        
+        return Inertia::render('Stocks/LesSTocks', [
+            'stocks' => $stocks,
+            'produits' => MedicalProduit::all(),
+            'hopitals' => Hopital::all(),
+            'mouvements' => StockMouvement::with(['medicalProduit', 'hopital', 'createdBy'])
+                ->orderBy('created_at', 'desc')
+                ->paginate(20)
+        ]);
     }
 }

@@ -2,10 +2,10 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
-import { PageProps } from '@/types/types';
+import { auth, PageProps } from '@/types/types';
 import { Head, Link } from '@inertiajs/react';
 import { Badge } from '@/components/ui/badge';
-import { BreadcrumbItem, User } from '@/types';
+import {  BreadcrumbItem, User } from '@/types';
 import { Eye, PencilIcon, PlusIcon, TrashIcon, UserCheck, UserPlusIcon } from 'lucide-react';
 import { useState } from 'react';
 import DeleteUserDialog from '@/components/DeleteUserDialog';
@@ -14,9 +14,10 @@ import DeleteUserDialog from '@/components/DeleteUserDialog';
 interface IndexProps extends PageProps {
     users: User[];
     canCreate: boolean;
+    auth: auth;
 }
 
-export default function Index({ users, canCreate }: IndexProps) {
+export default function Index({ users, canCreate , auth}: IndexProps) {
     const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
     const [selectedUser, setSelectedUser] = useState<User | null>(null);
     const breadcrumbs: BreadcrumbItem[] = [
@@ -53,18 +54,23 @@ export default function Index({ users, canCreate }: IndexProps) {
                                             </Link>
                                         </Button>
 
-                                        <Button asChild>
-                                            <Link href={route('admin.permissions.create')}>
-                                                <PlusIcon className="mr-2 h-4 w-4" />
-                                                Nouvelle permission
-                                            </Link>
+                                       
+                                       {auth.user.role === 'admin_central' && (
+                                         <>
+                                         <Button asChild>
+                                         <Link href={route('admin.permissions.create')}>
+                                             <PlusIcon className="mr-2 h-4 w-4" />
+                                             Nouvelle permission
+                                         </Link>
                                         </Button>
+                                     
                                         <Button asChild>
                                             <Link href={route('admin.permissions.assign')}>
                                                 <UserCheck className="mr-2 h-4 w-4" />
                                                 Assigner des Permissions
                                             </Link>
-                                        </Button>
+                                        </Button></>
+                                       )}
                                     </div>
                                 )}
                             </div>

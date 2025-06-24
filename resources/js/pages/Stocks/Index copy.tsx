@@ -21,7 +21,6 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function Index({ stocks, produits, hopitals, auth }: PageProps<{ 
     stocks: App.Stock[],
@@ -104,11 +103,11 @@ export default function Index({ stocks, produits, hopitals, auth }: PageProps<{
 
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
-                    <Card>
-                        <CardHeader className="flex flex-row items-center justify-between space-y-0">
-                            <CardTitle className="text-2xl font-bold">Gestion des Stocks</CardTitle>
-
-                            {canCreateStock ? (
+                    <div className="overflow-hidden shadow-sm sm:rounded-lg">
+                        <div className="p-6">
+                            <div className="flex justify-between items-center mb-6">
+                                <h1 className="text-2xl font-bold">Gestion des Stocks</h1>
+                                {canCreateStock ? (
                                     <Button asChild>
                                         <Link href={route('stocks.create')}>Ajouter une entrée</Link>
                                     </Button>
@@ -123,12 +122,6 @@ export default function Index({ stocks, produits, hopitals, auth }: PageProps<{
                                             <p>Vous êtes connecté en tant qu'admin, Mais ne pouvez pas créer des stocks, vous devez ajouter des permissions pour y accéder</p>
                                         </div>
                                 ) : null}
-                        </CardHeader>
-                        <CardContent>
-                        <div className="overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6">
-                            <div className="flex justify-between items-center mb-6">
-                                
                                 
                             </div>
 
@@ -245,8 +238,6 @@ export default function Index({ stocks, produits, hopitals, auth }: PageProps<{
                             </Table>
                         </div>
                     </div>
-                        </CardContent>
-                    </Card>
                 </div>
             </div>
 

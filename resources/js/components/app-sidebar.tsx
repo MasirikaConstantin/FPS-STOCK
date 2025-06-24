@@ -33,7 +33,7 @@ const getMainNavItems = (userRole: string): NavItem[] => {
 
     },
     {
-        title: 'Stocks Hôpitaux',
+        title: 'Stocks Hôpital',
         href: '/stocks',
         icon: Building2,
         roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
@@ -48,44 +48,44 @@ const getMainNavItems = (userRole: string): NavItem[] => {
         title: 'Médicaments',
         href: '/medical-produits',
         icon: Pill,
-        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        roles : ["admin_central"],
     },
 
     {
         title: 'Fournisseurs',
         href: '/fournisseurs',
         icon: Building2,
-        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        roles : ["admin_central"],
     },
     {
         title: 'Categories',
         href: '/categories',
         icon: CassetteTape,
-        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        roles : ["admin_central"],
     },
     {
         title: 'Transferts',
         href: '/transferts',
         icon: Truck,
-        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        roles : ["admin_central", 'admin','magasinier'],
     },
     {
         title: 'Alertes',
         href: '/alerts',
         icon: AlertTriangle,
-        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        roles : ["admin_central", 'admin', 'magasinier'],
     },
     {
         title: 'Kits',
         href: '/kits',
         icon: Package,
-        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        roles : ["admin_central"],
     },
     {
         title: 'Utilisateurs',
         href: '/users',
         icon: Users,
-        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        roles : ["admin_central", 'admin'],
     },
     {
         title: 'Rapports',
