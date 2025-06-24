@@ -34,6 +34,8 @@ export default function Create({ hopitals, medicalProduits, types, priorities }:
     post(route('alerts.store'));
   };
 
+  const normalizedHopitals = Array.isArray(hopitals) ? hopitals : [hopitals].filter(Boolean);
+
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title="Créer une Alerte" />
@@ -100,24 +102,31 @@ export default function Create({ hopitals, medicalProduits, types, priorities }:
                   <div className="space-y-2">
                     <Label htmlFor="hopital_id">Hôpital</Label>
                     <Select
-                        value={data.hopital_id?.toString()}  // Convert to string if it's a number
-                        onValueChange={(value) => setData('hopital_id', value)}
-                        >
-                        <SelectTrigger>
-                            <SelectValue placeholder="Sélectionner un hôpital">
-                            {data.hopital_id 
-                                ? hopitals.find(h => h.id.toString() === data.hopital_id.toString())?.nom
-                                : null}
-                            </SelectValue>
-                        </SelectTrigger>
-                        <SelectContent>
-                            {hopitals.map((hopital: any) => (
-                            <SelectItem key={hopital.id} value={hopital.id.toString()}>  {/* Ensure string value */}
-                                {hopital.nom}
+                      value={data.hopital_id?.toString()}
+                      onValueChange={(value) => setData('hopital_id', value)}
+                    >
+                      <SelectTrigger>
+                        <SelectValue placeholder="Sélectionner un hôpital">
+                          {data.hopital_id 
+                            ? normalizedHopitals.find(h => h.id.toString() === data.hopital_id.toString())?.nom
+                            : null}
+                        </SelectValue>
+                      </SelectTrigger>
+                      <SelectContent>
+                        {normalizedHopitals.length > 0 ? (
+                          normalizedHopitals.map((hopital) => (
+                            <SelectItem key={hopital.id} value={hopital.id.toString()}>
+                              {hopital.nom} - {hopital.ville}
                             </SelectItem>
-                            ))}
-                        </SelectContent>
-                        </Select>
+                          ))
+                        ) : (
+                          <SelectItem value="" disabled>
+                            Aucun hôpital disponible
+                          </SelectItem>
+                        )}
+                      </SelectContent>
+                    </Select>
+                    {errors.hopital_id && <p className="text-sm text-red-500">{errors.hopital_id}</p>}
                   </div>
 
                   <div className="space-y-2">

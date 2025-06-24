@@ -44,8 +44,8 @@ class DatabaseSeeder extends Seeder
         //Kit::factory(100)->create();
         //ArticleKit::factory(300)->create();
 
-        //$hopital = Hopital::find(1);
-        //Stock::factory(4)->forHopital($hopital)->create();
+        $hopital = Hopital::find(5);
+        Stock::factory(42)->forHopital($hopital)->create();
 
 
     }

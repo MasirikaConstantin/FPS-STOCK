@@ -6,6 +6,7 @@ use App\Models\StockMouvement;
 use App\Models\MedicalProduit;
 use App\Models\Stock;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
@@ -14,15 +15,28 @@ class StockMouvementController extends Controller
 {
     // Affiche le formulaire de sortie directe
     public function createDirectOut()
-    {
-        return Inertia::render('Stock/DirectOut', [
-            'products' => MedicalProduit::with(['stocks' => function($query) {
-                $query->where('quantite', '>', 0)
-                      ->with('hopital')
-                      ->orderBy('date_expiration');
-            }])->get()
-        ]);
+{
+    $user = Auth::user();
+    $produits = new MedicalProduit();
+    
+    if($user->isAdminCentral()){
+        $produits = MedicalProduit::with(['stocks' => function($query) {
+            $query->whereNull("hopital_id") // <-- Seulement les stocks centraux (hopital_id = NULL)
+                  ->with('hopital') // (Optionnel : si hopital_id est NULL, cette relation sera vide)
+                  ->orderBy('date_expiration');
+        }])->orderBy('name')->get();
+    }elseif($user->isAdmin() || $user->isMedicalStaff()){
+        $produits = MedicalProduit::with(['stocks' => function($query) use ($user) {
+            $query->where("hopital_id", $user->profile->hopital_id)
+                  ->with('hopital')
+                  ->orderBy('date_expiration');
+        }])->orderBy('name')->get();
     }
+    
+    return Inertia::render('Stock/DirectOut', [
+        'products' => $produits 
+    ]);
+}
 
     // Traite la sortie directe
     public function storeDirectOut(Request $request)
@@ -85,10 +99,19 @@ class StockMouvementController extends Controller
     // Liste des mouvements
     public function index()
     {
+        $user = Auth::user();
+        $mouvements = new StockMouvement();
+        if($user->isAdminCentral()){
+            $mouvements = StockMouvement::with(['medicalProduit', 'hopital', 'createdBy'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+        }elseif($user->isAdmin() || $user->isMedicalStaff()){
+            $mouvements = StockMouvement::where('hopital_id', $user->profile->hopital_id)->with(['medicalProduit', 'hopital', 'createdBy'])
+            ->orderBy('created_at', 'desc')
+            ->paginate(20);
+        }
         return Inertia::render('Stock/Mouvements', [
-            'mouvements' => StockMouvement::with(['medicalProduit', 'hopital', 'createdBy'])
-                ->orderBy('created_at', 'desc')
-                ->paginate(20)
+            'mouvements' => $mouvements
         ]);
     }
 }

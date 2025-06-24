@@ -22,12 +22,8 @@ class StockController extends Controller
             $stocks = Stock::with(['medical_produit', 'hopital', 'created_by', 'updated_by'])
             ->orderBy('created_at', 'desc')
             ->get();
-        } elseif ($user->isAdmin()) {
+        } elseif ($user->isAdmin() || $user->isMedicalStaff()) {
             $stocks = Stock::where('hopital_id', $user->profile->hopital_id)->with(['medical_produit', 'hopital', 'created_by', 'updated_by'])
-            ->orderBy('created_at', 'desc')
-            ->get();
-        } elseif ($user->isMedicalStaff()) {
-            $stocks = Stock::where('created_by', $user->id)->with(['medical_produit', 'hopital', 'created_by', 'updated_by'])
             ->orderBy('created_at', 'desc')
             ->get();
         }else{

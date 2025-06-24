@@ -452,7 +452,59 @@ export interface PageProps<T extends Record<string, unknown> = {}> extends Page<
         };
         
     };
-    
+ hopital  :{
+        id: number;
+        ref: string;
+        nom: string;
+        type: 'central' | 'general' | 'reference' | 'centre_sante' | null;
+        province: string;
+        ville: string;
+        address: string | null;
+        contact_person: string | null;
+        phone: string | null;
+        email: string | null;
+        capacite: number;
+        is_active: boolean;
+        coordonees: {
+            latitude: number;
+            longitude: number;
+        } | null;
+        division_administrative_id: number | null;
+        created_by: number | null;
+        updated_by: number | null;
+        created_at: string;
+        updated_at: string;
+        divisionAdministrative?: DivisionAdministrative;
+        creator?: User;
+        updater?: User;
+    }
+
+    hospital  :{
+        id: number;
+        ref: string;
+        nom: string;
+        type: 'central' | 'general' | 'reference' | 'centre_sante' | null;
+        province: string;
+        ville: string;
+        address: string | null;
+        contact_person: string | null;
+        phone: string | null;
+        email: string | null;
+        capacite: number;
+        is_active: boolean;
+        coordonees: {
+            latitude: number;
+            longitude: number;
+        } | null;
+        division_administrative_id: number | null;
+        created_by: number | null;
+        updated_by: number | null;
+        created_at: string;
+        updated_at: string;
+        divisionAdministrative?: DivisionAdministrative;
+        creator?: User;
+        updater?: User;
+    }
     Stock  :{
         id: number;
         quantite: number;

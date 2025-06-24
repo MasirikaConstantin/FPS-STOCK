@@ -86,22 +86,43 @@ class User extends Authenticatable implements MustVerifyEmail
             'hopital_id'
         );
     }
-
+    /**
+     * Vérifie si l'utilisateur est un administrateur central
+     *
+     * @return bool
+    */
     public function isAdminCentral(): bool
     {
         return $this->role === 'admin_central';
     }
 
+    /**
+     * Vérifie si l'utilisateur est un administrateur
+     *
+     * @return bool
+    */
     public function isAdmin(): bool
     {
         return $this->role === 'admin';
     }
 
+    /**
+     * Vérifie si l'utilisateur est un personnel médical
+     *
+     * @return bool
+    */
     public function isMedicalStaff(): bool
     {
         return in_array($this->role, ['medecin', 'pharmacien', 'magasinier']);
     }
 
+    /**
+     * Scope pour filtrer les utilisateurs par hôpital
+     *
+     * @param \Illuminate\Database\Eloquent\Builder $query
+     * @param int $hospitalId
+     * @return \Illuminate\Database\Eloquent\Builder
+    */
     public function scopeForHospital($query, $hospitalId)
     {
         return $query->whereHas('profile', function($q) use ($hospitalId) {
@@ -109,28 +130,48 @@ class User extends Authenticatable implements MustVerifyEmail
         });
     }
 
+    /**
+     * Vérifie si l'utilisateur a une permission spécifique
+     *
+     * @param string $module
+     * @param string $action
+     * @return bool
+    */
     public function hasPermission(string $module, string $action): bool
-{
-    return $this->permissions()
-        ->where('module', $module)
-        ->where('action', $action)
-        ->exists();
+    {
+        return $this->permissions()
+            ->where('module', $module)
+            ->where('action', $action)
+            ->exists();
 }
 
-public function permissions()
-{
-    return $this->belongsToMany(Permission::class, 'user_permissions')
-        ->withTimestamps();
-}
+    /**
+     * Récupère les permissions de l'utilisateur
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+    */
+    public function permissions()
+    {
+        return $this->belongsToMany(Permission::class, 'user_permissions')
+            ->withTimestamps();
+    }
 
+    /**
+     * Récupère l'utilisateur qui a créé le modèle
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    */
+    public function createdBy()
+    {
+        return $this->belongsTo(User::class, 'created_by');
+    }
 
-
-public function createdBy()
-{
-    return $this->belongsTo(User::class, 'created_by');
-}
-
-public function updatedBy()
+    /**
+     * Récupère l'utilisateur qui a mis à jour le modèle
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+    */
+    public function updatedBy()
 {
     return $this->belongsTo(User::class, 'updated_by');
 }

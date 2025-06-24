@@ -6,6 +6,7 @@ use App\Models\Alert;
 use App\Models\Hopital;
 use App\Models\MedicalProduit;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 
 class AlertController extends Controller
@@ -42,8 +43,16 @@ class AlertController extends Controller
 
     public function create()
     {
+        $user= Auth::user();
+        $hopitals=new Hopital;
+        if($user->isAdminCentral()){
+            $hopitals=Hopital::all();
+        }else{
+            //dd($user->profile->hopital);
+            $hopitals=$user->profile->hopital;
+        }
         return Inertia::render('Alerts/Create', [
-            'hopitals' => Hopital::all(),
+            'hopitals' => $hopitals,
             'medicalProduits' => MedicalProduit::all(),
             'types' => Alert::types(),
             'priorities' => Alert::priorities(),

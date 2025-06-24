@@ -29,7 +29,6 @@ export default function Show({ auth, transfert }: { auth: Auth; transfert: any }
     },
   ];
 
-
 const handleApprove = () => {
     router.post(route('approve-transfert.approve', transfert.ref));
 };
@@ -42,9 +41,10 @@ const handleCancel = () => {
     router.post(route('cancel.transferts.cancel', transfert.ref));
 };
 
-  const peutApprouver = auth.profil && auth.profil.hopital_id === transfert.to_hospital_id && (auth.user.role === 'admin' || auth.user.role === 'admin_central');
-  const peutCompleter = auth.profil && auth.profil.hopital_id === transfert.to_hospital_id && auth.user.role === 'admin';
+  const peutApprouver = auth.profil?.profil && auth.profil?.profil.hopital_id === transfert.to_hospital_id && (auth.user.role === 'admin' || auth.user.role === 'admin_central');
+  const peutCompleter = auth.profil?.profil && auth.profil?.profil.hopital_id === transfert.to_hospital_id && auth.user.role === 'admin';
   const peutAnnuler = auth.profil && auth.profil.hopital_id === transfert.to_hospital_id  || (auth.user.role === 'admin' || auth.user.role === 'admin_central');
+
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
       <Head title={`Détails du Transfert ${transfert.ref}`} />

@@ -7,6 +7,7 @@ import {
     AlertTriangle,
     BarChart3,
     Building2,
+    CarFront,
     CassetteTape,
     Hospital,
     LayoutGrid,
@@ -24,6 +25,12 @@ const getMainNavItems = (userRole: string): NavItem[] => {
         href: '/dashboard',
         icon: LayoutGrid,
         roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+    },
+    {
+        title: 'Stocks Mouvement',
+        href: '/stock-mouvement',
+        icon: CarFront,
+        roles : ["admin_central"],
     },
     {
         title: 'Stocks Central',

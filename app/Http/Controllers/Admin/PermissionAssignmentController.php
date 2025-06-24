@@ -6,6 +6,7 @@ use App\Models\Permission;
 use App\Models\User;
 use App\Models\UserPermission;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Inertia\Inertia;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
@@ -66,7 +67,7 @@ class PermissionAssignmentController extends Controller
             UserPermission::create([
                 'user_id' => $request->user_id,
                 'permission_id' => $permissionId,
-                'granted_by' => auth()->id()
+                'granted_by' => Auth::user()->id
             ]);
         }
 

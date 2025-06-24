@@ -15,7 +15,7 @@ class MedicalProduitController extends Controller
     {
         return Inertia::render('MedicalProduits/Index', [
             'produits' => MedicalProduit::with(['categorie', 'fournisseur', 'creator', 'updater'])
-                ->orderBy('created_at', 'desc')
+                ->orderBy('name', 'asc')
                 ->get(),
             'categories' => Categorie::all(),
             'fournisseurs' => Fournisseur::all(),

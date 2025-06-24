@@ -62,7 +62,8 @@ class HandleInertiaRequests extends Middleware
                 ? [
                     'hopital' => $user->profile->hopital
                         ? $user->profile->hopital->only('id', 'nom')
-                        : null
+                        : null,
+                    "profil"=>$user->profile ? $user->profile : null,
                 ]
                 : null,
             ],

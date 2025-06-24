@@ -13,20 +13,25 @@ use Illuminate\Support\Str;
 class StockCentalController extends Controller
 {
     public function index()
-    {
-        return Inertia::render('StocksCentral/Index', [
-            'stocks' => Stock::where('hopital_id',null)->with(['medical_produit', 'hopital', 'created_by', 'updated_by'])
-                ->orderBy('created_at', 'desc')
-                ->get(),
-            'produits' => MedicalProduit::all(),
-            'hopitals' => Hopital::all(),
-        ]);
-    }
+{
+    $stocks = Stock::whereNull('hopital_id')
+        ->join('medical_produits', 'stocks.medical_produit_id', '=', 'medical_produits.id')
+        ->with(['medical_produit', 'hopital', 'created_by', 'updated_by'])
+        ->orderBy('medical_produits.name') // tri par nom du produit
+        ->select('stocks.*') // important pour que Laravel retourne des objets Stock
+        ->get();
+
+    return Inertia::render('StocksCentral/Index', [
+        'stocks' => $stocks,
+        'produits' => MedicalProduit::orderBy('name')->get(),
+        'hopitals' => Hopital::all(),
+    ]);
+}
 
     public function create()
     {
         return Inertia::render('StocksCentral/Create', [
-            'produits' => MedicalProduit::all(),
+            'produits' => MedicalProduit::orderBy('name')->get(),
             'hopitals' => Hopital::all(),
         ]);
     }
@@ -59,7 +64,7 @@ class StockCentalController extends Controller
         $stock = Stock::where('ref', $stock)->firstOrFail();
         return Inertia::render('StocksCentral/Show', [
             'stock' => $stock->load(['medical_produit', 'hopital', 'created_by', 'updated_by']),
-            'produits' => MedicalProduit::all(),
+            'produits' => MedicalProduit::orderBy('name')->get(),
             'hopitals' => Hopital::all(),
         ]);
     }
@@ -69,7 +74,7 @@ class StockCentalController extends Controller
         $stock = Stock::where('ref', $stock)->firstOrFail();
         return Inertia::render('StocksCentral/Edit', [
             'stock' => $stock,
-            'produits' => MedicalProduit::all(),
+            'produits' => MedicalProduit::orderBy('name')->get(),
             'hopitals' => Hopital::all(),
         ]);
     }

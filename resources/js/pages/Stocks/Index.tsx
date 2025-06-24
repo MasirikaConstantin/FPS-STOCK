@@ -141,7 +141,6 @@ export default function Index({ stocks, produits, hopitals, auth }: PageProps<{
                                         <TableHead>Date expiration</TableHead>
                                         <TableHead>Prix unitaire</TableHead>
                                         <TableHead>Date réception</TableHead>
-                                        <TableHead>Emplacement</TableHead>
                                         <TableHead>Statut</TableHead>
                                         <TableHead>Actions</TableHead>
                                     </TableRow>
@@ -168,9 +167,6 @@ export default function Index({ stocks, produits, hopitals, auth }: PageProps<{
                                                 </TableCell>
                                                 <TableCell>
                                                     {formatDate(stock.received_date)}
-                                                </TableCell>
-                                                <TableCell>
-                                                    {getHopitalName(stock.hopital_id)}
                                                 </TableCell>
                                                 <TableCell>
                                                     {getStatusBadge(stock.status)}

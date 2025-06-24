@@ -6,6 +6,7 @@ use App\Models\Transfert;
 use App\Models\MedicalProduit;
 use App\Models\Hopital;
 use App\Models\Stock;
+use App\Models\StockMouvement;
 use COM;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
@@ -109,7 +110,12 @@ class TransfertController extends Controller
                 'created_by' => $validated['created_by'] ?? auth()->id(),
                 'ref' => \Illuminate\Support\Str::uuid(),
             ]);
-
+            $validated['items'] = array_map(function ($item) use ($validated) {
+                $item['hospital_id'] = $validated['to_hospital_id'];
+                return $item;
+            }, $validated['items']);
+            
+            //dd($validated['items']);
             foreach ($validated['items'] as $item) {
                 $transfert->items()->create([
                     'medical_produit_id' => $item['medical_produit_id'],
@@ -118,6 +124,19 @@ class TransfertController extends Controller
                     'quantite' => $item['quantite'],
                     'status' => 'en_attente',
                     'ref' => \Illuminate\Support\Str::uuid(),
+                ]);
+
+                StockMouvement::create([
+                    'transfert_id' => $transfert->id,
+                    'type' => 'transfert',
+                    'quantite' => $item['quantite'],
+                    //"raison"=>$item['raison'],
+                    "notes"=>$item['notes'] ?? null,
+                    "medical_produit_id"=>$item['medical_produit_id'],
+                    "hopital_id"=>$item['hospital_id'] ?? null,
+                    "created_by"=>auth()->id(),
+                    "updated_by"=>auth()->id(),
+                    
                 ]);
 
                 // Réserver le stock
@@ -187,6 +206,7 @@ class TransfertController extends Controller
                     'date_expiration' => $item->stockSource->date_expiration ?? null,
                     'prix_unitaire' => $item->stockSource->prix_unitaire ?? null,
                     'status' => 'disponible',
+                    "created_by"=>Auth::user()->id,
                     'ref' => \Illuminate\Support\Str::uuid(),
                 ]);
 
