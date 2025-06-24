@@ -1,4 +1,4 @@
-import { useForm } from '@inertiajs/react';
+import { useForm, usePage } from '@inertiajs/react';
 import { useState, useEffect } from 'react';
 import { Head, router } from '@inertiajs/react';
 import { Button } from '@/components/ui/button';
@@ -27,6 +27,7 @@ import { BreadcrumbItem } from '@/types';
 import { Alert, AlertDescription } from '@/components/ui/alert';
 import { Badge } from '@/components/ui/badge';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { toast } from 'sonner';
 
 interface DirectOutProps extends PageProps {
   products: MedicalProduit[];
@@ -38,7 +39,7 @@ export default function DirectOut({ products, auth }: DirectOutProps) {
   const [allocations, setAllocations] = useState<Allocation[]>([]);
   const [remaining, setRemaining] = useState<number>(0);
   const [noStockError, setNoStockError] = useState<string | null>(null);
-
+  const { flash, error } = usePage<{ flash?: { error?: string }; verifyMessage?: string }>().props;
   const { data, setData, post, processing, errors, reset } = useForm<DirectOutFormData>({
     product_id: '',
     allocations: [],
@@ -133,6 +134,7 @@ export default function DirectOut({ products, auth }: DirectOutProps) {
 
     post(route('stock.mouvements.direct-out'), {
       onSuccess: () => reset(),
+      onError : () => toast.error("Le texte de raison ne peut pas contenir plus de 255 caractères.")
     });
   };
 
@@ -302,6 +304,8 @@ export default function DirectOut({ products, auth }: DirectOutProps) {
                           <Input
                             id="reason"
                             value={data.raison}
+                            max={255}
+                            maxLength={254}
                             onChange={(e) => setData('raison', e.target.value)}
                             placeholder="Raison de la sortie"
                             required

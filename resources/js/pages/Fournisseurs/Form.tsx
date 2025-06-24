@@ -13,6 +13,7 @@ import { BadgeCheckIcon, CalendarIcon } from 'lucide-react';
 import { useState } from 'react';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select"
 import { Badge } from '@/components/ui/badge';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 interface FournisseurFormProps {
     fournisseur?: {
@@ -79,7 +80,12 @@ export default function Form({ fournisseur }: PageProps<FournisseurFormProps>) {
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle className="text-xl font-semibold">{fournisseur ? 'Modifier Fournisseur' : 'Créer Fournisseur'}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                            <div className="p-6">
                             <form onSubmit={submit} className="space-y-6">
                                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                     <div className="space-y-2">
@@ -270,6 +276,9 @@ export default function Form({ fournisseur }: PageProps<FournisseurFormProps>) {
                                 </div>
                             </form>
                         </div>
+                            </CardContent>
+                        </Card>
+                        
                     </div>
                 </div>
             </div>

@@ -18,10 +18,16 @@ const sidebarNavItems: NavItem[] = [
         icon: null,
     },
     {
+        title: 'Autres Données',
+        href: '/settings/autres',
+        icon: null,
+    },
+    {
         title: 'Apparence',
         href: '/settings/appearance',
         icon: null,
     },
+    
 ];
 
 export default function SettingsLayout({ children }: PropsWithChildren) {

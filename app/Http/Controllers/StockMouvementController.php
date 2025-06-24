@@ -41,14 +41,20 @@ class StockMouvementController extends Controller
     // Traite la sortie directe
     public function storeDirectOut(Request $request)
     {
-        $validated = $request->validate([
-            'product_id' => 'required|exists:medical_produits,id',
-            'allocations' => 'required|array',
-            'allocations.*.stock_id' => 'required|exists:stocks,id',
-            'allocations.*.quantity' => 'required|integer|min:1',
-            'raison' => 'required|string|max:255',
-            'notes' => 'nullable|string',
-        ]);
+        try{
+            $validated = $request->validate([
+                'product_id' => 'required|exists:medical_produits,id',
+                'allocations' => 'required|array',
+                'allocations.*.stock_id' => 'required|exists:stocks,id',
+                'allocations.*.quantity' => 'required|integer|min:1',
+                'raison' => 'required|string|max:255',
+                'notes' => 'nullable|string',
+            ]);
+        }catch(\Exception $e){
+            //dd($e->getessage())
+            return back()->with('error', $e->getMessage());
+
+        }
 
         DB::beginTransaction();
 

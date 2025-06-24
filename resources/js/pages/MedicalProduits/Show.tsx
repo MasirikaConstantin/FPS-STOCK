@@ -6,8 +6,9 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Badge } from '@/components/ui/badge';
 import { Snowflake } from 'lucide-react';
+import MedicamentStats from './Stats';
 
-export default function Show({ produit, categories, fournisseurs }: PageProps<{ 
+export default function Show({ produit, categories, fournisseurs,stats }: PageProps<{ 
     produit: App.MedicalProduit, 
     categories: App.Categorie[],
     fournisseurs: App.Fournisseur[]
@@ -22,6 +23,7 @@ export default function Show({ produit, categories, fournisseurs }: PageProps<{
             href: `/medical-produits/${produit.ref}`,
         },
     ];
+    console.log(produit)
 
     const getCategoryName = (id: number) => {
         return categories.find(c => c.id === id)?.name || 'Inconnue';
@@ -153,6 +155,9 @@ export default function Show({ produit, categories, fournisseurs }: PageProps<{
                                     )}
                                 </CardContent>
                             </Card>
+                            <div className="mt-6">
+                                <MedicamentStats produit={stats}/>
+                            </div>
                         </div>
                     </div>
                 </div>

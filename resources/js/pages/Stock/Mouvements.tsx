@@ -74,7 +74,9 @@ export default function Mouvements({ mouvements, auth }: MouvementsProps) {
                         </CardHeader>
                       
 
-                      <CardContent className=" rounded-lg shadow">
+                      <CardContent >
+                      <div className="p-6">
+                        
                         <Table>
                           <TableHeader>
                             <TableRow>
@@ -118,6 +120,7 @@ export default function Mouvements({ mouvements, auth }: MouvementsProps) {
                             ))}
                           </TableBody>
                         </Table>
+                        </div>
                       </CardContent>
 
                       {mouvements.links.length > 3 && (

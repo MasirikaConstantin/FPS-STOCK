@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
@@ -68,17 +69,21 @@ export default function Index({ fournisseurs }: PageProps<{ fournisseurs: App.Fo
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6">
-                            <Button className="mb-3">
-                                <Link href={route('fournisseurs.create')}>Créer un Fournisseur</Link>
-                            </Button>
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0">
+                                <CardTitle className="text-xl font-semibold">Gestion des Fournisseurs</CardTitle>
+                                <Link href={route('fournisseurs.create')} className="text-white">
+                                    <Button>Nouveau Fournisseur</Button>
+                                </Link>
+                            </CardHeader>
+                            <CardContent>
+                            <div className="p-6">
                             <Table className="dark:text-gray-400cell w-full text-left text-sm text-gray-500 rtl:text-right">
                                 <TableHeader>
                                     <TableRow>
                                         <TableHead>Nom</TableHead>
                                         <TableHead>Contact</TableHead>
                                         <TableHead>Spécialités</TableHead>
-                                        <TableHead>Contrat</TableHead>
                                         <TableHead>Statut</TableHead>
                                         <TableHead>Créé par</TableHead>
                                         <TableHead>Date de création</TableHead>
@@ -111,10 +116,7 @@ export default function Index({ fournisseurs }: PageProps<{ fournisseurs: App.Fo
                                                         '-'
                                                     )}
                                                     </TableCell>
-                                                <TableCell>
-                                                    {formatDate(fournisseur.contract_start_date)} -{' '}
-                                                    {formatDate(fournisseur.contract_end_date)}
-                                                </TableCell>
+                                                
                                                 <TableCell>
                                                     <Badge variant={fournisseur.is_active ? 'default' : 'destructive'}>
                                                         {fournisseur.is_active ? 'Actif' : 'Inactif'}
@@ -191,6 +193,11 @@ export default function Index({ fournisseurs }: PageProps<{ fournisseurs: App.Fo
                                 </TableBody>
                             </Table>
                         </div>
+                            </CardContent>
+                                
+                            
+                        </Card>
+                        
                     </div>
                 </div>
             </div>

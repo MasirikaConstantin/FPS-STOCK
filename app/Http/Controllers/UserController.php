@@ -108,12 +108,34 @@ class UserController extends Controller
             ])
             ->get();
     
+            $stats = $user->loadCount([
+                'alerts as total_alertes_crees',
+                'alerts as alertes_resolues' => function($query) {
+                    $query->where('is_resolved', true);
+                },
+                'stockMouvements as mouvements_stock_crees',
+                'transfertsInities as transferts_inities',
+                'medicalProduits as produits_ajoutes'
+            ]);
+    
+            // Ajoutez des statistiques supplémentaires
+            $stats->alertes_par_type = $user->alerts()
+                ->selectRaw('type, count(*) as count')
+                ->groupBy('type')
+                ->pluck('count', 'type');
+    
+            $stats->mouvements_par_type = $user->stockMouvements()
+                ->selectRaw('type, count(*) as count')
+                ->groupBy('type')
+                ->pluck('count', 'type');
+
         // ⬇️ Injecter la collection dans l'objet User
         $user->permissions = $permissions;
     
         return Inertia::render('Users/Show', [
             'user' => $user,
             'canEdit' => $this->canEdit($user),
+            'stats'=>$stats
         ]);
     }    
 

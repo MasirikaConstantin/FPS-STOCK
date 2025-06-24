@@ -21,6 +21,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
+import { Card, CardContent, CardHeader } from '@/components/ui/card';
 
 export default function Index({ stocks, produits, hopitals, auth }: PageProps<{ 
     stocks: App.Stock[],
@@ -101,7 +102,11 @@ export default function Index({ stocks, produits, hopitals, auth }: PageProps<{
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6">
+                        <Card>
+                            <CardHeader>
+
+                            </CardHeader>
+                            <CardContent>
                             <div className="flex justify-between items-center mb-6">
                                 <h1 className="text-2xl font-bold">Gestion des Stocks Central</h1>
                                 {canCreateStock ? (
@@ -224,7 +229,9 @@ export default function Index({ stocks, produits, hopitals, auth }: PageProps<{
                                     )}
                                 </TableBody>
                             </Table>
-                        </div>
+                            </CardContent>
+                        </Card>
+                       
                     </div>
                 </div>
             </div>

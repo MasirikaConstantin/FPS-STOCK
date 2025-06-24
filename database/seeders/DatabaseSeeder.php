@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Alert;
 use App\Models\ArticleKit;
 use App\Models\Categorie;
 use App\Models\User;
@@ -43,10 +44,15 @@ class DatabaseSeeder extends Seeder
         //Stock::factory(100)->create();
         //Kit::factory(100)->create();
         //ArticleKit::factory(300)->create();
-
+/*
         $hopital = Hopital::find(5);
+        $produit = MedicalProduit::find(13);
         Stock::factory(42)->forHopital($hopital)->create();
+        Stock::factory(42)->forHopital($hopital)->forProduit($produit)->create();
 
+*/
 
+$produit = MedicalProduit::find(13);
+$alerte = Alert::factory(5)->forProduit($produit)->demande_transfert()->create();
     }
 }

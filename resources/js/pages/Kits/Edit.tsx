@@ -10,6 +10,7 @@ import { Textarea } from '@/components/ui/textarea';
 import { Switch } from '@/components/ui/switch';
 import { toast } from 'sonner';
 import { FormEventHandler } from 'react';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function Edit({ kit, categories, produits }: PageProps<{ 
     kit: App.Kit,
@@ -78,7 +79,12 @@ export default function Edit({ kit, categories, produits }: PageProps<{
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6">
+                        <Card>
+                            <CardHeader>
+                                <CardTitle>Modification du Kit {kit?.nom}</CardTitle>
+                            </CardHeader>
+                            <CardContent>
+                            <div className="p-6">
                             <form onSubmit={submit} className="space-y-6">
                                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
                                     <div className="space-y-2">
@@ -145,7 +151,7 @@ export default function Edit({ kit, categories, produits }: PageProps<{
                                     </div>
 
                                     {data.articles.length > 0 ? (
-                                        <div className="space-y-4">
+                                        <div className="space-y-4 border px-4 py-4 rounded-2xl">
                                             {data.articles.map((article, index) => (
                                                 <div key={index} className="grid grid-cols-1 md:grid-cols-3 gap-4 items-end">
                                                     <div className="space-y-2">
@@ -215,6 +221,9 @@ export default function Edit({ kit, categories, produits }: PageProps<{
                                 </div>
                             </form>
                         </div>
+                            </CardContent>
+                        </Card>
+                        
                     </div>
                 </div>
             </div>

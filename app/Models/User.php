@@ -181,4 +181,26 @@ public function grantedBy1()
     return $this->belongsTo(User::class, 'granted_by');
 }
 
+
+
+
+public function alerts()
+{
+    return $this->hasMany(Alert::class);
+}
+
+public function stockMouvements()
+{
+    return $this->hasMany(StockMouvement::class, 'created_by');
+}
+
+public function transfertsInities()
+{
+    return $this->hasMany(Transfert::class, 'created_by');
+}
+
+public function medicalProduits()
+{
+    return $this->hasMany(MedicalProduit::class, 'created_by');
+}
 }

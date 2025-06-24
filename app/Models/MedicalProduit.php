@@ -58,4 +58,17 @@ class MedicalProduit extends Model
     {
         return $this->hasMany(Stock::class);
     }
+    public function mouvements(){
+        return $this->hasMany(StockMouvement::class, "medical_produit_id");
+    }
+
+        public function articleTransferts()
+    {
+        return $this->hasMany(ArticleTransfert::class, 'medical_produit_id');
+    }
+
+    public function alerts()
+    {
+        return $this->hasMany(Alert::class, 'medical_produit_id');
+    }
 }

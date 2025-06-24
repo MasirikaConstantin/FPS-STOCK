@@ -10,6 +10,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from '@/components/ui/table';
 import AppLayout from '@/layouts/app-layout';
@@ -63,10 +64,16 @@ export default function Index({  categories }: PageProps<{ categories: App.Categ
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden shadow-sm sm:rounded-lg">
-                        <div className="p-6">
+                        <Card>
+                            <CardHeader className="flex flex-row items-center justify-between space-y-0">
+                            <CardTitle className="text-xl font-semibold">Gestion des Catégories</CardTitle>
                             <Button className="mb-3">
                                 <Link href={route('categories.create')}>Créer une Catégorie</Link>
                             </Button>
+                            </CardHeader>
+                            <CardContent>
+                            <div className="p-6">
+                            
                             <Table className="dark:text-gray-400cell w-full text-left text-sm text-gray-500 rtl:text-right">
                                 <TableHeader>
                                     <TableRow>
@@ -163,6 +170,9 @@ export default function Index({  categories }: PageProps<{ categories: App.Categ
                                 </TableBody>
                             </Table>
                         </div>
+                            </CardContent>
+                        </Card>
+                        
                     </div>
                 </div>
             </div>

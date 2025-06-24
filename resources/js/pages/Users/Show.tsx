@@ -12,6 +12,7 @@ import DeleteUserDialog from '@/components/DeleteUserDialog';
 import { Alert, AlertDescription, AlertTitle } from '@/components/ui/alert';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { P } from 'node_modules/framer-motion/dist/types.d-B_QPEvFK';
+import UserStats from './Stats';
 
 interface ShowProps extends PageProps {
     user: User;
@@ -190,8 +191,9 @@ export default function Show({ user, canEdit, auth }: ShowProps) {
                                     
                                 </div>
                             </CardContent>
-                        </Card>
 
+                        </Card>
+                        
                         {!user.email_verified_at && (
                             <Alert>
                                 <CheckCircle2Icon />
@@ -202,6 +204,8 @@ export default function Show({ user, canEdit, auth }: ShowProps) {
                             </Alert>
                         )}
                     </div>
+                    <UserStats auth={auth} user={user} />
+
                 </div>
             </div>
 

@@ -15,6 +15,7 @@ import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover
 import { CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { format } from 'date-fns';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function Create({ produits, hopitals }: PageProps<{ 
     produits: App.MedicalProduit[],
@@ -62,6 +63,11 @@ export default function Create({ produits, hopitals }: PageProps<{
             <div className="py-12">
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden shadow-sm sm:rounded-lg">
+                       <Card>
+                        <CardHeader>
+                            <CardTitle className='font-bold '>Création d'un stock</CardTitle>
+                        </CardHeader>
+                        <CardContent>
                         <div className="p-6">
                             <form onSubmit={submit} className="space-y-6">
                                 <div className="grid grid-cols-1 gap-6 md:grid-cols-2">
@@ -235,6 +241,8 @@ export default function Create({ produits, hopitals }: PageProps<{
                                 </div>
                             </form>
                         </div>
+                        </CardContent>
+                       </Card>
                     </div>
                 </div>
             </div>

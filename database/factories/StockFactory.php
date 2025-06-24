@@ -104,4 +104,10 @@ class StockFactory extends Factory
             'hopital_id' => $hopital->id
         ]);
     }
+    public function forProduit(MedicalProduit $produit): self
+    {
+        return $this->state([
+            'medical_produit_id' => $produit->id
+        ]);
+    }
 }

@@ -13,6 +13,7 @@ class MedicalProduitController extends Controller
 {
     public function index()
     {
+
         return Inertia::render('MedicalProduits/Index', [
             'produits' => MedicalProduit::with(['categorie', 'fournisseur', 'creator', 'updater'])
                 ->orderBy('name', 'asc')
@@ -66,9 +67,45 @@ class MedicalProduitController extends Controller
         $medicalProduit = MedicalProduit::where('ref', $medicalProduit)
             ->with(['categorie', 'fournisseur', 'creator', 'updater'])
             ->firstOrFail();
+
+
+
+
+            $produit = $medicalProduit->load(['mouvements', 'stocks']);
+
+            // Ajouter les agrégations
+            // Utilisez les relations chargées pour les calculs
+            
+    $stats = [
+        'stocks' => [
+            'total' => $produit->stocks->sum('quantite'),
+            'disponible' => $produit->stocks->where('status', 'disponible')->sum('quantite'),
+            'reservee' => $produit->stocks->where('status', 'reservee')->sum('quantite'),
+            'expirer' => $produit->stocks->where('status', 'expirer')->sum('quantite'),
+            'endommage' => $produit->stocks->where('status', 'endommage')->sum('quantite'),
+        ],
+        'transferts' => [
+            'total' => $produit->articleTransferts->count(),
+            'en_attente' => $produit->articleTransferts->where('status', 'en_attente')->count(),
+            'preleve' => $produit->articleTransferts->where('status', 'preleve')->count(),
+            'livre' => $produit->articleTransferts->where('status', 'livre')->count(),
+            'annule' => $produit->articleTransferts->where('status', 'annule')->count(),
+        ],
+        'mouvements' => $produit->mouvements,
+        'alerts' => [
+            'total' => $produit->alerts->count(),
+            'stock_faible' => $produit->alerts->where('type', 'stock_faible')->count(),
+            'avertissement_expiration' => $produit->alerts->where('type', 'avertissement_expiration')->count(),
+            'expire' => $produit->alerts->where('type', 'expire')->count(),
+            'demande_transfert' => $produit->alerts->where('type', 'demande_transfert')->count(),
+            'systeme'=>$produit->alerts->where('type', 'systeme')->count(),
+        ],
+    ];
+
         return Inertia::render('MedicalProduits/Show', [
-            'produit' => $medicalProduit,
+            'produit' => $produit,
             'categories' => Categorie::all(),
+            'stats' => $stats,
             'fournisseurs' => Fournisseur::all(),
         ]);
     }
