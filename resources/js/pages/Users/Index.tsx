@@ -6,9 +6,10 @@ import { auth, PageProps } from '@/types/types';
 import { Head, Link } from '@inertiajs/react';
 import { Badge } from '@/components/ui/badge';
 import {  BreadcrumbItem, User } from '@/types';
-import { Eye, PencilIcon, PlusIcon, TrashIcon, UserCheck, UserPlusIcon } from 'lucide-react';
+import { Eye, PencilIcon, PlusIcon, TrashIcon, User2, UserCheck, UserCircle, UserPlusIcon } from 'lucide-react';
 import { useState } from 'react';
 import DeleteUserDialog from '@/components/DeleteUserDialog';
+import { Avatar } from '@radix-ui/react-avatar';
 //import DeleteUserDialog from '@/components/delete-user-dialog';
 
 interface IndexProps extends PageProps {
@@ -92,13 +93,16 @@ export default function Index({ users, canCreate , auth}: IndexProps) {
                                         <TableRow key={user.id}>
                                             <TableCell className="font-medium">
                                                 <div className="flex items-center space-x-3">
-                                                    {user.avatar && (
+                                                    {user.avatar ? (
                                                         <img
-                                                            src={user.avatar}
+                                                            src={user.avatar_url}
                                                             alt={user.name}
                                                             className="h-8 w-8 rounded-full"
                                                         />
-                                                    )}
+                                                    ):(
+                                                            <UserCircle/>
+
+                                                    ) }
                                                     <span>{user.name}</span>
                                                 </div>
                                             </TableCell>

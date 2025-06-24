@@ -60,4 +60,37 @@ class ProfileController extends Controller
 
         return redirect('/');
     }
+    public function editContact(){
+        return Inertia::render('settings/contact',[
+            "user"=>Auth::user()
+        ]);
+    }
+    public function updateContact(Request $request)
+    {
+        $request->validate([
+            "phone" => "nullable|numeric",
+            "address" => "nullable|string",
+            "avatar" => "nullable|image|mimes:jpeg,png,jpg,gif,svg|max:4096",
+        ]);
+        
+        $user = Auth::user();
+        
+        // Chargez explicitement le profil ou créez-en un nouveau si inexistant
+        $profil = $user->profil()->firstOrNew([]);
+        
+        $profil->phone = $request->phone;
+        $profil->address = $request->address;
+        
+        if ($request->hasFile('avatar')) {
+            // Stockage selon les normes Laravel (dans storage/app/public)
+            $avatarPath = $request->file('avatar')->store('avatars', 'public');
+            $user->avatar = $avatarPath;
+            $user->save();
+
+        }
+        
+        $profil->save();
+        
+        return redirect()->route('profile.autres');
+    }
 }

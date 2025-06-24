@@ -1,5 +1,6 @@
 import Heading from '@/components/heading';
 import { Button } from '@/components/ui/button';
+import { Card } from '@/components/ui/card';
 import { Separator } from '@/components/ui/separator';
 import { cn } from '@/lib/utils';
 import { type NavItem } from '@/types';
@@ -39,7 +40,7 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
     const currentPath = window.location.pathname;
 
     return (
-        <div className="px-4 py-6">
+        <div className="px-4 py-6 ">
             <Heading title="Paramètres" description="Gestion de votre profil et de vos paramètres" />
 
             <div className="flex flex-col space-y-8 lg:flex-row lg:space-y-0 lg:space-x-12">
@@ -63,11 +64,11 @@ export default function SettingsLayout({ children }: PropsWithChildren) {
                     </nav>
                 </aside>
 
-                <Separator className="my-6 md:hidden" />
+                <Separator className="my-6 md:hidden " />
 
-                <div className="flex-1 md:max-w-2xl">
+                <Card className="flex-1 md:max-w-2xl border-2 py-4 px-6 rounded-2xl shadow-2xl ">
                     <section className="max-w-xl space-y-12">{children}</section>
-                </div>
+                </Card>
             </div>
         </div>
     );

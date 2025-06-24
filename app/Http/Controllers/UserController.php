@@ -26,7 +26,7 @@ class UserController extends Controller
             ->when($user->isMedicalStaff(), function($query) use ($user) {
                 $query->where('id', $user->id);
             })
-            ->latest()
+            ->orderBy('name')
             ->get();
 
         return Inertia::render('Users/Index', [

@@ -41,7 +41,7 @@ class HandleInertiaRequests extends Middleware
         [$message, $author] = str(Inspiring::quotes()->random())->explode('-');
         if(Auth::check()){
             $user = $request->user()->loadMissing([
-                'profile' => fn ($query) => $query->select('id', 'user_id', 'hopital_id'),
+                'profile' => fn ($query) => $query->select('id', 'user_id', 'hopital_id', 'phone', 'address'),
                 'profile.hopital' => fn ($query) => $query->select('id', 'nom', 'ville'),
                 'permissions' => fn ($query) => $query->select(
                                     'permissions.id',

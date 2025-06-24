@@ -8,7 +8,7 @@ use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Illuminate\Support\Str;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
-
+use Illuminate\Support\Facades\Storage;
 
 class User extends Authenticatable implements MustVerifyEmail
 {
@@ -203,4 +203,35 @@ public function medicalProduits()
 {
     return $this->hasMany(MedicalProduit::class, 'created_by');
 }
+public function profil()
+{
+    return $this->hasOne(Profil::class);
+}
+
+protected $appends = ['avatar_url'];
+
+    /**
+     * Accessor pour obtenir l'URL complète de l'avatar
+     */
+    public function getAvatarUrlAttribute()
+{
+    if ($this->avatar) {
+        return asset(Storage::url($this->avatar));
+    }
+    return asset('images/default-avatar.png');
+}
+
+    /**
+     * Mutator pour gérer l'upload de l'avatar
+     */
+    public function setAvatarAttribute($value)
+    {
+        if (is_string($value) && !filter_var($value, FILTER_VALIDATE_URL)) {
+            // Si c'est un fichier uploadé
+            $this->attributes['avatar'] = $value->store('avatars', 'public');
+        } else {
+            // Si c'est une URL ou null
+            $this->attributes['avatar'] = $value;
+        }
+    }
 }
