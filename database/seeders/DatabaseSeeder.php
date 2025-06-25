@@ -22,22 +22,22 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        //User::factory(50)->create();
+        User::factory(15)->create();
 
-        //DivisionAdministrative::factory()->province()->create();
-        /*DivisionAdministrative::factory()->ville()->create([
+        DivisionAdministrative::factory()->province()->create();
+        DivisionAdministrative::factory()->ville()->create([
             'parent_id' => 1
-        ]);*/
-        /*DivisionAdministrative::factory()->commune()->count(23)->create([
+        ]);
+        DivisionAdministrative::factory()->commune()->count(23)->create([
             'parent_id' => 2
-        ]);*/
+        ]);
 
-        /*$province = DivisionAdministrative::factory()->province()->create();
+        $province = DivisionAdministrative::factory()->province()->create();
         $ville = DivisionAdministrative::factory()->ville()->create(['parent_id' => $province->id]);
-        $communes = DivisionAdministrative::factory()->commune()->count(23)->create(['parent_id' => $ville->id]);*/
+        $communes = DivisionAdministrative::factory()->commune()->count(23)->create(['parent_id' => $ville->id]);
 
-        //Categorie::factory(30)->create();
-        //Categorie::factory()->medicaments()->count(5)->create();
+        Categorie::factory(30)->create();
+        Categorie::factory()->medicaments()->count(5)->create();
         //Hopital::factory(30)->create();
         //Fournisseur::factory(50)->create();
         //MedicalProduit::factory(50)->create();
