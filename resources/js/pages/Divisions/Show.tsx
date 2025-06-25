@@ -67,7 +67,7 @@ console.log(canEdit)
                             <Button
                             variant="destructive"
                             onClick={() => {
-                                route('divisions.destroy', division.id);
+                                route('divisions.destroy', division.ref);
                                 setDeleteOpen(false);
                             }}
                             >
