@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('numero_lot')->nullable();
             $table->date('date_expiration')->nullable();
             $table->decimal('prix_unitaire', 10, 2)->nullable();
-            $table->date('received_date')->default(DB::raw('CURRENT_DATE'));
+            $table->timestamp('received_date')->default(DB::raw('CURRENT_TIMESTAMP'));
             $table->enum('status', ['disponible', 'reservee', 'expirer', 'endommage'])->default('disponible');
             $table->foreignId('created_by')->nullable()->constrained('users')->nullOnDelete();
             $table->foreignId('updated_by')->nullable()->constrained('users')->nullOnDelete();
