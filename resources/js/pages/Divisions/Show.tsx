@@ -1,5 +1,5 @@
 import { Button } from '@/components/ui/button';
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import AppLayout from '@/layouts/app-layout';
 import { PageProps } from '@/types/types';
 import { Head, Link } from '@inertiajs/react';
@@ -14,12 +14,12 @@ import { DialogContent, DialogDescription, DialogTitle, DialogTrigger } from '@r
 interface ShowProps extends PageProps {
     division: DivisionAdministrative;
     hierarchy: string;
-    canEdit: boolean;
+    auth: any;
 }
 
-export default function Show({ division, hierarchy, canEdit }: ShowProps) {
+export default function Show({ division, hierarchy, auth }: ShowProps) {
     const [deleteOpen, setDeleteOpen] = useState(false);
-console.log(canEdit)
+    const canEdit = auth.user.permissions.some(p => p.action === 'create' && p.module === 'divisionadministratives');
     const breadcrumbs: BreadcrumbItem[] = [
         {
             title: 'Divisions Administratives',
@@ -118,28 +118,31 @@ console.log(canEdit)
                     <div>
                         <h4 className="text-sm font-medium text-gray-500">Division parente</h4>
                         <p>
-                        <Link href={route('divisions.show', division.parent.id)} className="text-primary hover:underline">
+                        <Link href={route('divisions.show', division.parent.ref)} className="text-primary hover:underline">
                             {division.parent.nom} ({division.parent.type})
                         </Link>
                         </p>
                     </div>
                     )}
-
-                    {division.children.length > 0 && (
-                    <div>
+                    {division.children && division.children.length > 0 && (
+                    <div className="">
                         <h4 className="text-sm font-medium text-gray-500">Subdivisions</h4>
-                        <ul className="space-y-1">
+                        <div className="grid grid-cols-1 md:grid-cols-5 gap-6">
                         {division.children.map((child) => (
-                            <li key={child.id}>
-                            <Link href={route('divisions.show', child.id)} className="text-primary hover:underline">
+                            <div key={child.ref}>
+                            <Link href={route('divisions.show', child.ref)} className="text-primary hover:underline">
                                 {child.nom} ({child.type})
                             </Link>
-                            </li>
+                            </div>
                         ))}
-                        </ul>
+                        </div>
                     </div>
                     )}
+                    
                 </CardContent>
+                <CardFooter>
+                
+                </CardFooter>
                 </Card>
             </div>
             </div>

@@ -1,0 +1,1 @@
+{"version":3,"file":"Create-BUnsUXsC.js","sources":["../../../resources/js/pages/Fournisseurs/Create.tsx"],"sourcesContent":["import Form from './Form';\n\nexport default function Create() {\n    return <Form />;\n}"],"names":["Create","Form"],"mappings":"q1BAEA,SAAwBA,GAAS,CAC7B,aAAQC,EAAK,EAAA,CACjB"}

@@ -91,7 +91,7 @@ class DivisionAdministrativeController extends Controller
             'division' => $division,
             'hierarchy' => $division->hierarchy,
 
-            'canEdit' => auth()->user()->can('edit', $division),
+           // 'canEdit' => auth()->user()->can('edit', $division),
         ]);
     }
 
