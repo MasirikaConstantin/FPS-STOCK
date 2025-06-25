@@ -13,9 +13,14 @@ class AlertController extends Controller
 {
     public function index(Request $request)
     {
+        $user = Auth::user();
+       if($user->isAdminCentral()){
         $query = Alert::with(['hopital', 'user', 'medicalProduit', 'resolvedBy'])
             ->latest();
-
+       }else{
+        $query = Alert::where('hopital_id', $user->profile->hopital_id)->with(['hopital', 'user', 'medicalProduit', 'resolvedBy'])
+            ->latest();
+       }
         if ($request->has('search')) {
             $query->where('titre', 'like', "%{$request->search}%")
                 ->orWhere('message', 'like', "%{$request->search}%");

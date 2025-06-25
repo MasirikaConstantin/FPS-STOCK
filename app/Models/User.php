@@ -225,13 +225,14 @@ protected $appends = ['avatar_url'];
      * Mutator pour gérer l'upload de l'avatar
      */
     public function setAvatarAttribute($value)
-    {
-        if (is_string($value) && !filter_var($value, FILTER_VALIDATE_URL)) {
-            // Si c'est un fichier uploadé
-            $this->attributes['avatar'] = $value->store('avatars', 'public');
-        } else {
-            // Si c'est une URL ou null
-            $this->attributes['avatar'] = $value;
-        }
+{
+    // Si c'est une instance de UploadedFile (fichier uploadé)
+    if ($value instanceof \Illuminate\Http\UploadedFile) {
+        $this->attributes['avatar'] = $value->store('avatars', 'public');
+    } 
+    // Si c'est une URL ou null
+    else {
+        $this->attributes['avatar'] = $value;
     }
+}
 }

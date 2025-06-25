@@ -21,7 +21,7 @@ import { useState } from 'react';
 import { toast } from 'sonner';
 import { format } from 'date-fns';
 import { fr } from 'date-fns/locale';
-import { Card, CardContent, CardHeader } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 
 export default function Index({ stocks, produits, hopitals, auth }: PageProps<{ 
     stocks: App.Stock[],
@@ -103,23 +103,27 @@ export default function Index({ stocks, produits, hopitals, auth }: PageProps<{
                 <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
                     <div className="overflow-hidden shadow-sm sm:rounded-lg">
                         <Card>
-                            <CardHeader>
-
-                            </CardHeader>
-                            <CardContent>
-                            <div className="flex justify-between items-center mb-6">
-                                <h1 className="text-2xl font-bold">Gestion des Stocks Central</h1>
+                            <CardHeader className="flex justify-between items-center mb-6">
+                                <CardTitle className="text-2xl font-bold">Gestion des Stocks Central</CardTitle>
                                 {canCreateStock ? (
+                                   <div className="flex gap-2">
                                     <Button asChild>
                                         <Link href={route('central-stocks.create')}>Ajouter une entrée</Link>
                                     </Button>
+                                    <Button variant="outline" asChild>
+                                        <Link href={route('stock.entree.activite')}>Activité d'entrée</Link>
+                                    </Button>
+                                   </div>
+
                                 ):
                                 isAdminCentral ? (
                                     <div className="text-red-500 text-sm font-bold w-1/2">
                                         <p>Vous êtes connecté en tant qu'admin central, Mais ne pouvez pas créer des stocks, vous devez ajouter des permissions pour y accéder</p>
                                     </div>
                                 ):null}
-                            </div>
+                            </CardHeader>
+                            <CardContent>
+                            
 
                             <Table className="dark:text-gray-400cell w-full text-left text-sm text-gray-500 rtl:text-right">
                                 <TableHeader>

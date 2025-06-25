@@ -2,54 +2,72 @@ import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { Plus, Minus, FileText, Search, Package, AlertTriangle } from 'lucide-react';
 import { router } from '@inertiajs/react';
+import { usePage } from '@inertiajs/react';
 
 export const QuickActions = () => {
-  const actions = [
-    {
-      title: 'Entrée de stock',
-      description: 'Enregistrer une livraison',
-      icon: Plus,
-      color: 'bg-green-500/90 hover:bg-green-600 text-white',
-      action: () => router.visit('/stocks/create')
-    },
-    {
-      title: 'Sortie de stock',
-      description: 'Consommation/vente',
-      icon: Minus,
-      color: 'bg-red-500/90 hover:bg-red-600 text-white',
-      action: () => router.visit('/stock/mouvements/')
-    },
-    {
-      title: 'Stock',
-      description: 'Compter les stocks',
-      icon: Package,
-      color: 'bg-blue-500/90 hover:bg-blue-600 text-white',
-      action: () => router.visit('/stock/entree/activite')
-    },
-    {
-      title: 'Rechercher',
-      description: 'Trouver un article',
-      icon: Search,
-      color: 'bg-slate-500/90 hover:bg-slate-600 text-white',
-      action: () => console.log('Rechercher')
-    },
-    {
-      title: 'Rapport',
-      description: 'Générer un rapport',
-      icon: FileText,
-      color: 'bg-purple-500/90 hover:bg-purple-600 text-white',
-      action: () => console.log('Rapport')
-    },
-    {
-      title: 'Alertes',
-      description: 'Gérer les alertes',
-      icon: AlertTriangle,
-      color: 'bg-orange-500/90 hover:bg-orange-600 text-white',
-      action: () => console.log('Alertes')
-    }
-  ];
+    const { auth } = usePage().props;
+    const userRole = auth.user.role;
+    const getItemActions = (userRole: string) => {
+    const Allactions = [
+      {
+        title: 'Entrée de stock',
+        description: 'Enregistrer une livraison',
+        icon: Plus,
+        roles : ["admin_central"],
+
+        color: 'bg-green-500/90 hover:bg-green-600 text-white',
+        action: () => router.visit('/stocks/create')
+      },
+      {
+        title: 'Sortie de stock',
+        description: 'Consommation/vente',
+        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        icon: Minus,
+        color: 'bg-red-500/90 hover:bg-red-600 text-white',
+        action: () => router.visit('/stock/mouvements/')
+      },
+      {
+        title: 'Stock',
+        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        description: 'Compter les stocks',
+        icon: Package,
+        color: 'bg-blue-500/90 hover:bg-blue-600 text-white',
+        action: () => auth.user.role === 'admin_central' ? router.visit('/stock/entree/activite') : router.visit('/stocks')
+      },
+      {
+        title: 'Rechercher',
+        description: 'Trouver un article',
+        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        icon: Search,
+        color: 'bg-slate-500/90 hover:bg-slate-600 text-white',
+        action: () => console.log('Rechercher')
+      },
+      {
+        title: 'Rapport',
+        description: 'Générer un rapport',
+        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        icon: FileText,
+        color: 'bg-purple-500/90 hover:bg-purple-600 text-white',
+        action: () => console.log('Rapport')
+      },
+      {
+        title: 'Alertes',
+        description: 'Gérer les alertes',
+        icon: AlertTriangle,
+        roles : ["admin_central", 'admin', 'medecin', 'pharmacien','magasinier'],
+        color: 'bg-orange-500/90 hover:bg-orange-600 text-white',
+        action: () => router.visit('/alerts/')
+      }
+    ];
+return Allactions.filter(item => item.roles?.includes(userRole));
+
+  }
+  
+
+const actions = getItemActions(userRole);
 
   return (
+    
     <Card className="border-border/50 shadow-sm">
       <CardHeader className="pb-3">
         <CardTitle className="text-lg font-semibold text-foreground">Actions rapides</CardTitle>

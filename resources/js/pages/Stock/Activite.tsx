@@ -10,7 +10,7 @@ import {
   TableRow,
 } from '@/components/ui/table';
 import { Stock } from '@/types/types';
-import { Card, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 
 interface ActiviteProps {
@@ -20,8 +20,8 @@ interface ActiviteProps {
 
 export default function Activite({ stocks, auth }: ActiviteProps) {
   const breadcrumbs: BreadcrumbItem[] = [
-    { title: 'Stock', href: route('stocks.index') },
-    { title: 'Activité des entrées', href: route('stock.entree.activite') },
+    { title: 'Stocks Central', href: '/central-stocks' },
+    { title: 'Activité des entrées', href: '/stock/activite' },
   ];
   return (
     <AppLayout breadcrumbs={breadcrumbs}>
@@ -29,9 +29,10 @@ export default function Activite({ stocks, auth }: ActiviteProps) {
 
       <div className="py-12">
         <div className="mx-auto max-w-7xl sm:px-6 lg:px-8">
+          <div className="overflow-hidden shadow-sm sm:rounded-lg">
           <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0">
-              <CardTitle>Activité des entrées</CardTitle>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 mb-2 mt-6">
+              <CardTitle className="text-2xl font-bold">Activité des entrées</CardTitle>
               {auth.user.role === 'admin_central' && (
                 <Button asChild>
                   <Link href={route('stock.entree.create')}>Nouveau Transfert</Link>
@@ -39,12 +40,12 @@ export default function Activite({ stocks, auth }: ActiviteProps) {
               )}
             </CardHeader>
 
-            <div className="overflow-hidden sm:rounded-lg">
+            <CardContent>
             <div className="p-6">
               
               
               <div className="overflow-x-auto">
-                <Table>
+                <Table className="dark:text-gray-400cell w-full text-left text-sm text-gray-500 rtl:text-right">
                   <TableHeader>
                     <TableRow>
                       <TableHead>Produit</TableHead>
@@ -58,7 +59,7 @@ export default function Activite({ stocks, auth }: ActiviteProps) {
                   <TableBody>
                     {stocks.map((stock) => (
                       <TableRow key={stock.id}>
-                        <TableCell>{stock.medical_produit?.name}</TableCell>
+                        <TableCell className="font-medium text-black dark:text-white">{stock.medical_produit?.name}</TableCell>
                         <TableCell>{stock.quantite}</TableCell>
                         <TableCell>{stock.numero_lot || 'N/A'}</TableCell>
                         <TableCell>
@@ -86,8 +87,9 @@ export default function Activite({ stocks, auth }: ActiviteProps) {
                 </div>
               )}
             </div>
-          </div>
+            </CardContent>
           </Card>
+          </div>
         </div>
       </div>
     </AppLayout>

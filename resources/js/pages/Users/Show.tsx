@@ -51,7 +51,7 @@ export default function Show({ user, canEdit, auth }: ShowProps) {
                                     <div className="relative">
                                         {user.avatar ? (
                                             <img
-                                                src={user.avatar}
+                                                src={user.avatar_url}
                                                 alt={user.name}
                                                 className="h-24 w-24 rounded-full"
                                             />
@@ -140,7 +140,7 @@ export default function Show({ user, canEdit, auth }: ShowProps) {
                                                 <p>{user.created_by?.name}</p>
                                                 {user.created_by?.avatar ?(
                                                     <Avatar>
-                                                    <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                                    <AvatarImage src={user.created_by.avatar_url} alt="@shadcn" />
                                                     <AvatarFallback>CN</AvatarFallback>
                                                 </Avatar>
                                                 )
@@ -158,7 +158,7 @@ export default function Show({ user, canEdit, auth }: ShowProps) {
                                             <p>{user.updated_by?.name}</p>
                                             {user.updated_by?.avatar ?(
                                                 <Avatar>
-                                                <AvatarImage src="https://github.com/shadcn.png" alt="@shadcn" />
+                                                <AvatarImage src={user.updated_by.avatar_url} alt="@shadcn" />
                                                 <AvatarFallback>CN</AvatarFallback>
                                             </Avatar>
                                             )

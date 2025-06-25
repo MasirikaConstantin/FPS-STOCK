@@ -13,6 +13,7 @@ import AppLayout from '@/layouts/app-layout';
 import SettingsLayout from '@/layouts/settings/layout';
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar';
 import { toast } from 'sonner';
+import { Progress } from '@radix-ui/react-progress';
 
 export default function Profile() {
     const { auth } = usePage().props;
@@ -95,9 +96,10 @@ export default function Profile() {
                                     />
                                     <InputError message={errors.avatar} className="mt-2" />
                                     {progress && (
-                                        <progress value={progress.percentage} max="100" className="mt-2">
+                                        <>
+                                            <Progress value={progress.percentage} maxWidth="200px" className="mt-2"/>
                                             {progress.percentage}%
-                                        </progress>
+                                        </>
                                     )}
                                 </div>
                             </div>
